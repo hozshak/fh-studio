@@ -1,0 +1,14 @@
+# Betriebssystem / Editor
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Claude Code – lokale, persönliche Einstellungen
+.claude/settings.local.json
+
+# Sensibles niemals committen
+*.pfx
+*.cer
+*.key
+*-password.txt
+*.env
