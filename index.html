@@ -5,6 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>FH Studio — Webdesign, das beeindruckt</title>
 <meta name="description" content="FH Studio von Fynn Beckmann & Hozan Shaker. Wir bauen extrem moderne Websites, die Kunden begeistern und Umsatz bringen." />
+<meta name="theme-color" content="#04050a" />
+<meta name="color-scheme" content="dark" />
+<link rel="canonical" href="https://fh-studio.de/" />
+
+<!-- SVG-Favicon (FH-Logo, inline – kein extra Request) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2316e0c7'/%3E%3Cstop offset='.55' stop-color='%237c5cff'/%3E%3Cstop offset='1' stop-color='%23ff4d8d'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='2.5' y='2.5' width='43' height='43' rx='13' fill='url(%23g)'/%3E%3Cpath d='M14 14 h11 v4 h-7 v5 h6 v4 h-6 v7 h-4 z' fill='%2305060a'/%3E%3Cpath d='M28 14 h4 v7 h6 v-7 h4 v20 h-4 v-9 h-6 v9 h-4 z' fill='%2305060a'/%3E%3C/svg%3E" />
+
+<!-- Open Graph / Social Sharing -->
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="de_DE" />
+<meta property="og:url" content="https://fh-studio.de/" />
+<meta property="og:site_name" content="FH Studio" />
+<meta property="og:title" content="FH Studio — Webdesign, das beeindruckt" />
+<meta property="og:description" content="Extrem moderne Websites, die Besucher in Kunden verwandeln. Ein Studio von Fynn Beckmann & Hozan Shaker." />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="FH Studio — Webdesign, das beeindruckt" />
+<meta name="twitter:description" content="Extrem moderne Websites, die Besucher in Kunden verwandeln. Ein Studio von Fynn Beckmann & Hozan Shaker." />
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -17,11 +35,14 @@
     --radius:22px; --maxw:1180px;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:smooth;color-scheme:dark;scrollbar-gutter:stable}
   body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:none}
-  h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif;letter-spacing:-.02em;line-height:1.02}
+  h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif;letter-spacing:-.02em;line-height:1.02;text-wrap:balance}
+  p,.sec-sub,.hero p.lead,.card p{text-wrap:pretty}
   a{color:inherit;text-decoration:none}
   ::selection{background:var(--c1);color:#fff}
+  :focus-visible{outline:2px solid var(--c2);outline-offset:3px;border-radius:6px}
+  a:focus-visible,.btn:focus-visible,.nav-links a:focus-visible{outline-offset:5px}
 
   /* canvas */
   #stars{position:fixed;inset:0;z-index:-3;display:block}
@@ -58,9 +79,9 @@
   nav.scrolled{backdrop-filter:blur(16px);background:rgba(4,5,10,.55);border-bottom:1px solid var(--stroke)}
   .nav-links{display:flex;gap:32px;font-size:15px;color:var(--muted)}
   .nav-links a{position:relative;transition:.25s}
-  .nav-links a:hover{color:var(--ink)}
+  .nav-links a:hover,.nav-links a.active{color:var(--ink)}
   .nav-links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:2px;background:linear-gradient(90deg,var(--c1),var(--c2));transition:.3s}
-  .nav-links a:hover::after{width:100%}
+  .nav-links a:hover::after,.nav-links a.active::after{width:100%}
   @media(max-width:820px){.nav-links{display:none}}
 
   .btn{display:inline-flex;align-items:center;gap:10px;padding:13px 24px;border-radius:100px;font-weight:600;font-size:15px;position:relative;overflow:hidden;border:1px solid transparent;transition:transform .18s cubic-bezier(.2,.8,.2,1)}
@@ -1043,6 +1064,28 @@
     requestAnimationFrame(frame);
   }
   frame();
+
+  /* NAV SCROLL-SPY — aktiver Menüpunkt je nach sichtbarer Sektion */
+  const navLinks=[...document.querySelectorAll('.nav-links a')];
+  const spySecs=navLinks
+    .map(a=>({a,sec:document.getElementById(a.getAttribute('href').slice(1))}))
+    .filter(o=>o.sec);
+  let curActive=null;
+  function spyScroll(){
+    const line=scrollY+innerHeight*0.32; // Referenzlinie im oberen Drittel
+    let best=null;
+    spySecs.forEach(o=>{
+      const top=o.sec.getBoundingClientRect().top+scrollY;
+      if(top<=line&&(!best||top>best.top))best={top,a:o.a};
+    });
+    const link=best?best.a:null;
+    if(link!==curActive){
+      spySecs.forEach(o=>o.a.classList.remove('active'));
+      if(link)link.classList.add('active');
+      curActive=link;
+    }
+  }
+  addEventListener('scroll',spyScroll,{passive:true});spyScroll();
 })();
 </script>
 <script>

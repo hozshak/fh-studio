@@ -5,6 +5,7 @@ desktop.ini
 
 # Claude Code – lokale, persönliche Einstellungen
 .claude/settings.local.json
+CLAUDE.md
 
 # Sensibles niemals committen
 *.pfx
