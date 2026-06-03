@@ -335,67 +335,6 @@
   footer .social a:hover{border-color:var(--c2);color:var(--c2);transform:translateY(-3px)}
 
 
-  /* ===== BUILD-A-WEBSITE PIPELINE ===== */
-  .bw{margin-top:48px}
-  .bw-head{display:flex;align-items:center;gap:16px;margin-bottom:14px;flex-wrap:wrap}
-  .bw-prog{font-family:'Space Grotesk';font-weight:700;font-size:15px;color:var(--c2)}
-  .bw-prog .t{color:var(--muted);font-weight:600}
-  .bw-msg{font-family:'Space Grotesk';font-weight:700;color:var(--c2);opacity:0;transition:.4s}
-  .bw-msg.show{opacity:1}
-  .bw-reset{margin-left:auto;font-family:'Space Grotesk';font-size:12px;font-weight:600;color:var(--muted);background:var(--glass);border:1px solid var(--stroke);border-radius:8px;padding:9px 15px;cursor:pointer;transition:.2s}
-  .bw-reset:hover{color:var(--c2);border-color:rgba(22,224,199,.4)}
-  .bw-board{position:relative;height:480px;border:1px solid var(--stroke);border-radius:18px;overflow:hidden;background:#070a12;background-image:radial-gradient(circle at 1px 1px,rgba(22,224,199,.06) 1px,transparent 1px);background-size:26px 26px;touch-action:none}
-  @media(max-width:600px){.bw-board{height:540px}}
-  .bw-board canvas{position:absolute;inset:0;pointer-events:none;z-index:1}
-  .bw-node{position:absolute;z-index:3;display:flex;flex-direction:column;align-items:center;gap:5px;background:#10131f;border:1.5px solid var(--stroke);border-radius:14px;padding:11px 4px;user-select:none;transition:border-color .3s,box-shadow .3s,transform .2s}
-  .bw-node .ic{font-size:23px;line-height:1}
-  .bw-node .lb{font-family:'Space Grotesk';font-weight:700;font-size:11px;color:var(--muted);transition:.3s}
-  .bw-node.done{border-color:rgba(22,224,199,.6);box-shadow:0 0 16px rgba(22,224,199,.18)}
-  .bw-node.done .lb{color:var(--c2)}
-  .bw-node.bad{animation:bwBad .35s}
-  @keyframes bwBad{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-  .bw-port{position:absolute;width:14px;height:14px;border-radius:50%;background:#1a1e2e;border:2px solid var(--stroke);cursor:crosshair;z-index:4;top:50%;margin-top:-7px;transition:.2s}
-  .bw-port::after{content:"";position:absolute;inset:-10px;border-radius:50%}
-  .bw-port.out{right:-7px}.bw-port.in{left:-7px}
-  .bw-port.next{border-color:var(--c1);background:rgba(124,92,255,.45);animation:bwPulse 1.4s infinite}
-  @keyframes bwPulse{0%{box-shadow:0 0 0 0 rgba(124,92,255,.5)}70%{box-shadow:0 0 0 9px rgba(124,92,255,0)}100%{box-shadow:0 0 0 0 rgba(124,92,255,0)}}
-  .bw-port.hot{border-color:var(--c1);background:rgba(124,92,255,.55);box-shadow:0 0 10px rgba(124,92,255,.5)}
-  .bw-node.done .bw-port.out{border-color:var(--c2);background:var(--c2);box-shadow:0 0 8px var(--c2)}
-  .bw-hint{position:absolute;top:118px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--muted);background:rgba(7,10,18,.82);border:1px solid var(--stroke);padding:6px 12px;border-radius:100px;z-index:4;pointer-events:none;white-space:nowrap}
-  /* live preview */
-  .bw-preview{position:absolute;left:50%;transform:translateX(-50%);bottom:22px;width:min(560px,84%);z-index:2}
-  .bw-browser{border:1px solid var(--stroke);border-radius:14px;overflow:hidden;background:#0a0d18;box-shadow:0 20px 50px -20px #000;transition:box-shadow .5s}
-  .bw-preview.s4 .bw-browser{box-shadow:0 0 42px -6px rgba(22,224,199,.45),0 20px 50px -20px #000}
-  .bw-bbar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:rgba(0,0,0,.3);border-bottom:1px solid var(--stroke)}
-  .bw-bbar .d{width:9px;height:9px;border-radius:50%;background:#2a2f40}
-  .bw-url{margin-left:8px;font-family:'Space Grotesk';font-size:11px;color:var(--muted);background:rgba(255,255,255,.05);padding:4px 12px;border-radius:6px;flex:1;max-width:280px;transition:.3s;white-space:nowrap;overflow:hidden}
-  .bw-preview.s4 .bw-url{color:var(--c2);background:rgba(22,224,199,.08)}
-  .bw-live{font-family:'Space Grotesk';font-weight:700;font-size:10px;letter-spacing:.08em;color:#04050a;background:var(--c2);padding:3px 8px;border-radius:6px;opacity:0;transition:.3s}
-  .bw-preview.s4 .bw-live{opacity:1;animation:bwBlink 1.4s infinite}
-  @keyframes bwBlink{50%{opacity:.55}}
-  .bw-screen{position:relative;height:190px;background:radial-gradient(circle at 70% 8%,#10142a,#0a0d18);padding:16px 20px;overflow:hidden}
-  .bw-ph{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:12px}
-  .bw-preview:not(.s0) .bw-ph{display:none}
-  .bw-sk{display:none;flex-direction:column;gap:8px}
-  .bw-preview.s1 .bw-sk{display:flex;animation:bwSk 1.2s ease-in-out infinite}
-  @keyframes bwSk{50%{opacity:.45}}
-  .bw-sk i{height:13px;border-radius:4px;background:rgba(255,255,255,.1)}
-  .bw-sk i:nth-child(1){width:55%}.bw-sk i:nth-child(2){width:38%}.bw-sk i:nth-child(3){width:70%}
-  .bw-sk .r{display:flex;gap:8px;margin-top:8px}.bw-sk .r b{flex:1;height:42px;border-radius:6px;background:rgba(255,255,255,.07)}
-  .bw-site{display:none}
-  .bw-preview.s2 .bw-site,.bw-preview.s3 .bw-site,.bw-preview.s4 .bw-site{display:block;animation:bwIn .5s ease}
-  @keyframes bwIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-  .bw-nav{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-  .bw-nav .logo{font-family:'Space Grotesk';font-weight:700;color:#fff;font-size:11px}
-  .bw-nav .lk{width:22px;height:5px;border-radius:3px;background:rgba(255,255,255,.18)}
-  .bw-nav .cta{margin-left:auto;width:34px;height:14px;border-radius:100px;background:linear-gradient(120deg,var(--c1),var(--c4))}
-  .bw-site h4{font-family:'Space Grotesk';font-weight:700;font-size:23px;line-height:1.05;color:#fff;margin:0}
-  .bw-site h4 b{background:linear-gradient(120deg,var(--c2),var(--c1));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .bw-row{display:flex;gap:8px;margin-top:12px}
-  .bw-btn{height:18px;border-radius:100px}.bw-btn.p{width:72px;background:linear-gradient(120deg,var(--c1),var(--c4))}.bw-btn.g{width:54px;border:1px solid var(--stroke)}
-  .bw-cards{display:flex;gap:8px;margin-top:14px}.bw-cards div{flex:1;height:34px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid var(--stroke)}
-  .bw-seo{position:absolute;top:12px;right:12px;font-size:10px;font-weight:600;color:var(--c2);background:rgba(22,224,199,.1);border:1px solid rgba(22,224,199,.3);padding:5px 9px;border-radius:100px;opacity:0;transform:translateY(-6px);transition:.4s}
-  .bw-preview.s3 .bw-seo,.bw-preview.s4 .bw-seo{opacity:1;transform:none}
 
   /* ===== AIR HOCKEY ===== */
   .ah{--blue:#00d4ff;--red:#ff2d55;--gold:#ffc940;--ah-panel:#080d14;display:flex;justify-content:center;margin-top:44px}
@@ -791,40 +730,6 @@
   </div>
 </section>
 
-<!-- BUILD-A-WEBSITE PIPELINE -->
-<section id="lab" class="wrap reveal">
-  <div class="eyebrow">Interaktiv · sinnvoll</div>
-  <h2 class="sec-title" data-scramble>Bau eine Website in 5 Schritten.</h2>
-  <p class="sec-sub">Verbinde die Schritte der Reihe nach — und sieh rechts zu, wie deine Website live entsteht: Wireframe → Design → Inhalt → LIVE. Genau dieser Weg führt bei uns zu deinem fertigen Auftritt.</p>
-  <div class="bw" id="bw">
-    <div class="bw-head">
-      <div class="bw-prog"><span id="bwProg">0</span><span class="t"> / 4 Verbindungen</span></div>
-      <span class="bw-msg" id="bwMsg">🎉 Live in 14 Tagen!</span>
-      <button class="bw-reset" id="bwReset">↺ Von vorn</button>
-    </div>
-    <div class="bw-board" id="bwBoard">
-      <canvas id="bwCanvas"></canvas>
-      <div class="bw-hint">Zieh vom leuchtenden Punkt zum nächsten Schritt</div>
-      <div class="bw-preview s0" id="bwPreview">
-        <div class="bw-browser">
-          <div class="bw-bbar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="bw-url" id="bwUrl">about:blank</span><span class="bw-live" id="bwLive">● LIVE</span></div>
-          <div class="bw-screen">
-            <div class="bw-ph">Verbinde die Schritte, um zu starten</div>
-            <div class="bw-sk"><i></i><i></i><i></i><div class="r"><b></b><b></b><b></b></div></div>
-            <div class="bw-site">
-              <div class="bw-nav"><span class="logo">◆ Marke</span><span class="lk"></span><span class="lk"></span><span class="cta"></span></div>
-              <h4>Deine <b>Marke</b><br>im besten Licht.</h4>
-              <div class="bw-row"><span class="bw-btn p"></span><span class="bw-btn g"></span></div>
-              <div class="bw-cards"><div></div><div></div><div></div></div>
-            </div>
-            <div class="bw-seo">🔍 Platz 1 bei Google</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- FINAL CTA -->
 <section id="kontakt" class="wrap">
   <div class="final reveal">
@@ -1138,78 +1043,6 @@
     requestAnimationFrame(frame);
   }
   frame();
-})();
-</script>
-<script>
-/* ===== BUILD-A-WEBSITE PIPELINE ===== */
-(function(){
-  const board=document.getElementById('bwBoard'),cv=document.getElementById('bwCanvas'),preview=document.getElementById('bwPreview');
-  if(!board||!cv||!preview)return;
-  const ctx=cv.getContext('2d');
-  const urlEl=document.getElementById('bwUrl'),progEl=document.getElementById('bwProg'),msgEl=document.getElementById('bwMsg'),resetBtn=document.getElementById('bwReset');
-  const STAGES=[{ic:'🧠',l:'Idee'},{ic:'🎨',l:'Design'},{ic:'⚡',l:'Code'},{ic:'🔍',l:'SEO'},{ic:'🚀',l:'Launch'}];
-  let nodes=[],links=0,start=null,dragPt=null,dash=0;
-  function sizeCanvas(){const w=board.clientWidth,h=board.clientHeight,dpr=Math.min(devicePixelRatio||1,2);cv.width=w*dpr;cv.height=h*dpr;cv.style.width=w+'px';cv.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);draw();}
-  function layout(){
-    const Wb=board.clientWidth,pad=26,slot=(Wb-pad*2)/5,nodeW=Math.max(54,Math.min(96,slot-12)),y=24;
-    nodes.forEach((nd,i)=>{nd.el.style.width=nodeW+'px';nd.el.style.left=Math.round(pad+i*slot+(slot-nodeW)/2)+'px';nd.el.style.top=y+'px';});
-    sizeCanvas();
-  }
-  function build(){
-    nodes.forEach(n=>n.el.remove());nodes=[];links=0;start=null;dragPt=null;
-    STAGES.forEach((s,i)=>{
-      const el=document.createElement('div');el.className='bw-node';el.dataset.i=i;
-      let p='';if(i>0)p+='<div class="bw-port in"></div>';if(i<STAGES.length-1)p+='<div class="bw-port out"></div>';
-      el.innerHTML='<span class="ic">'+s.ic+'</span><span class="lb">'+s.l+'</span>'+p;
-      board.appendChild(el);
-      nodes.push({el,i,inPort:el.querySelector('.in'),outPort:el.querySelector('.out')});
-    });
-    layout();setStage();
-  }
-  function setStage(){
-    preview.className='bw-preview s'+links;progEl.textContent=links;
-    nodes.forEach((nd,i)=>nd.el.classList.toggle('done',i<=links));
-    nodes.forEach(nd=>{nd.outPort&&nd.outPort.classList.remove('next');nd.inPort&&nd.inPort.classList.remove('next');});
-    if(links<4){nodes[links].outPort&&nodes[links].outPort.classList.add('next');nodes[links+1].inPort&&nodes[links+1].inPort.classList.add('next');}
-    if(links===0)urlEl.textContent='about:blank';else if(links<4)urlEl.textContent='deine-marke.de';else urlEl.textContent='https://deine-marke.de  🔒';
-    if(links===4)msgEl.classList.add('show');else msgEl.classList.remove('show');
-    draw();
-  }
-  function portCenter(nd,which){const e=nd.el,p=which==='out'?nd.outPort:nd.inPort;if(!p)return null;return{x:e.offsetLeft+p.offsetLeft+p.offsetWidth/2,y:e.offsetTop+p.offsetTop+p.offsetHeight/2};}
-  function curve(s,d){const cp=Math.max(Math.abs(d.x-s.x)*0.5,28);ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.bezierCurveTo(s.x+cp,s.y,d.x-cp,d.y,d.x,d.y);}
-  function draw(){
-    ctx.clearRect(0,0,cv.width,cv.height);ctx.lineCap='round';
-    for(let i=0;i<links;i++){const a=portCenter(nodes[i],'out'),b=portCenter(nodes[i+1],'in');if(a&&b){ctx.setLineDash([8,10]);ctx.lineDashOffset=-dash;ctx.strokeStyle='#16e0c7';ctx.lineWidth=2.8;ctx.shadowColor='rgba(22,224,199,.5)';ctx.shadowBlur=8;curve(a,b);ctx.stroke();}}
-    ctx.shadowBlur=0;
-    if(start&&dragPt){const s=portCenter(nodes[start.i],'out');if(s){ctx.setLineDash([6,6]);ctx.lineDashOffset=0;ctx.strokeStyle='#7c5cff';ctx.lineWidth=2;ctx.globalAlpha=.8;curve(s,dragPt);ctx.stroke();ctx.globalAlpha=1;}}
-    ctx.setLineDash([]);
-  }
-  function ptBoard(e){const r=board.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
-
-  board.addEventListener('pointerdown',e=>{
-    const portEl=e.target.closest('.bw-port');if(!portEl||!portEl.classList.contains('out'))return;
-    const i=+portEl.closest('.bw-node').dataset.i;if(i!==links)return;
-    e.preventDefault();start={i};dragPt=ptBoard(e);portEl.classList.add('hot');try{board.setPointerCapture(e.pointerId);}catch(_){}
-  });
-  board.addEventListener('pointermove',e=>{if(!start)return;dragPt=ptBoard(e);draw();});
-  board.addEventListener('pointerup',e=>{
-    if(!start)return;
-    const so=nodes[start.i].outPort;so&&so.classList.remove('hot');
-    const tgt=document.elementFromPoint(e.clientX,e.clientY);const portEl=tgt&&tgt.closest?tgt.closest('.bw-port'):null;const nodeEl=portEl?portEl.closest('.bw-node'):null;
-    if(portEl&&portEl.classList.contains('in')&&nodeEl){
-      const ti=+nodeEl.dataset.i;
-      if(ti===start.i+1){links++;setStage();}
-      else{nodeEl.classList.add('bad');setTimeout(()=>nodeEl.classList.remove('bad'),380);}
-    }
-    start=null;dragPt=null;draw();
-  });
-  board.addEventListener('pointercancel',()=>{const so=start&&nodes[start.i].outPort;so&&so.classList.remove('hot');start=null;dragPt=null;draw();});
-  resetBtn&&resetBtn.addEventListener('click',build);
-  let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
-
-  build();
-  function loop(){if(links>0){dash=(dash+0.5)%18;draw();}requestAnimationFrame(loop);}
-  requestAnimationFrame(loop);
 })();
 </script>
 <script>
