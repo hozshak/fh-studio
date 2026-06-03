@@ -1170,6 +1170,18 @@
       }
       ctx.globalAlpha=1;
     }
+    /* nasse Strasse: gespiegelte Skyline-Reflexion */
+    ctx.save();
+    ctx.translate(0,horizon*2);ctx.scale(1,-1);
+    for(const b of buildings){
+      const ox=par*24*DPR*b.depth;
+      ctx.globalAlpha=0.13;ctx.fillStyle=b.col;ctx.fillRect(b.x+ox,b.y,b.w,b.h);
+      for(const w of b.wins){if(!w.on)continue;const fl=0.5+0.5*Math.sin(T*w.sp+w.ph);ctx.globalAlpha=0.18*fl;ctx.fillStyle=w.col;ctx.fillRect(w.x+ox-1.3*DPR,w.y,2.6*DPR,3.6*DPR);}
+    }
+    ctx.restore();ctx.globalAlpha=1;
+    const refl=ctx.createLinearGradient(0,horizon,0,H);
+    refl.addColorStop(0,'rgba(4,5,10,0)');refl.addColorStop(.55,'rgba(4,5,10,.55)');refl.addColorStop(1,'rgba(4,5,10,.92)');
+    ctx.fillStyle=refl;ctx.fillRect(0,horizon,W,H-horizon);
     /* Synthwave-Bodengrid */
     ctx.save();ctx.lineWidth=DPR;ctx.strokeStyle='rgba(124,92,255,1)';
     for(let i=1;i<=11;i++){const yy=horizon+i*i*(H*0.0055);if(yy>H)break;ctx.globalAlpha=0.22*(1-i/13);ctx.beginPath();ctx.moveTo(0,yy);ctx.lineTo(W,yy);ctx.stroke();}
@@ -1181,11 +1193,11 @@
       tr.x+=tr.sp;const s=Math.sign(tr.sp);
       const gr=ctx.createLinearGradient(tr.x-tr.len*s,tr.y,tr.x,tr.y);
       gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(1,tr.col);
-      ctx.strokeStyle=gr;ctx.globalAlpha=tr.a;ctx.lineWidth=1.6*DPR;ctx.lineCap='round';
+      ctx.strokeStyle=gr;ctx.globalAlpha=tr.a;ctx.lineWidth=1.6*DPR;ctx.lineCap='round';ctx.shadowBlur=9*DPR;ctx.shadowColor=tr.col;
       ctx.beginPath();ctx.moveTo(tr.x-tr.len*s,tr.y);ctx.lineTo(tr.x,tr.y);ctx.stroke();
       if((s>0&&tr.x>W+tr.len)||(s<0&&tr.x<-tr.len))Object.assign(tr,mkTrail());
     }
-    ctx.globalAlpha=1;ctx.lineCap='butt';
+    ctx.globalAlpha=1;ctx.lineCap='butt';ctx.shadowBlur=0;
     /* aufsteigende Glut-Partikel */
     for(const e of embers){e.y+=e.vy;e.x+=e.vx;if(e.y<-6){e.y=H+6;e.x=Math.random()*W;}ctx.globalAlpha=e.a*(0.55+0.45*Math.sin(T*2+e.ph));ctx.fillStyle=e.col;ctx.beginPath();ctx.arc(e.x,e.y,e.r,0,7);ctx.fill();}
     ctx.globalAlpha=1;
