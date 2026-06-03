@@ -10,7 +10,7 @@
 <link rel="canonical" href="https://fh-studio.de/" />
 
 <!-- SVG-Favicon (FH-Logo, inline – kein extra Request) -->
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2316e0c7'/%3E%3Cstop offset='.55' stop-color='%237c5cff'/%3E%3Cstop offset='1' stop-color='%23ff4d8d'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='2.5' y='2.5' width='43' height='43' rx='13' fill='url(%23g)'/%3E%3Cpath d='M14 14 h11 v4 h-7 v5 h6 v4 h-6 v7 h-4 z' fill='%2305060a'/%3E%3Cpath d='M28 14 h4 v7 h6 v-7 h4 v20 h-4 v-9 h-6 v9 h-4 z' fill='%2305060a'/%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2316e0c7'/%3E%3Cstop offset='.55' stop-color='%237c5cff'/%3E%3Cstop offset='1' stop-color='%23ff4d8d'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='2.5' y='2.5' width='43' height='43' rx='14' fill='url(%23g)'/%3E%3Cpath d='M13 13 V35 M23 13 V35 M35 13 V35 M13 13 H23 M13 24 H35' fill='none' stroke='%2306070e' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
 
 <!-- Open Graph / Social Sharing -->
 <meta property="og:type" content="website" />
@@ -608,12 +608,22 @@
 <div class="cursor" id="cur"></div>
 <div class="cursor-ring" id="ring"></div>
 
-<!-- FH LOGO MARK (reusable definition) -->
+<!-- FH LOGO MARK (zentrale, wiederverwendbare Definition – via <use href="#fhmark"/>) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <linearGradient id="fhg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#16e0c7"/><stop offset=".55" stop-color="#7c5cff"/><stop offset="1" stop-color="#ff4d8d"/>
     </linearGradient>
+    <linearGradient id="fhSheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".35"/><stop offset=".5" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <!-- Verbundenes FH-Monogramm (Ligatur): F und H teilen sich Mittelvertikale + Balken -->
+    <symbol id="fhmark" viewBox="0 0 48 48">
+      <rect x="2.5" y="2.5" width="43" height="43" rx="14" fill="url(#fhg)"/>
+      <rect x="2.5" y="2.5" width="43" height="43" rx="14" fill="url(#fhSheen)"/>
+      <path d="M13 13 V35 M23 13 V35 M35 13 V35 M13 13 H23 M13 24 H35"
+            fill="none" stroke="#06070e" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
   </defs>
 </svg>
 
@@ -621,11 +631,7 @@
 <nav id="nav">
   <div class="inner">
     <div class="logo">
-      <svg class="mark" viewBox="0 0 48 48" aria-label="FH Studio Logo">
-        <rect x="2.5" y="2.5" width="43" height="43" rx="13" fill="url(#fhg)"/>
-        <path d="M14 14 h11 v4 h-7 v5 h6 v4 h-6 v7 h-4 z" fill="#05060a"/>
-        <path d="M28 14 h4 v7 h6 v-7 h4 v20 h-4 v-9 h-6 v9 h-4 z" fill="#05060a"/>
-      </svg>
+      <svg class="mark" viewBox="0 0 48 48" aria-label="FH Studio Logo"><use href="#fhmark"/></svg>
       <span>FH<span style="color:var(--c2)">.</span>Studio</span>
     </div>
     <div class="nav-links">
@@ -667,11 +673,7 @@
       <div class="orb">
         <div class="orb-glow"></div>
         <div class="orb-ring">
-          <svg class="mark" viewBox="0 0 48 48" aria-label="FH Studio">
-            <rect x="2.5" y="2.5" width="43" height="43" rx="13" fill="url(#fhg)"/>
-            <path d="M14 14 h11 v4 h-7 v5 h6 v4 h-6 v7 h-4 z" fill="#05060a"/>
-            <path d="M28 14 h4 v7 h6 v-7 h4 v20 h-4 v-9 h-6 v9 h-4 z" fill="#05060a"/>
-          </svg>
+          <svg class="mark" viewBox="0 0 48 48" aria-label="FH Studio"><use href="#fhmark"/></svg>
         </div>
         <div class="hbadge hb1"><span class="hi">⚛</span><div><b>React &amp; Next</b><small>Hooks · SSR · TS</small></div></div>
         <div class="hbadge hb2"><span class="hi">⚡</span><div><b>Performance</b><small>0.9s · 100/100</small></div></div>
@@ -876,27 +878,27 @@
       <div class="book-pages">
         <div class="page">
           <div class="face front"><div class="qmark">”</div><div class="stars">★★★★★</div><p class="qt">Unsere neue Website sieht aus wie aus einem Sci-Fi-Film — und die Anfragen haben sich verdoppelt. Absolute Empfehlung.</p><div class="who"><div class="av">LK</div><div><b>Lena K.</b><small>Inhaberin, Studio Hain</small></div></div></div>
-          <div class="face back"><div class="back-logo"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><rect x="2.5" y="2.5" width="43" height="43" rx="13" fill="url(#fhg)"/><path d="M14 14 h11 v4 h-7 v5 h6 v4 h-6 v7 h-4 z" fill="#05060a"/><path d="M28 14 h4 v7 h6 v-7 h4 v20 h-4 v-9 h-6 v9 h-4 z" fill="#05060a"/></svg><span>FH.Studio</span></div></div>
+          <div class="face back"><div class="back-logo"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><use href="#fhmark"/></svg><span>FH.Studio</span></div></div>
         </div>
         <div class="page">
           <div class="face front"><div class="qmark">”</div><div class="stars">★★★★★</div><p class="qt">Schnell, professionell und kreativ. In zwei Wochen stand alles. So muss Zusammenarbeit sein.</p><div class="who"><div class="av">MT</div><div><b>Marco T.</b><small>Gründer, FitLab</small></div></div></div>
-          <div class="face back"><div class="back-logo"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><rect x="2.5" y="2.5" width="43" height="43" rx="13" fill="url(#fhg)"/><path d="M14 14 h11 v4 h-7 v5 h6 v4 h-6 v7 h-4 z" fill="#05060a"/><path d="M28 14 h4 v7 h6 v-7 h4 v20 h-4 v-9 h-6 v9 h-4 z" fill="#05060a"/></svg><span>FH.Studio</span></div></div>
+          <div class="face back"><div class="back-logo"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><use href="#fhmark"/></svg><span>FH.Studio</span></div></div>
         </div>
         <div class="page">
           <div class="face front"><div class="qmark">”</div><div class="stars">★★★★★</div><p class="qt">Endlich eine Seite, auf die ich stolz bin. Die Animationen begeistern jeden einzelnen Besucher.</p><div class="who"><div class="av">SB</div><div><b>Sara B.</b><small>Café Lumen</small></div></div></div>
-          <div class="face back"><div class="back-logo"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><rect x="2.5" y="2.5" width="43" height="43" rx="13" fill="url(#fhg)"/><path d="M14 14 h11 v4 h-7 v5 h6 v4 h-6 v7 h-4 z" fill="#05060a"/><path d="M28 14 h4 v7 h6 v-7 h4 v20 h-4 v-9 h-6 v9 h-4 z" fill="#05060a"/></svg><span>FH.Studio</span></div></div>
+          <div class="face back"><div class="back-logo"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><use href="#fhmark"/></svg><span>FH.Studio</span></div></div>
         </div>
         <div class="page">
           <div class="face front"><div class="qmark">”</div><div class="stars">★★★★★</div><p class="qt">Vom ersten Gespräch bis zum Launch top betreut. Die Seite lädt schneller als alles, was wir vorher hatten.</p><div class="who"><div class="av">DR</div><div><b>Daniel R.</b><small>Immobilien Nord</small></div></div></div>
-          <div class="face back"><div class="back-logo"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><rect x="2.5" y="2.5" width="43" height="43" rx="13" fill="url(#fhg)"/><path d="M14 14 h11 v4 h-7 v5 h6 v4 h-6 v7 h-4 z" fill="#05060a"/><path d="M28 14 h4 v7 h6 v-7 h4 v20 h-4 v-9 h-6 v9 h-4 z" fill="#05060a"/></svg><span>FH.Studio</span></div></div>
+          <div class="face back"><div class="back-logo"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><use href="#fhmark"/></svg><span>FH.Studio</span></div></div>
         </div>
         <div class="page">
           <div class="face front"><div class="qmark">”</div><div class="stars">★★★★★</div><p class="qt">Mein Online-Shop verkauft jetzt sogar nachts. Das Design trifft meine Marke einfach perfekt.</p><div class="who"><div class="av">AÖ</div><div><b>Aylin Ö.</b><small>Boutique Mara</small></div></div></div>
-          <div class="face back"><div class="back-logo"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><rect x="2.5" y="2.5" width="43" height="43" rx="13" fill="url(#fhg)"/><path d="M14 14 h11 v4 h-7 v5 h6 v4 h-6 v7 h-4 z" fill="#05060a"/><path d="M28 14 h4 v7 h6 v-7 h4 v20 h-4 v-9 h-6 v9 h-4 z" fill="#05060a"/></svg><span>FH.Studio</span></div></div>
+          <div class="face back"><div class="back-logo"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><use href="#fhmark"/></svg><span>FH.Studio</span></div></div>
         </div>
         <div class="page">
           <div class="face front"><div class="qmark">”</div><div class="stars">★★★★★</div><p class="qt">Diese beiden liefern auf Agentur-Niveau — aber persönlicher und schneller. Klare Empfehlung von mir.</p><div class="who"><div class="av">TW</div><div><b>Tom W.</b><small>TechVolt</small></div></div></div>
-          <div class="face back"><div class="back-logo"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><rect x="2.5" y="2.5" width="43" height="43" rx="13" fill="url(#fhg)"/><path d="M14 14 h11 v4 h-7 v5 h6 v4 h-6 v7 h-4 z" fill="#05060a"/><path d="M28 14 h4 v7 h6 v-7 h4 v20 h-4 v-9 h-6 v9 h-4 z" fill="#05060a"/></svg><span>FH.Studio</span></div></div>
+          <div class="face back"><div class="back-logo"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><use href="#fhmark"/></svg><span>FH.Studio</span></div></div>
         </div>
       </div>
       <div class="book-nav"><button class="book-btn" id="bprev" aria-label="Vorherige Stimme">‹</button><button class="book-btn" id="bnext" aria-label="Nächste Stimme">›</button></div>
@@ -1086,11 +1088,7 @@
 <footer class="wrap">
   <div class="inner">
     <div class="logo">
-      <svg class="mark" viewBox="0 0 48 48" aria-hidden="true">
-        <rect x="2.5" y="2.5" width="43" height="43" rx="13" fill="url(#fhg)"/>
-        <path d="M14 14 h11 v4 h-7 v5 h6 v4 h-6 v7 h-4 z" fill="#05060a"/>
-        <path d="M28 14 h4 v7 h6 v-7 h4 v20 h-4 v-9 h-6 v9 h-4 z" fill="#05060a"/>
-      </svg>
+      <svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><use href="#fhmark"/></svg>
       <span>FH<span style="color:var(--c2)">.</span>Studio</span>
     </div>
     <div class="muted">© 2026 FH Studio · Fynn Beckmann &amp; Hozan Shaker</div>
