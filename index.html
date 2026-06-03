@@ -335,37 +335,67 @@
   footer .social a:hover{border-color:var(--c2);color:var(--c2);transform:translateY(-3px)}
 
 
-  /* ===== CONNECT-PAIRS GAME ===== */
-  .cn{margin-top:48px}
-  .cn-head{display:flex;align-items:center;gap:16px;margin-bottom:14px;flex-wrap:wrap}
-  .cn-prog{font-family:'Space Grotesk';font-weight:700;font-size:15px;color:var(--c2)}
-  .cn-prog .t{color:var(--muted);font-weight:600}
-  .cn-msg{font-family:'Space Grotesk';font-weight:700;color:var(--c2);opacity:0;transition:.4s}
-  .cn-msg.show{opacity:1}
-  .cn-reset{margin-left:auto;font-family:'Space Grotesk';font-size:12px;font-weight:600;color:var(--muted);background:var(--glass);border:1px solid var(--stroke);border-radius:8px;padding:9px 15px;cursor:pointer;transition:.2s}
-  .cn-reset:hover{color:var(--c2);border-color:rgba(22,224,199,.4)}
-  .cn-stage{position:relative;height:380px;border:1px solid var(--stroke);border-radius:18px;overflow:hidden;background:#070a12;background-image:radial-gradient(circle at 1px 1px,rgba(22,224,199,.06) 1px,transparent 1px);background-size:26px 26px;touch-action:none}
-  @media(max-width:600px){.cn-stage{height:440px}.cn-item{width:150px!important;padding:10px 12px!important}}
-  .cn-stage canvas{position:absolute;inset:0;pointer-events:none;z-index:1}
-  .cn-item{position:absolute;z-index:2;display:flex;align-items:center;gap:12px;background:#10131f;border:1.5px solid var(--stroke);border-radius:12px;padding:13px 16px;width:210px;transition:border-color .3s,box-shadow .3s,transform .2s;user-select:none}
-  .cn-item.left{left:22px}
-  .cn-item.right{right:22px;flex-direction:row-reverse;text-align:right}
-  .cn-item .ic{font-size:22px;flex:none;line-height:1}
-  .cn-item .tx{font-family:'Space Grotesk';font-weight:600;font-size:14px;color:var(--ink);line-height:1.2}
-  .cn-item.done{border-color:rgba(22,224,199,.6);box-shadow:0 0 18px rgba(22,224,199,.2)}
-  .cn-item.bad{animation:cnBad .35s}
-  @keyframes cnBad{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
-  .cn-port{position:absolute;width:15px;height:15px;border-radius:50%;background:#1a1e2e;border:2px solid var(--stroke);cursor:crosshair;z-index:3;transition:.2s;top:50%;margin-top:-7.5px}
-  .cn-port::after{content:"";position:absolute;inset:-10px;border-radius:50%}
-  .cn-item.left .cn-port{right:-8px}
-  .cn-item.right .cn-port{left:-8px}
-  .cn-port:hover,.cn-port.hot{border-color:var(--c1);background:rgba(124,92,255,.4);box-shadow:0 0 10px rgba(124,92,255,.5)}
-  .cn-item.done .cn-port{border-color:var(--c2);background:var(--c2);box-shadow:0 0 8px var(--c2);cursor:default}
-  .cn-hint{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--muted);background:rgba(7,10,18,.82);border:1px solid var(--stroke);padding:6px 12px;border-radius:100px;z-index:4;pointer-events:none;white-space:nowrap}
-  .cn-win{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;background:rgba(7,10,18,.72);backdrop-filter:blur(5px);z-index:5;opacity:0;pointer-events:none;transition:.45s}
-  .cn-win.show{opacity:1}
-  .cn-win .big{font-family:'Space Grotesk';font-weight:700;font-size:clamp(24px,4vw,40px);background:linear-gradient(120deg,var(--c2),var(--c1),var(--c3));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .cn-win .sub{color:var(--muted);font-size:14px}
+  /* ===== BUILD-A-WEBSITE PIPELINE ===== */
+  .bw{margin-top:48px}
+  .bw-head{display:flex;align-items:center;gap:16px;margin-bottom:14px;flex-wrap:wrap}
+  .bw-prog{font-family:'Space Grotesk';font-weight:700;font-size:15px;color:var(--c2)}
+  .bw-prog .t{color:var(--muted);font-weight:600}
+  .bw-msg{font-family:'Space Grotesk';font-weight:700;color:var(--c2);opacity:0;transition:.4s}
+  .bw-msg.show{opacity:1}
+  .bw-reset{margin-left:auto;font-family:'Space Grotesk';font-size:12px;font-weight:600;color:var(--muted);background:var(--glass);border:1px solid var(--stroke);border-radius:8px;padding:9px 15px;cursor:pointer;transition:.2s}
+  .bw-reset:hover{color:var(--c2);border-color:rgba(22,224,199,.4)}
+  .bw-board{position:relative;height:480px;border:1px solid var(--stroke);border-radius:18px;overflow:hidden;background:#070a12;background-image:radial-gradient(circle at 1px 1px,rgba(22,224,199,.06) 1px,transparent 1px);background-size:26px 26px;touch-action:none}
+  @media(max-width:600px){.bw-board{height:540px}}
+  .bw-board canvas{position:absolute;inset:0;pointer-events:none;z-index:1}
+  .bw-node{position:absolute;z-index:3;display:flex;flex-direction:column;align-items:center;gap:5px;background:#10131f;border:1.5px solid var(--stroke);border-radius:14px;padding:11px 4px;user-select:none;transition:border-color .3s,box-shadow .3s,transform .2s}
+  .bw-node .ic{font-size:23px;line-height:1}
+  .bw-node .lb{font-family:'Space Grotesk';font-weight:700;font-size:11px;color:var(--muted);transition:.3s}
+  .bw-node.done{border-color:rgba(22,224,199,.6);box-shadow:0 0 16px rgba(22,224,199,.18)}
+  .bw-node.done .lb{color:var(--c2)}
+  .bw-node.bad{animation:bwBad .35s}
+  @keyframes bwBad{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  .bw-port{position:absolute;width:14px;height:14px;border-radius:50%;background:#1a1e2e;border:2px solid var(--stroke);cursor:crosshair;z-index:4;top:50%;margin-top:-7px;transition:.2s}
+  .bw-port::after{content:"";position:absolute;inset:-10px;border-radius:50%}
+  .bw-port.out{right:-7px}.bw-port.in{left:-7px}
+  .bw-port.next{border-color:var(--c1);background:rgba(124,92,255,.45);animation:bwPulse 1.4s infinite}
+  @keyframes bwPulse{0%{box-shadow:0 0 0 0 rgba(124,92,255,.5)}70%{box-shadow:0 0 0 9px rgba(124,92,255,0)}100%{box-shadow:0 0 0 0 rgba(124,92,255,0)}}
+  .bw-port.hot{border-color:var(--c1);background:rgba(124,92,255,.55);box-shadow:0 0 10px rgba(124,92,255,.5)}
+  .bw-node.done .bw-port.out{border-color:var(--c2);background:var(--c2);box-shadow:0 0 8px var(--c2)}
+  .bw-hint{position:absolute;top:118px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--muted);background:rgba(7,10,18,.82);border:1px solid var(--stroke);padding:6px 12px;border-radius:100px;z-index:4;pointer-events:none;white-space:nowrap}
+  /* live preview */
+  .bw-preview{position:absolute;left:50%;transform:translateX(-50%);bottom:22px;width:min(560px,84%);z-index:2}
+  .bw-browser{border:1px solid var(--stroke);border-radius:14px;overflow:hidden;background:#0a0d18;box-shadow:0 20px 50px -20px #000;transition:box-shadow .5s}
+  .bw-preview.s4 .bw-browser{box-shadow:0 0 42px -6px rgba(22,224,199,.45),0 20px 50px -20px #000}
+  .bw-bbar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:rgba(0,0,0,.3);border-bottom:1px solid var(--stroke)}
+  .bw-bbar .d{width:9px;height:9px;border-radius:50%;background:#2a2f40}
+  .bw-url{margin-left:8px;font-family:'Space Grotesk';font-size:11px;color:var(--muted);background:rgba(255,255,255,.05);padding:4px 12px;border-radius:6px;flex:1;max-width:280px;transition:.3s;white-space:nowrap;overflow:hidden}
+  .bw-preview.s4 .bw-url{color:var(--c2);background:rgba(22,224,199,.08)}
+  .bw-live{font-family:'Space Grotesk';font-weight:700;font-size:10px;letter-spacing:.08em;color:#04050a;background:var(--c2);padding:3px 8px;border-radius:6px;opacity:0;transition:.3s}
+  .bw-preview.s4 .bw-live{opacity:1;animation:bwBlink 1.4s infinite}
+  @keyframes bwBlink{50%{opacity:.55}}
+  .bw-screen{position:relative;height:190px;background:radial-gradient(circle at 70% 8%,#10142a,#0a0d18);padding:16px 20px;overflow:hidden}
+  .bw-ph{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:12px}
+  .bw-preview:not(.s0) .bw-ph{display:none}
+  .bw-sk{display:none;flex-direction:column;gap:8px}
+  .bw-preview.s1 .bw-sk{display:flex;animation:bwSk 1.2s ease-in-out infinite}
+  @keyframes bwSk{50%{opacity:.45}}
+  .bw-sk i{height:13px;border-radius:4px;background:rgba(255,255,255,.1)}
+  .bw-sk i:nth-child(1){width:55%}.bw-sk i:nth-child(2){width:38%}.bw-sk i:nth-child(3){width:70%}
+  .bw-sk .r{display:flex;gap:8px;margin-top:8px}.bw-sk .r b{flex:1;height:42px;border-radius:6px;background:rgba(255,255,255,.07)}
+  .bw-site{display:none}
+  .bw-preview.s2 .bw-site,.bw-preview.s3 .bw-site,.bw-preview.s4 .bw-site{display:block;animation:bwIn .5s ease}
+  @keyframes bwIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .bw-nav{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .bw-nav .logo{font-family:'Space Grotesk';font-weight:700;color:#fff;font-size:11px}
+  .bw-nav .lk{width:22px;height:5px;border-radius:3px;background:rgba(255,255,255,.18)}
+  .bw-nav .cta{margin-left:auto;width:34px;height:14px;border-radius:100px;background:linear-gradient(120deg,var(--c1),var(--c4))}
+  .bw-site h4{font-family:'Space Grotesk';font-weight:700;font-size:23px;line-height:1.05;color:#fff;margin:0}
+  .bw-site h4 b{background:linear-gradient(120deg,var(--c2),var(--c1));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .bw-row{display:flex;gap:8px;margin-top:12px}
+  .bw-btn{height:18px;border-radius:100px}.bw-btn.p{width:72px;background:linear-gradient(120deg,var(--c1),var(--c4))}.bw-btn.g{width:54px;border:1px solid var(--stroke)}
+  .bw-cards{display:flex;gap:8px;margin-top:14px}.bw-cards div{flex:1;height:34px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid var(--stroke)}
+  .bw-seo{position:absolute;top:12px;right:12px;font-size:10px;font-weight:600;color:var(--c2);background:rgba(22,224,199,.1);border:1px solid rgba(22,224,199,.3);padding:5px 9px;border-radius:100px;opacity:0;transform:translateY(-6px);transition:.4s}
+  .bw-preview.s3 .bw-seo,.bw-preview.s4 .bw-seo{opacity:1;transform:none}
 
   /* ===== AIR HOCKEY ===== */
   .ah{--blue:#00d4ff;--red:#ff2d55;--gold:#ffc940;--ah-panel:#080d14;display:flex;justify-content:center;margin-top:44px}
@@ -761,21 +791,36 @@
   </div>
 </section>
 
-<!-- CONNECT-PAIRS GAME -->
+<!-- BUILD-A-WEBSITE PIPELINE -->
 <section id="lab" class="wrap reveal">
-  <div class="eyebrow">Interaktiv · einfach</div>
-  <h2 class="sec-title" data-scramble>Verbinde, was zusammengehört.</h2>
-  <p class="sec-sub">Zieh eine Linie von jedem Begriff zur passenden Beschreibung. Genau so durchdacht verknüpfen wir alle Teile deiner Website.</p>
-  <div class="cn" id="cn">
-    <div class="cn-head">
-      <div class="cn-prog"><span id="cnDone">0</span><span class="t"> / 4 verbunden</span></div>
-      <span class="cn-msg" id="cnMsg">Treffer! ⚡</span>
-      <button class="cn-reset" id="cnReset">↺ Neu mischen</button>
+  <div class="eyebrow">Interaktiv · sinnvoll</div>
+  <h2 class="sec-title" data-scramble>Bau eine Website in 5 Schritten.</h2>
+  <p class="sec-sub">Verbinde die Schritte der Reihe nach — und sieh rechts zu, wie deine Website live entsteht: Wireframe → Design → Inhalt → LIVE. Genau dieser Weg führt bei uns zu deinem fertigen Auftritt.</p>
+  <div class="bw" id="bw">
+    <div class="bw-head">
+      <div class="bw-prog"><span id="bwProg">0</span><span class="t"> / 4 Verbindungen</span></div>
+      <span class="bw-msg" id="bwMsg">🎉 Live in 14 Tagen!</span>
+      <button class="bw-reset" id="bwReset">↺ Von vorn</button>
     </div>
-    <div class="cn-stage" id="cnStage">
-      <canvas id="cnCanvas"></canvas>
-      <div class="cn-hint">Von Punkt zu Punkt ziehen, um zu verbinden</div>
-      <div class="cn-win" id="cnWin"><div class="big">Perfekt verbunden! 🎉</div><div class="sub">Genau so bauen wir deine Website.</div></div>
+    <div class="bw-board" id="bwBoard">
+      <canvas id="bwCanvas"></canvas>
+      <div class="bw-hint">Zieh vom leuchtenden Punkt zum nächsten Schritt</div>
+      <div class="bw-preview s0" id="bwPreview">
+        <div class="bw-browser">
+          <div class="bw-bbar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="bw-url" id="bwUrl">about:blank</span><span class="bw-live" id="bwLive">● LIVE</span></div>
+          <div class="bw-screen">
+            <div class="bw-ph">Verbinde die Schritte, um zu starten</div>
+            <div class="bw-sk"><i></i><i></i><i></i><div class="r"><b></b><b></b><b></b></div></div>
+            <div class="bw-site">
+              <div class="bw-nav"><span class="logo">◆ Marke</span><span class="lk"></span><span class="lk"></span><span class="cta"></span></div>
+              <h4>Deine <b>Marke</b><br>im besten Licht.</h4>
+              <div class="bw-row"><span class="bw-btn p"></span><span class="bw-btn g"></span></div>
+              <div class="bw-cards"><div></div><div></div><div></div></div>
+            </div>
+            <div class="bw-seo">🔍 Platz 1 bei Google</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1096,77 +1141,74 @@
 })();
 </script>
 <script>
-/* ===== CONNECT-PAIRS GAME ===== */
+/* ===== BUILD-A-WEBSITE PIPELINE ===== */
 (function(){
-  const stage=document.getElementById('cnStage'),cv=document.getElementById('cnCanvas');
-  if(!stage||!cv)return;
+  const board=document.getElementById('bwBoard'),cv=document.getElementById('bwCanvas'),preview=document.getElementById('bwPreview');
+  if(!board||!cv||!preview)return;
   const ctx=cv.getContext('2d');
-  const doneEl=document.getElementById('cnDone'),msgEl=document.getElementById('cnMsg'),winEl=document.getElementById('cnWin'),resetBtn=document.getElementById('cnReset');
-  const PAIRS=[
-    {id:'design',ic:'🎨',l:'Design',r:'Sieht edel & einzigartig aus'},
-    {id:'speed',ic:'⚡',l:'Speed',r:'Lädt blitzschnell'},
-    {id:'seo',ic:'🔍',l:'SEO',r:'Wird bei Google gefunden'},
-    {id:'mobile',ic:'📱',l:'Responsive',r:'Läuft auf jedem Handy'}
-  ];
-  let items=[],links=[],start=null,dragPt=null,doneCount=0,dash=0;
-  function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=a[i];a[i]=a[j];a[j]=t;}return a;}
-  function itemByEl(el){return items.find(it=>it.el===el);}
-  function addItem(side,id,html,topCenter){
-    const el=document.createElement('div');el.className='cn-item '+side;el.dataset.id=id;el.dataset.side=side;
-    el.innerHTML=html+'<div class="cn-port"></div>';stage.appendChild(el);
-    el.style.top=Math.round(topCenter-el.offsetHeight/2)+'px';
-    items.push({el,port:el.querySelector('.cn-port'),id,side,done:false});
+  const urlEl=document.getElementById('bwUrl'),progEl=document.getElementById('bwProg'),msgEl=document.getElementById('bwMsg'),resetBtn=document.getElementById('bwReset');
+  const STAGES=[{ic:'🧠',l:'Idee'},{ic:'🎨',l:'Design'},{ic:'⚡',l:'Code'},{ic:'🔍',l:'SEO'},{ic:'🚀',l:'Launch'}];
+  let nodes=[],links=0,start=null,dragPt=null,dash=0;
+  function sizeCanvas(){const w=board.clientWidth,h=board.clientHeight,dpr=Math.min(devicePixelRatio||1,2);cv.width=w*dpr;cv.height=h*dpr;cv.style.width=w+'px';cv.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);draw();}
+  function layout(){
+    const Wb=board.clientWidth,pad=26,slot=(Wb-pad*2)/5,nodeW=Math.max(54,Math.min(96,slot-12)),y=24;
+    nodes.forEach((nd,i)=>{nd.el.style.width=nodeW+'px';nd.el.style.left=Math.round(pad+i*slot+(slot-nodeW)/2)+'px';nd.el.style.top=y+'px';});
+    sizeCanvas();
   }
   function build(){
-    items.forEach(it=>it.el.remove());items=[];links=[];start=null;dragPt=null;doneCount=0;
-    const H=stage.clientHeight,n=PAIRS.length,gap=H/(n+1);
-    PAIRS.forEach((p,i)=>addItem('left',p.id,'<span class="ic">'+p.ic+'</span><span class="tx">'+p.l+'</span>',gap*(i+1)));
-    shuffle(PAIRS).forEach((p,i)=>addItem('right',p.id,'<span class="ic">→</span><span class="tx">'+p.r+'</span>',gap*(i+1)));
-    doneEl.textContent='0';winEl.classList.remove('show');msgEl.classList.remove('show');sizeCanvas();
+    nodes.forEach(n=>n.el.remove());nodes=[];links=0;start=null;dragPt=null;
+    STAGES.forEach((s,i)=>{
+      const el=document.createElement('div');el.className='bw-node';el.dataset.i=i;
+      let p='';if(i>0)p+='<div class="bw-port in"></div>';if(i<STAGES.length-1)p+='<div class="bw-port out"></div>';
+      el.innerHTML='<span class="ic">'+s.ic+'</span><span class="lb">'+s.l+'</span>'+p;
+      board.appendChild(el);
+      nodes.push({el,i,inPort:el.querySelector('.in'),outPort:el.querySelector('.out')});
+    });
+    layout();setStage();
   }
-  function reposition(){const H=stage.clientHeight,n=PAIRS.length,gap=H/(n+1);let li=0,ri=0;items.forEach(it=>{const idx=it.side==='left'?li++:ri++;it.el.style.top=Math.round(gap*(idx+1)-it.el.offsetHeight/2)+'px';});sizeCanvas();}
-  function portCenter(it){const e=it.el,p=it.port;return{x:e.offsetLeft+p.offsetLeft+p.offsetWidth/2,y:e.offsetTop+p.offsetTop+p.offsetHeight/2};}
-  function curve(s,d){const cp=Math.max(Math.abs(d.x-s.x)*0.4,40);ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.bezierCurveTo(s.x+cp,s.y,d.x-cp,d.y,d.x,d.y);}
+  function setStage(){
+    preview.className='bw-preview s'+links;progEl.textContent=links;
+    nodes.forEach((nd,i)=>nd.el.classList.toggle('done',i<=links));
+    nodes.forEach(nd=>{nd.outPort&&nd.outPort.classList.remove('next');nd.inPort&&nd.inPort.classList.remove('next');});
+    if(links<4){nodes[links].outPort&&nodes[links].outPort.classList.add('next');nodes[links+1].inPort&&nodes[links+1].inPort.classList.add('next');}
+    if(links===0)urlEl.textContent='about:blank';else if(links<4)urlEl.textContent='deine-marke.de';else urlEl.textContent='https://deine-marke.de  🔒';
+    if(links===4)msgEl.classList.add('show');else msgEl.classList.remove('show');
+    draw();
+  }
+  function portCenter(nd,which){const e=nd.el,p=which==='out'?nd.outPort:nd.inPort;if(!p)return null;return{x:e.offsetLeft+p.offsetLeft+p.offsetWidth/2,y:e.offsetTop+p.offsetTop+p.offsetHeight/2};}
+  function curve(s,d){const cp=Math.max(Math.abs(d.x-s.x)*0.5,28);ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.bezierCurveTo(s.x+cp,s.y,d.x-cp,d.y,d.x,d.y);}
   function draw(){
     ctx.clearRect(0,0,cv.width,cv.height);ctx.lineCap='round';
-    links.forEach(L=>{const a=portCenter(L.a),b=portCenter(L.b);ctx.setLineDash([8,10]);ctx.lineDashOffset=-dash;ctx.strokeStyle='#16e0c7';ctx.lineWidth=2.8;ctx.shadowColor='rgba(22,224,199,.45)';ctx.shadowBlur=8;curve(a,b);ctx.stroke();});
+    for(let i=0;i<links;i++){const a=portCenter(nodes[i],'out'),b=portCenter(nodes[i+1],'in');if(a&&b){ctx.setLineDash([8,10]);ctx.lineDashOffset=-dash;ctx.strokeStyle='#16e0c7';ctx.lineWidth=2.8;ctx.shadowColor='rgba(22,224,199,.5)';ctx.shadowBlur=8;curve(a,b);ctx.stroke();}}
     ctx.shadowBlur=0;
-    if(start&&dragPt){const s=portCenter(start);ctx.setLineDash([6,6]);ctx.lineDashOffset=0;ctx.strokeStyle='#7c5cff';ctx.lineWidth=2;ctx.globalAlpha=.8;if(start.side==='left')curve(s,dragPt);else curve(dragPt,s);ctx.stroke();ctx.globalAlpha=1;}
+    if(start&&dragPt){const s=portCenter(nodes[start.i],'out');if(s){ctx.setLineDash([6,6]);ctx.lineDashOffset=0;ctx.strokeStyle='#7c5cff';ctx.lineWidth=2;ctx.globalAlpha=.8;curve(s,dragPt);ctx.stroke();ctx.globalAlpha=1;}}
     ctx.setLineDash([]);
   }
-  function sizeCanvas(){const w=stage.clientWidth,h=stage.clientHeight,dpr=Math.min(devicePixelRatio||1,2);cv.width=w*dpr;cv.height=h*dpr;cv.style.width=w+'px';cv.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);draw();}
-  function ptStage(e){const r=stage.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
+  function ptBoard(e){const r=board.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
 
-  stage.addEventListener('pointerdown',e=>{
-    const portEl=e.target.closest('.cn-port');if(!portEl)return;
-    const it=itemByEl(portEl.closest('.cn-item'));if(!it||it.done)return;
-    e.preventDefault();start=it;dragPt=ptStage(e);portEl.classList.add('hot');try{stage.setPointerCapture(e.pointerId);}catch(_){}
+  board.addEventListener('pointerdown',e=>{
+    const portEl=e.target.closest('.bw-port');if(!portEl||!portEl.classList.contains('out'))return;
+    const i=+portEl.closest('.bw-node').dataset.i;if(i!==links)return;
+    e.preventDefault();start={i};dragPt=ptBoard(e);portEl.classList.add('hot');try{board.setPointerCapture(e.pointerId);}catch(_){}
   });
-  stage.addEventListener('pointermove',e=>{if(!start)return;dragPt=ptStage(e);draw();});
-  stage.addEventListener('pointerup',e=>{
+  board.addEventListener('pointermove',e=>{if(!start)return;dragPt=ptBoard(e);draw();});
+  board.addEventListener('pointerup',e=>{
     if(!start)return;
-    start.port.classList.remove('hot');
-    const tgt=document.elementFromPoint(e.clientX,e.clientY);const portEl=tgt&&tgt.closest?tgt.closest('.cn-port'):null;const t=portEl?itemByEl(portEl.closest('.cn-item')):null;
-    if(t&&!t.done&&t.side!==start.side){
-      if(t.id===start.id){
-        const left=start.side==='left'?start:t,right=start.side==='left'?t:start;
-        left.done=right.done=true;left.el.classList.add('done');right.el.classList.add('done');
-        links.push({a:left,b:right});doneCount++;doneEl.textContent=doneCount;
-        msgEl.classList.add('show');setTimeout(()=>msgEl.classList.remove('show'),900);
-        if(doneCount===PAIRS.length)setTimeout(()=>winEl.classList.add('show'),250);
-      }else{
-        const a=start,b=t;a.el.classList.add('bad');b.el.classList.add('bad');
-        setTimeout(()=>{a.el.classList.remove('bad');b.el.classList.remove('bad');},400);
-      }
+    const so=nodes[start.i].outPort;so&&so.classList.remove('hot');
+    const tgt=document.elementFromPoint(e.clientX,e.clientY);const portEl=tgt&&tgt.closest?tgt.closest('.bw-port'):null;const nodeEl=portEl?portEl.closest('.bw-node'):null;
+    if(portEl&&portEl.classList.contains('in')&&nodeEl){
+      const ti=+nodeEl.dataset.i;
+      if(ti===start.i+1){links++;setStage();}
+      else{nodeEl.classList.add('bad');setTimeout(()=>nodeEl.classList.remove('bad'),380);}
     }
     start=null;dragPt=null;draw();
   });
-  stage.addEventListener('pointercancel',()=>{if(start)start.port.classList.remove('hot');start=null;dragPt=null;draw();});
+  board.addEventListener('pointercancel',()=>{const so=start&&nodes[start.i].outPort;so&&so.classList.remove('hot');start=null;dragPt=null;draw();});
   resetBtn&&resetBtn.addEventListener('click',build);
-  let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(reposition,150);});
+  let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layout,150);});
 
   build();
-  function loop(){if(links.length){dash=(dash+0.5)%18;draw();}requestAnimationFrame(loop);}
+  function loop(){if(links>0){dash=(dash+0.5)%18;draw();}requestAnimationFrame(loop);}
   requestAnimationFrame(loop);
 })();
 </script>
