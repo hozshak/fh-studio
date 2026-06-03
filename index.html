@@ -103,6 +103,14 @@
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(22,224,199,.6)}70%{box-shadow:0 0 0 12px rgba(22,224,199,0)}}
   .hero h1{font-size:clamp(32px,4.6vw,58px);font-weight:700;line-height:1.1}
   .hero h1 .grad{background:linear-gradient(120deg,var(--c2),var(--c1) 45%,var(--c3));-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% auto;animation:shine 6s linear infinite;filter:drop-shadow(0 0 16px rgba(124,92,255,.35))}
+  /* FIX: Nach dem Zeichen-Split traegt jedes .ch den Text. Verlauf + clip:text muessen daher AUFS .ch (sonst hat .grad keinen eigenen Text mehr -> unsichtbar). --gw/--gx werden per JS gesetzt, damit der Verlauf durchgehend ueber das ganze Wort laeuft. */
+  .hero h1 .grad .ch{
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    background-image:linear-gradient(120deg,var(--c2),var(--c1) 45%,var(--c3));
+    background-repeat:no-repeat;
+    background-size:var(--gw,100%) 100%;
+    background-position:calc(var(--gx,0px) + var(--gshift,0px)) 0;
+  }
   .hero p.lead em{font-style:normal;font-weight:600;background:linear-gradient(120deg,var(--c2),var(--c1));-webkit-background-clip:text;background-clip:text;color:transparent}
   .btn .ar{display:inline-block;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
   .btn:hover .ar{transform:translateX(5px)}
@@ -887,6 +895,67 @@
     const txt=el.textContent;el.textContent='';
     [...txt].forEach((ch,i)=>{const s=document.createElement('span');s.className='ch';s.textContent=ch===' '?' ':ch;s.style.animationDelay=(wi*0.05+i*0.03+0.15)+'s';el.appendChild(s);});
   });
+
+  /* HERO GRADIENT WORD — Verlauf durchgehend ueber die Einzelbuchstaben ausrichten.
+     (Notwendig, weil das Splitting den Text in .ch-Kinder verschiebt und das textlose
+      .grad-Element sonst nichts mehr clippt -> unsichtbarer Verlauf.) */
+  const gradWord=document.querySelector('.hero h1 .grad');
+  if(gradWord){
+    const gchars=[...gradWord.querySelectorAll('.ch')];
+    function alignGradient(){
+      const wRect=gradWord.getBoundingClientRect();
+      if(!wRect.width)return;
+      gchars.forEach(ch=>{
+        const r=ch.getBoundingClientRect();
+        ch.style.setProperty('--gw',wRect.width+'px');
+        ch.style.setProperty('--gx',-(r.left-wRect.left)+'px');
+      });
+    }
+    alignGradient();
+    addEventListener('load',alignGradient);
+    if('fonts' in document)document.fonts.ready.then(alignGradient);
+    let gt;addEventListener('resize',()=>{clearTimeout(gt);gt=setTimeout(alignGradient,120);});
+  }
+
+  /* HERO — magnetische Buchstaben + fliessender Verlauf (Cursor-reaktiv).
+     Robust: Sichtbarkeit haengt NICHT von diesem Effekt ab. Faellt er aus,
+     bleiben die Buchstaben einfach stehen (und sichtbar). */
+  const heroH1=document.querySelector('.hero h1');
+  if(heroH1 && !reduce && matchMedia('(hover:hover) and (pointer:fine)').matches){
+    const allCh=[...heroH1.querySelectorAll('.ch')];
+    let centers=[],hx=0,hy=0,active=false,ready=false;
+    const grad=heroH1.querySelector('.grad');
+    function measure(){
+      const saved=allCh.map(ch=>ch.style.transform);
+      allCh.forEach(ch=>ch.style.transform='none');
+      centers=allCh.map(ch=>{const r=ch.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+scrollY+r.height/2};});
+      allCh.forEach((ch,i)=>ch.style.transform=saved[i]);
+    }
+    /* Nach Ablauf der Einblend-Animation (~1.3s) den SICHTBAREN Endzustand fest
+       verankern (opacity:1!), die CSS-Animation entfernen und transform fuer die
+       Maus-Steuerung freigeben. Per Timer statt animationend -> zuverlaessig. */
+    setTimeout(()=>{
+      allCh.forEach(ch=>{ch.style.opacity='1';ch.style.transform='none';ch.style.animation='none';ch.style.transition='transform .22s cubic-bezier(.2,.8,.2,1)';});
+      measure();ready=true;
+    },1650);
+    heroH1.addEventListener('pointermove',e=>{hx=e.clientX;hy=e.clientY;active=true;});
+    heroH1.addEventListener('pointerleave',()=>{active=false;allCh.forEach(ch=>ch.style.transform='none');if(grad)grad.style.setProperty('--gshift','0px');});
+    let rt2;addEventListener('resize',()=>{clearTimeout(rt2);rt2=setTimeout(()=>{if(ready)measure();},150);});
+    const R=170;
+    function heroLoop(){
+      if(ready&&active&&centers.length){
+        allCh.forEach((ch,i)=>{
+          const c=centers[i];if(!c)return;
+          const dx=hx-c.x,dy=hy-(c.y-scrollY),dist=Math.hypot(dx,dy);
+          if(dist<R){const f=1-dist/R;ch.style.transform='translate('+(dx*0.16*f).toFixed(1)+'px,'+(dy*0.22*f).toFixed(1)+'px) scale('+(1+0.22*f).toFixed(3)+')';}
+          else ch.style.transform='none';
+        });
+        if(grad)grad.style.setProperty('--gshift',((hx/(innerWidth||1)-0.5)*70).toFixed(1)+'px');
+      }
+      requestAnimationFrame(heroLoop);
+    }
+    requestAnimationFrame(heroLoop);
+  }
 
   /* REVEAL */
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.14});
