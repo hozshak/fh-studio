@@ -333,43 +333,6 @@
   footer .social a{width:40px;height:40px;border-radius:50%;border:1px solid var(--stroke);display:grid;place-items:center;transition:.3s;font-size:13px}
   footer .social a:hover{border-color:var(--c2);color:var(--c2);transform:translateY(-3px)}
 
-  /* ===== STUDIO PANORAMA (Hommage an floor796) ===== */
-  .hq-viewport{position:relative;margin-top:48px;border:1px solid var(--stroke);border-radius:20px;overflow:hidden;height:520px;background:#f3efe6;cursor:grab;touch-action:none;user-select:none}
-  .hq-viewport.grabbing{cursor:grabbing}
-  .hq-viewport::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 36%,#fbfaf6,#e8e3d6);pointer-events:none;z-index:0}
-  .hq-world{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform;z-index:1}
-  .hq-world svg{display:block}
-  .hq-hint{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);font-size:12px;color:#3a3a3a;background:rgba(255,255,255,.82);border:1px solid rgba(0,0,0,.12);padding:6px 14px;border-radius:100px;pointer-events:none;letter-spacing:.04em;z-index:3}
-  .hq-tag{position:absolute;top:14px;left:14px;z-index:3;font-size:12px;font-weight:600;color:#444;background:rgba(255,255,255,.82);border:1px solid rgba(0,0,0,.12);padding:6px 12px;border-radius:100px}
-  .hq-zoom{position:absolute;top:14px;right:14px;display:flex;flex-direction:column;gap:8px;z-index:3}
-  .hq-zoom button{width:36px;height:36px;border-radius:10px;border:1px solid rgba(0,0,0,.15);background:rgba(255,255,255,.9);color:#222;font-size:18px;font-weight:700;cursor:pointer;display:grid;place-items:center;transition:.2s}
-  .hq-zoom button:hover{background:#fff;border-color:var(--c1);color:var(--c1)}
-  .hq .tile{stroke:#ded7c6;stroke-width:1}
-  .hq .wall{fill:#efe9dc;stroke:#cfc7b3;stroke-width:1.2}
-  .hq .ln{fill:#fff;stroke:#212121;stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
-  .hq .ln0{fill:none;stroke:#212121;stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
-  .hq .shadow{fill:rgba(40,30,10,.12)}
-  .hq .roomlabel{fill:#c0b69e;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;letter-spacing:.18em}
-  .hq .a-teal{fill:var(--c2)} .hq .a-violet{fill:var(--c1)} .hq .a-pink{fill:var(--c3)}
-  @keyframes hqBob{50%{transform:translateY(-4px)}}
-  @keyframes hqType{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.5px)}}
-  @keyframes hqSteam{0%{opacity:0;transform:translateY(0) scale(.8)}30%{opacity:.7}100%{opacity:0;transform:translateY(-22px) scale(1.3)}}
-  @keyframes hqBlink{0%,100%{opacity:1}50%{opacity:.2}}
-  @keyframes hqSway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
-  @keyframes hqFloat{50%{transform:translateY(-9px)}}
-  @keyframes hqWalk{to{transform:translateX(110px)}}
-  .hq .an-bob{animation:hqBob 2.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
-  .hq .an-type{animation:hqType .5s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
-  .hq .an-type.d{animation-delay:.25s}
-  .hq .an-steam{animation:hqSteam 3s ease-in-out infinite;transform-box:fill-box}
-  .hq .an-steam.d{animation-delay:1.5s}
-  .hq .an-blink{animation:hqBlink 1.4s steps(1) infinite}
-  .hq .an-blink.d{animation-delay:.7s}
-  .hq .an-sway{animation:hqSway 4s ease-in-out infinite;transform-box:fill-box;transform-origin:bottom center}
-  .hq .an-float{animation:hqFloat 3s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
-  .hq .an-walk{animation:hqWalk 6s ease-in-out infinite alternate;transform-box:fill-box}
-  @keyframes hqHue{to{filter:hue-rotate(360deg)}}
-  .hq .an-disco{animation:hqHue 5s linear infinite}
 
   @media (prefers-reduced-motion:reduce){
     *{animation:none!important;transition:none!important}
@@ -383,18 +346,6 @@
     .btn-primary:hover::after{animation:sweep .75s ease!important}
     .tv.on .crt{animation:crtOn .7s ease forwards!important}
     .tv-off{transition:opacity .35s!important}
-    /* Studio-Panorama bleibt lebendig (vom Nutzer gewünscht) */
-    .hq .an-bob{animation:hqBob 2.6s ease-in-out infinite!important}
-    .hq .an-type{animation:hqType .5s ease-in-out infinite!important}
-    .hq .an-type.d{animation-delay:.25s!important}
-    .hq .an-steam{animation:hqSteam 3s ease-in-out infinite!important}
-    .hq .an-steam.d{animation-delay:1.5s!important}
-    .hq .an-blink{animation:hqBlink 1.4s steps(1) infinite!important}
-    .hq .an-blink.d{animation-delay:.7s!important}
-    .hq .an-sway{animation:hqSway 4s ease-in-out infinite!important}
-    .hq .an-float{animation:hqFloat 3s ease-in-out infinite!important}
-    .hq .an-walk{animation:hqWalk 6s ease-in-out infinite alternate!important}
-    .hq .an-disco{animation:hqHue 5s linear infinite!important}
   }
 </style>
 </head>
@@ -756,19 +707,6 @@
   </div>
 </section>
 
-<!-- STUDIO PANORAMA (Hommage an floor796) -->
-<section class="hq wrap reveal">
-  <div class="eyebrow">Hinter den Kulissen</div>
-  <h2 class="sec-title" data-scramble>Willkommen im FH-Studio.</h2>
-  <p class="sec-sub">Eine lebendige, isometrische Welt — zieh dich frei in alle Richtungen, zoome rein. <span style="opacity:.55">(im Stil von floor796.com)</span></p>
-  <div class="hq-viewport" id="hqv">
-    <div class="hq-world" id="hqworld"><svg id="hqsvg" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Isometrisches FH-Studio"></svg></div>
-    <div class="hq-tag">FH-Studio · Etage 1</div>
-    <div class="hq-zoom"><button id="hqin" aria-label="Reinzoomen">+</button><button id="hqout" aria-label="Rauszoomen">−</button></div>
-    <div class="hq-hint">↔↕ ziehen · Mausrad / +– zoomt</div>
-  </div>
-</section>
-
 <!-- FOOTER -->
 <footer class="wrap">
   <div class="inner">
@@ -993,75 +931,6 @@
     tv.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
   });
 
-  /* STUDIO PANORAMA — isometrische Welt (floor796-Stil) */
-  const hqv=document.getElementById('hqv'),hqw=document.getElementById('hqworld'),hqsvg=document.getElementById('hqsvg');
-  if(hqv&&hqw&&hqsvg){
-    const TW=62,TH=31,COLS=20,ROWS=16;
-    const OFFX=(ROWS-1)*TW/2+44, OFFY=92;
-    const Wd=Math.round((COLS+ROWS)*TW/2+96), Ht=Math.round((COLS+ROWS)*TH/2+OFFY+92);
-    const iso=(gx,gy)=>[OFFX+(gx-gy)*TW/2, OFFY+(gx+gy)*TH/2];
-    const PP=(p)=>p[0].toFixed(1)+','+p[1].toFixed(1);
-    const CC=(g)=>iso(g[0]+0.5,g[1]+0.5);
-    function shade(hex,f){const n=parseInt(hex.slice(1),16);const r=Math.min(255,(n>>16&255)*f|0),g=Math.min(255,(n>>8&255)*f|0),b=Math.min(255,(n&255)*f|0);return 'rgb('+r+','+g+','+b+')';}
-    const OL='stroke="#2c2c2c" stroke-width="1" stroke-linejoin="round"';
-    const q=(a,b,c,d,f)=>'<polygon points="'+PP(a)+' '+PP(b)+' '+PP(c)+' '+PP(d)+'" fill="'+f+'" '+OL+'/>';
-    function box(gx,gy,sx,sy,H,c,base){base=base||0;const A=iso(gx,gy),B=iso(gx+sx,gy),Cc=iso(gx+sx,gy+sy),D=iso(gx,gy+sy);const lo=p=>[p[0],p[1]-base],hi=p=>[p[0],p[1]-base-H];return q(lo(D),lo(Cc),hi(Cc),hi(D),shade(c,.62))+q(lo(B),lo(Cc),hi(Cc),hi(B),shade(c,.8))+q(hi(A),hi(B),hi(Cc),hi(D),shade(c,1));}
-    const rooms=[{x0:0,y0:0,x1:6,y1:6,t:'#eaf1fb'},{x0:8,y0:0,x1:19,y1:6,t:'#f4f7ef'},{x0:0,y0:8,x1:6,y1:12,t:'#eef1f5'},{x0:8,y0:7,x1:13,y1:10,t:'#f7efe6'},{x0:8,y0:11,x1:13,y1:15,t:'#191525'},{x0:14,y0:8,x1:19,y1:15,t:'#f2edfa'}];
-    function tintAt(gx,gy){for(const r of rooms){if(gx>=r.x0&&gx<=r.x1&&gy>=r.y0&&gy<=r.y1)return r.t;}return '#e7e1d4';}
-    let s='';
-    for(let gy=0;gy<ROWS;gy++)for(let gx=0;gx<COLS;gx++){const a=iso(gx,gy),b=iso(gx+1,gy),c=iso(gx+1,gy+1),d=iso(gx,gy+1);s+='<polygon points="'+PP(a)+' '+PP(b)+' '+PP(c)+' '+PP(d)+'" fill="'+tintAt(gx,gy)+'" stroke="rgba(0,0,0,.06)" stroke-width="1"/>';}
-    function gw(g,inner){const c=CC(g);return '<g transform="translate('+c[0].toFixed(1)+','+c[1].toFixed(1)+')">'+inner+'</g>';}
-    function disco(gx,gy,w,d){let t='<g class="an-disco">';const cols=['#ff3b6b','#ffd23b','#3bd2ff','#8a5bff','#16e0c7','#ff8fcf','#9be15d','#ff7a3b'];for(let yy=0;yy<d;yy++)for(let xx=0;xx<w;xx++){const a=iso(gx+xx,gy+yy),b=iso(gx+xx+1,gy+yy),c=iso(gx+xx+1,gy+yy+1),e=iso(gx+xx,gy+yy+1);t+='<polygon points="'+PP(a)+' '+PP(b)+' '+PP(c)+' '+PP(e)+'" fill="'+cols[(xx*3+yy*5)%cols.length]+'" opacity=".92" stroke="#222" stroke-width=".5"/>';}return t+'</g>';}
-    s+=disco(8.5,11.5,5,3.2);
-    function person(g,shirt,hair,anim,walk){shirt=shirt||'#7c8cff';hair=hair||'#2a2a2a';anim=anim||'bob';const legs=walk?'<line x1="-2.4" y1="-1" x2="-3.4" y2="6" stroke="#333" stroke-width="1.6" stroke-linecap="round"/><line x1="2.4" y1="-1" x2="3.4" y2="6" stroke="#333" stroke-width="1.6" stroke-linecap="round"/>':'';return gw(g,'<ellipse class="shadow" cx="0" cy="3" rx="6.5" ry="2.8"/><g class="an-'+anim+'">'+legs+'<path d="M-4.5 1 Q-5.5 -13 0 -15 Q5.5 -13 4.5 1 Z" fill="'+shirt+'" stroke="#222" stroke-width="1"/><circle cx="0" cy="-20" r="4.8" fill="#f1c7a0" stroke="#222" stroke-width="1"/><path d="M-4.2 -21.5 Q0 -26 4.2 -21.5 L4 -19.5 Q0 -22.5 -4 -19.5 Z" fill="'+hair+'"/></g>');}
-    function desk(gx,gy,sccol,delay){let h=box(gx,gy,1.1,0.7,11,'#c39a64');h+='<g class="an-blink'+(delay?' d':'')+'">'+box(gx+0.58,gy+0.12,0.28,0.46,13,sccol,11)+'</g>';h+=person([gx+0.12,gy+0.32],'#4a5568','#2a2a2a','type');return h;}
-    function shelf(gx,gy,len){let h=box(gx,gy,0.85,len,15,'#cbbfa8');const cols=['#ff5d5d','#ffce4d','#4dc4ff','#8f6bff','#16e0c7','#ff8fcf','#9be15d','#ff944d','#5d9cff'];const n=Math.max(2,Math.round(len/0.36));for(let i=0;i<n;i++){h+=box(gx+0.16,gy+0.06+i*(len-0.12)/n,0.54,(len-0.12)/n-0.05,7,cols[(i*5+(gx|0))%cols.length],15);}return h;}
-    function vending(gx,gy,c){return box(gx,gy,0.8,0.6,40,c)+box(gx+0.12,gy+0.1,0.5,0.42,2,'#cfe9ff',26);}
-    function fridge(gx,gy){return box(gx,gy,0.9,0.7,38,'#bfe2f2');}
-    function counter(gx,gy,len,c){return box(gx,gy,len,0.7,16,c||'#8a5a33');}
-    function sofa(gx,gy,len,c){return box(gx,gy,len,0.2,18,c)+box(gx,gy+0.2,len,0.7,9,c);}
-    function plant(gx,gy){const c=iso(gx+0.5,gy+0.5);return box(gx+0.28,gy+0.28,0.44,0.44,10,'#b07c4a')+'<g transform="translate('+c[0].toFixed(1)+','+(c[1]-10).toFixed(1)+')"><g class="an-sway"><ellipse cx="0" cy="-13" rx="9" ry="14" fill="#3fae6f" stroke="#2b6b46" stroke-width="1"/><ellipse cx="-6" cy="-8" rx="6" ry="9" fill="#4cc77f"/><ellipse cx="6" cy="-8" rx="6" ry="9" fill="#46b873"/></g></g>';}
-    function rack(gx,gy){let h=box(gx,gy,0.7,0.85,46,'#39414f');const c=iso(gx+0.5,gy+0.5);let d='<g transform="translate('+c[0].toFixed(1)+','+c[1].toFixed(1)+')">';for(let i=0;i<5;i++){d+='<circle class="a-teal an-blink'+(i%2?' d':'')+'" cx="3" cy="'+(-40+i*8)+'" r="1.8"/>';}return h+d+'</g>';}
-    function rocket(g){return gw(g,'<g class="an-float"><path d="M0 -46 q11 6 11 30 v10 h-22 v-10 q0 -24 11 -30 z" fill="#eceff5" stroke="#222" stroke-width="1"/><circle cx="0" cy="-24" r="4.5" fill="#16e0c7" stroke="#222" stroke-width="1"/><path d="M-11 -8 l-9 13 h9 z" fill="#ff5d5d" stroke="#222" stroke-width="1"/><path d="M11 -8 l9 13 h-9 z" fill="#ff5d5d" stroke="#222" stroke-width="1"/><path class="a-pink an-blink" d="M-6 -2 h12 l-6 16 z"/></g>');}
-    function cat(g,c){return gw(g,'<ellipse class="shadow" cx="0" cy="2" rx="9" ry="3"/><g class="an-walk"><ellipse cx="0" cy="-4" rx="9" ry="4.5" fill="'+(c||'#3a3a3a')+'" stroke="#222" stroke-width="1"/><circle cx="9" cy="-9" r="4" fill="'+(c||'#3a3a3a')+'" stroke="#222" stroke-width="1"/><path d="M7 -12 l-1.5 -4 l3 2 z" fill="'+(c||'#3a3a3a')+'"/><path d="M12 -12 l1.5 -4 l-3 2 z" fill="'+(c||'#3a3a3a')+'"/><path d="M-9 -6 q-8 -1 -10 -9" fill="none" stroke="#222" stroke-width="1.4"/></g>');}
-    const items=[];const push=(d,h)=>items.push({d,h});
-    push(-2,box(0,0,COLS,0.16,54,'#e4e7ee'));push(-2,box(0,0,0.16,ROWS,54,'#e0e3ea'));
-    push(3.2,desk(0.6,0.6,'#16e0c7',0));push(4.4,desk(2.4,0.6,'#8f6bff',1));push(5.0,desk(0.6,2.4,'#ff4d8d',1));push(6.4,desk(2.4,2.4,'#16e0c7',0));push(7.4,desk(4.4,1.2,'#ffce4d',0));
-    push(9.9,person([5,4],'#ff5d5d','#3a2a1a'));push(7.4,person([1.5,5],'#16e0c7','#222'));push(7.8,plant(0.4,5.4));
-    push(15.2,shelf(9,0.7,4.6));push(16.7,shelf(10.5,0.7,4.6));push(18.2,shelf(12,0.7,4.6));push(19.7,shelf(13.5,0.7,4.6));
-    push(18.4,vending(16.5,0.6,'#d23b3b'));push(20.7,vending(17.6,1.8,'#3b7bd2'));push(20.4,fridge(16.5,3.2));
-    push(13.6,person([9.7,3],'#8f6bff','#222','walk',true));push(16.6,person([11.2,4.5],'#ff8fcf','#3a2a1a','walk',true));push(17.9,person([15,2],'#16e0c7','#222'));
-    push(15.3,counter(8.2,5.2,1.4,'#9be15d'));push(13.7,person([8.4,4.7],'#444','#222'));
-    push(20.3,counter(8.6,7.2,4,'#8a5a33'));push(15.0,box(9,7.3,0.4,0.4,12,'#cfd3da',16));push(15.2,person([8.7,7.1],'#fff','#222'));
-    push(17.6,person([9,8.6],'#ff944d','#3a2a1a'));push(19.3,person([10.5,8.8],'#16e0c7','#222'));push(20.6,person([12,8.6],'#8f6bff','#3a2a1a'));
-    push(11.6,box(8.6,11,1.6,0.4,4,'#2a2233'));push(11.2,person([8.9,10.6],'#fff','#222'));
-    push(24.0,person([9.5,12.5],'#ff3b6b','#1a1a1a'));push(25.5,person([10.8,13.2],'#ffd23b','#222','walk',true));push(26.5,person([11.5,14],'#3bd2ff','#1a1a1a'));push(24.8,person([10,13.8],'#9be15d','#222','walk',true));
-    push(11.6,box(8,11,0.5,0.6,30,'#1c1c22'));push(14.4,box(12.8,11,0.5,0.6,30,'#1c1c22'));
-    push(10.9,rack(0.6,8.5));push(12.0,rack(1.7,8.5));push(13.1,rack(2.8,8.5));
-    push(14.0,person([4,9],'#eef0f3','#3a2a1a'));push(16.4,rocket([4.6,10.8]));push(15.0,person([3,11],'#16e0c7','#222'));
-    push(27.0,sofa(14.6,9,2.2,'#6b8cff'));push(29.1,sofa(17.2,9,2,'#ff8fcf'));push(27.6,plant(15,12));push(33.5,plant(18.6,14));
-    push(15.2,box(14.2,8.1,0.14,1.3,22,'#15171d',6));push(26.6,person([15.5,10.5],'#ffce4d','#3a2a1a'));push(28.6,person([17,11],'#8f6bff','#222'));push(31.6,person([18,13],'#16e0c7','#3a2a1a'));push(26.5,box(15.4,10.6,0.8,0.6,7,'#7a5a3a'));
-    push(10.5,person([7,3],'#ff5d5d','#222','walk',true));push(19.5,person([7,12],'#8f6bff','#222','walk',true));push(19.5,person([13,6],'#16e0c7','#222','walk',true));
-    push(14.5,cat([7,7],'#3a3a3a'));push(9.6,cat([6.5,3],'#d98a3a'));push(28.5,cat([16,12],'#3a3a3a'));
-    items.sort((p,r)=>p.d-r.d);s+=items.map(o=>o.h).join('');
-    hqsvg.setAttribute('viewBox','0 0 '+Wd+' '+Ht);hqsvg.setAttribute('width',Wd);hqsvg.setAttribute('height',Ht);
-    hqsvg.innerHTML=s;
-    let x=0,y=0,z=1,down=false,sx=0,sy=0,bx=0,by=0;
-    function clamp(){const vw=hqv.clientWidth,vh=hqv.clientHeight,ww=Wd*z,wh=Ht*z,p=120;
-      x=ww<=vw?(vw-ww)/2:Math.max(vw-ww-p,Math.min(p,x));
-      y=wh<=vh?(vh-wh)/2:Math.max(vh-wh-p,Math.min(p,y));}
-    function apply(){clamp();hqw.style.transform='translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px) scale('+z.toFixed(3)+')';}
-    function center(){const vw=hqv.clientWidth,vh=hqv.clientHeight;x=(vw-Wd*z)/2;y=(vh-Ht*z)/2;apply();}
-    center();addEventListener('resize',apply);addEventListener('load',center);
-    hqv.addEventListener('pointerdown',e=>{if(e.target.closest('.hq-zoom'))return;down=true;sx=e.clientX;sy=e.clientY;bx=x;by=y;hqv.classList.add('grabbing');try{hqv.setPointerCapture(e.pointerId);}catch(_){}});
-    hqv.addEventListener('pointermove',e=>{if(!down)return;x=bx+(e.clientX-sx);y=by+(e.clientY-sy);apply();});
-    const up=()=>{down=false;hqv.classList.remove('grabbing');};
-    hqv.addEventListener('pointerup',up);hqv.addEventListener('pointercancel',up);
-    function zoom(f,ox,oy){const nz=Math.max(.55,Math.min(2,z*f));const r=hqv.getBoundingClientRect();ox=ox==null?r.width/2:ox;oy=oy==null?r.height/2:oy;x=ox-(ox-x)*(nz/z);y=oy-(oy-y)*(nz/z);z=nz;apply();}
-    const inb=document.getElementById('hqin'),outb=document.getElementById('hqout');
-    inb&&inb.addEventListener('click',()=>zoom(1.2));outb&&outb.addEventListener('click',()=>zoom(1/1.2));
-    hqv.addEventListener('wheel',e=>{e.preventDefault();const r=hqv.getBoundingClientRect();zoom(e.deltaY<0?1.12:1/1.12,e.clientX-r.left,e.clientY-r.top);},{passive:false});
-  }
 
   /* MAGNETIC BUTTONS */
   document.querySelectorAll('.btn').forEach(b=>{
