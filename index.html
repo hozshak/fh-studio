@@ -334,6 +334,31 @@
   footer .social a:hover{border-color:var(--c2);color:var(--c2);transform:translateY(-3px)}
 
 
+  /* ===== 3D SCROLL TUNNEL ===== */
+  .tn{position:relative;height:320vh;background:#04050a}
+  .tn-sticky{position:sticky;top:0;height:100vh;overflow:hidden}
+  .tn-viewport{position:absolute;inset:0;perspective:1000px;z-index:1}
+  .tn-world{position:absolute;top:50%;left:50%;transform-style:preserve-3d;will-change:transform}
+  .tn-item{position:absolute;left:0;top:0;backface-visibility:hidden;transform-origin:center;display:flex;align-items:center;justify-content:center}
+  .tn-card{width:300px;height:420px;border-radius:14px;background:rgba(10,12,24,.5);border:1px solid var(--stroke);padding:26px;display:flex;flex-direction:column;justify-content:space-between;backdrop-filter:blur(6px);box-shadow:0 20px 60px rgba(0,0,0,.6);transform:translate(-50%,-50%);position:relative;overflow:hidden}
+  .tn-card .hd{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--stroke);padding-bottom:14px}
+  .tn-card .id{font-family:monospace;color:var(--c2);font-size:.78rem;letter-spacing:.05em}
+  .tn-card .dot{width:10px;height:10px;border-radius:2px;background:var(--c3)}
+  .tn-card h3{font-family:'Space Grotesk';font-size:2.4rem;line-height:.95;text-transform:uppercase;color:#fff;margin:0}
+  .tn-card .ft{font-family:monospace;font-size:.68rem;color:var(--muted);display:flex;justify-content:space-between}
+  .tn-card .no{position:absolute;right:18px;bottom:14px;font-family:'Space Grotesk';font-size:4rem;font-weight:700;color:rgba(255,255,255,.06);line-height:1}
+  .tn-big{font-family:'Space Grotesk';font-size:14vw;font-weight:700;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.14);text-transform:uppercase;white-space:nowrap;transform:translate(-50%,-50%);letter-spacing:-.04em;pointer-events:none}
+  .tn-star{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;transform:translate(-50%,-50%)}
+  .tn-scan{position:absolute;inset:0;z-index:6;pointer-events:none;background:linear-gradient(rgba(255,255,255,0) 50%,rgba(0,0,0,.22) 50%);background-size:100% 4px;mix-blend-mode:multiply}
+  .tn-vig{position:absolute;inset:0;z-index:5;pointer-events:none;background:radial-gradient(circle,transparent 42%,#04050a 120%)}
+  .tn-hud{position:absolute;inset:24px;z-index:7;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;font-family:monospace;font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em}
+  .tn-hud .row{display:flex;justify-content:space-between;align-items:center}
+  .tn-hud strong{color:var(--c2)}
+  .tn-hud .ln{flex:1;height:1px;background:rgba(255,255,255,.2);margin:0 14px}
+  .tn-cap{position:absolute;left:50%;top:38px;transform:translateX(-50%);z-index:7;text-align:center;pointer-events:none}
+  .tn-cap .e{font-size:12px;letter-spacing:.3em;color:var(--c2);text-transform:uppercase;font-weight:600}
+  .tn-cap h2{font-family:'Space Grotesk';font-size:clamp(22px,3vw,34px);margin-top:8px}
+
   @media (prefers-reduced-motion:reduce){
     *{animation:none!important;transition:none!important}
     .hero h1 .ch,.hero p.lead,.hero .cta,.by,.device,.sl-a{opacity:1!important;transform:none!important}
@@ -490,6 +515,21 @@
     <div class="stat reveal"><div class="num" data-count="98">0</div><div class="lbl">% zufriedene Kunden</div></div>
     <div class="stat reveal"><div class="num" data-count="14">0</div><div class="lbl">Tage Ø bis Launch</div></div>
     <div class="stat reveal"><div class="num" data-count="100">0</div><div class="lbl">% individuell gebaut</div></div>
+  </div>
+</section>
+
+<!-- 3D SCROLL TUNNEL -->
+<section class="tn" id="tn">
+  <div class="tn-sticky">
+    <div class="tn-viewport" id="tnviewport"><div class="tn-world" id="tnworld"></div></div>
+    <div class="tn-vig"></div>
+    <div class="tn-scan"></div>
+    <div class="tn-cap"><div class="e">Experience</div><h2>Scroll &amp; erlebe</h2></div>
+    <div class="tn-hud">
+      <div class="row"><span>SYS.READY</span><div class="ln"></div><span>FH://STUDIO</span></div>
+      <div class="row"><span>VEL <strong id="tnvel">0.00</strong></span><div class="ln"></div><span>POS <strong id="tncoord">0</strong></span></div>
+      <div class="row"><span>SCROLL ▼</span><div class="ln"></div><span>VER 2.0</span></div>
+    </div>
   </div>
 </section>
 
@@ -966,6 +1006,64 @@
     requestAnimationFrame(frame);
   }
   frame();
+
+  /* 3D SCROLL TUNNEL */
+  const tn=document.getElementById('tn'),tnw=document.getElementById('tnworld'),tnvp=document.getElementById('tnviewport');
+  if(tn&&tnw&&tnvp){
+    const WORDS=['DESIGN','SPEED','PIXEL','MODERN','CODE','WOW','FUTURE','LAUNCH'];
+    const N=16,GAP=720,DEPTH=N*GAP,STARS=80;
+    const TI=[];
+    for(let i=0;i<N;i++){
+      const el=document.createElement('div');el.className='tn-item';
+      if(i%4===0){
+        const t=document.createElement('div');t.className='tn-big';t.textContent=WORDS[i%WORDS.length];el.appendChild(t);
+        TI.push({el,type:'text',x:0,y:0,rot:(Math.random()-.5)*8,z:-i*GAP});
+      }else{
+        const c=document.createElement('div');c.className='tn-card';
+        c.innerHTML='<div class="hd"><span class="id">ID-'+(1000+i*173%9000)+'</span><span class="dot"></span></div><h3>'+WORDS[i%WORDS.length]+'</h3><div class="ft"><span>GRID '+(i%9)+'x'+((i*3)%9)+'</span><span>'+(18+i*4.2).toFixed(1)+'MB</span></div><div class="no">0'+i+'</div>';
+        el.appendChild(c);
+        const ang=(i/N)*Math.PI*5,x=Math.cos(ang)*innerWidth*0.26,y=Math.sin(ang)*innerHeight*0.26,rot=(Math.random()-.5)*22;
+        TI.push({el,type:'card',x,y,rot,z:-i*GAP});
+      }
+      tnw.appendChild(el);
+    }
+    for(let i=0;i<STARS;i++){const el=document.createElement('div');el.className='tn-star';tnw.appendChild(el);TI.push({el,type:'star',x:(Math.random()-.5)*2600,y:(Math.random()-.5)*2600,z:-Math.random()*DEPTH});}
+    let tmx=0,tmy=0,prog=0,vel=0,lastCam=0;
+    addEventListener('mousemove',e=>{tmx=(e.clientX/innerWidth-.5)*2;tmy=(e.clientY/innerHeight-.5)*2;});
+    const velEl=document.getElementById('tnvel'),coordEl=document.getElementById('tncoord');
+    function trender(){
+      const r=tn.getBoundingClientRect();
+      const total=tn.offsetHeight-innerHeight;
+      let p=total>0?(-r.top)/total:0;p=Math.max(0,Math.min(1,p));
+      prog+=(p-prog)*0.12;
+      const cam=prog*DEPTH*1.08;
+      vel+=((cam-lastCam)-vel)*0.1;lastCam=cam;
+      if(r.bottom>0&&r.top<innerHeight){
+        const tiltX=tmy*4-vel*0.02,tiltY=tmx*4;
+        tnw.style.transform='translate(-50%,-50%) rotateX('+tiltX.toFixed(2)+'deg) rotateY('+tiltY.toFixed(2)+'deg)';
+        tnvp.style.perspective=(1000-Math.min(Math.abs(vel)*7,520))+'px';
+        if(velEl)velEl.textContent=Math.abs(vel*0.02).toFixed(2);
+        if(coordEl)coordEl.textContent=Math.round(prog*1000);
+        const split=Math.abs(vel)>120,off=vel*0.04;
+        for(const it of TI){
+          let z=it.z+cam;z=((z%DEPTH)+DEPTH)%DEPTH;if(z>600)z-=DEPTH;
+          let a=1;
+          if(z<-3000)a=0;else if(z<-2000)a=(z+3000)/1000;
+          if(z>120&&it.type!=='star')a=1-((z-120)/440);
+          a=a<0?0:a>1?1:a;it.el.style.opacity=a;
+          if(a>0){
+            let tr='translate3d('+it.x.toFixed(0)+'px,'+it.y.toFixed(0)+'px,'+z.toFixed(0)+'px)';
+            if(it.type==='star'){tr+=' scaleZ('+Math.max(1,Math.min(1+Math.abs(vel)*0.03,9)).toFixed(2)+')';}
+            else if(it.type==='text'){tr+=' rotateZ('+it.rot+'deg)';it.el.firstChild.style.textShadow=split?off.toFixed(1)+'px 0 var(--c3),'+(-off).toFixed(1)+'px 0 var(--c2)':'none';}
+            else{tr+=' rotateZ('+it.rot+'deg)';}
+            it.el.style.transform=tr;
+          }
+        }
+      }
+      requestAnimationFrame(trender);
+    }
+    trender();
+  }
 })();
 </script>
 </body>
