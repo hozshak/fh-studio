@@ -512,6 +512,70 @@
   .nb-credit{text-align:center;padding:14px;font-size:12px;color:var(--c2);background:rgba(22,224,199,.05);border-top:1px solid rgba(22,224,199,.15)}
   @media(max-width:720px){.nb-feats,.nb-cards3,.nb-prices{grid-template-columns:1fr}.nb-dash{grid-template-columns:1fr}.nb-side{display:none}.nb-links{display:none}}
 
+  .sm-site{display:none}
+  .sm-site.show{display:block}
+  /* ===== STUDIO HAIN (portfolio) ===== */
+  .hn{font-family:'Inter',sans-serif;background:#120810;color:#f7e9ef;--hp:#ff4d8d;--hc:#ffb199}
+  .hn-nav{display:flex;align-items:center;gap:22px;padding:18px 28px;position:sticky;top:0;background:rgba(18,8,16,.85);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06);z-index:5}
+  .hn-logo{font-family:'Space Grotesk';font-weight:700;font-size:16px;letter-spacing:.18em}
+  .hn-links{display:flex;gap:20px;font-size:14px;color:#d8b9c8}
+  .hn-links span{cursor:pointer}.hn-links span:hover{color:#fff}
+  .hn-btn{margin-left:auto;padding:9px 18px;border-radius:100px;font-weight:600;font-size:14px;background:var(--hp);color:#120810;cursor:pointer;display:inline-block;border:none}
+  .hn-hero{padding:58px 28px 26px;text-align:center}
+  .hn-eyebrow{font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:var(--hp);margin-bottom:16px}
+  .hn-hero h1{font-family:'Space Grotesk';font-weight:700;font-size:clamp(42px,9vw,84px);line-height:.92;letter-spacing:-.03em;margin:0}
+  .hn-hero h1 span{background:linear-gradient(120deg,var(--hp),var(--hc));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hn-hero p{color:#d8b9c8;max-width:440px;margin:20px auto 0;font-size:16px}
+  .hn-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:30px 28px}
+  .hn-tile{aspect-ratio:4/3;border-radius:14px;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:16px;overflow:hidden;cursor:pointer;transition:transform .3s;color:#fff}
+  .hn-tile:hover{transform:translateY(-5px)}
+  .hn-tile .cat{font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+  .hn-tile b{font-family:'Space Grotesk';font-size:17px;margin-top:4px}
+  .hn-tile.t1{background:linear-gradient(135deg,#ff4d8d,#7c2d4d)}
+  .hn-tile.t2{background:linear-gradient(135deg,#ffb199,#ff6f91)}
+  .hn-tile.t3{background:linear-gradient(135deg,#9d4edd,#ff4d8d)}
+  .hn-tile.t4{background:linear-gradient(135deg,#ffd166,#ff7eb3)}
+  .hn-tile.t5{background:linear-gradient(135deg,#6c5ce7,#ff4d8d)}
+  .hn-tile.t6{background:linear-gradient(135deg,#2b2342,#ff4d8d)}
+  .hn-about{padding:48px 28px;text-align:center;max-width:640px;margin:0 auto}
+  .hn-about h2{font-family:'Space Grotesk';font-weight:700;font-size:clamp(26px,4vw,36px);margin:0 0 14px}
+  .hn-about p{color:#d8b9c8;font-size:16px;line-height:1.7}
+  .hn-stats{display:flex;justify-content:center;gap:48px;margin-top:30px;flex-wrap:wrap}
+  .hn-stats div{display:flex;flex-direction:column}
+  .hn-stats b{font-family:'Space Grotesk';font-size:34px;color:var(--hp)}
+  .hn-stats span{font-size:12px;color:#d8b9c8;letter-spacing:.05em}
+  .hn-cta{margin-top:10px;padding:54px 28px;text-align:center;background:radial-gradient(circle at 50% 0%,rgba(255,77,141,.4),transparent 60%);border-top:1px solid rgba(255,255,255,.08)}
+  .hn-cta h2{font-family:'Space Grotesk';font-weight:700;font-size:clamp(28px,5vw,46px);margin:0 0 22px}
+  .hn-foot{border-top:1px solid rgba(255,255,255,.06);padding:26px 28px;display:flex;justify-content:space-between;color:#d8b9c8;font-size:12px;font-family:'Space Grotesk';letter-spacing:.1em}
+  @media(max-width:720px){.hn-grid{grid-template-columns:1fr 1fr}.hn-links{display:none}.hn-stats{gap:28px}}
+  /* ===== PULSE (agency) ===== */
+  .pl{font-family:'Inter',sans-serif;background:#06121a;color:#eafffb;--p1:#16e0c7;--p2:#7c5cff}
+  .pl-nav{display:flex;align-items:center;gap:22px;padding:18px 28px;position:sticky;top:0;background:rgba(6,18,26,.85);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06);z-index:5}
+  .pl-logo{font-family:'Space Grotesk';font-weight:700;font-size:18px;letter-spacing:.05em}
+  .pl-links{display:flex;gap:20px;font-size:14px;color:#9fc7c0}.pl-links span{cursor:pointer}.pl-links span:hover{color:#fff}
+  .pl-btn{margin-left:auto;padding:9px 18px;border-radius:10px;font-weight:600;font-size:14px;background:linear-gradient(120deg,var(--p1),var(--p2));color:#06121a;cursor:pointer;display:inline-block;border:none}
+  .pl-hero{padding:68px 28px 22px;text-align:center;position:relative;overflow:hidden}
+  .pl-hero::before{content:"";position:absolute;bottom:-44%;left:50%;transform:translateX(-50%);width:700px;height:500px;background:radial-gradient(circle,rgba(22,224,199,.35),transparent 60%);pointer-events:none}
+  .pl-hero h1{font-family:'Space Grotesk';font-weight:700;font-size:clamp(40px,8vw,70px);line-height:1;margin:0;position:relative}
+  .pl-hero h1 span{background:linear-gradient(120deg,var(--p1),var(--p2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .pl-hero p{color:#9fc7c0;max-width:460px;margin:18px auto 0;font-size:16px;position:relative}
+  .pl-logos{display:flex;flex-wrap:wrap;gap:26px;justify-content:center;padding:26px;opacity:.5;font-family:'Space Grotesk';font-weight:700;font-size:15px}
+  .pl-sec{padding:44px 28px}
+  .pl-sec h2{font-family:'Space Grotesk';font-weight:700;font-size:clamp(26px,4vw,36px);text-align:center;margin:0 0 32px}
+  .pl-serv{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .pl-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px}
+  .pl-card .no{font-family:'Space Grotesk';font-weight:700;font-size:14px;color:var(--p1);letter-spacing:.1em}
+  .pl-card b{font-family:'Space Grotesk';font-size:19px;display:block;margin:10px 0 8px}
+  .pl-card p{color:#9fc7c0;font-size:14px;line-height:1.6;margin:0}
+  .pl-num{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:0 28px}
+  .pl-num div{text-align:center;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:24px}
+  .pl-num b{font-family:'Space Grotesk';font-weight:700;font-size:32px;background:linear-gradient(120deg,var(--p1),var(--p2));-webkit-background-clip:text;background-clip:text;color:transparent;display:block}
+  .pl-num span{font-size:12px;color:#9fc7c0}
+  .pl-cta{margin:30px 28px;padding:48px 28px;border-radius:20px;text-align:center;background:radial-gradient(circle at 50% 0%,rgba(124,92,255,.4),transparent 60%),rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1)}
+  .pl-cta h2{font-family:'Space Grotesk';font-weight:700;font-size:clamp(26px,4vw,40px);margin:0 0 22px}
+  .pl-foot{border-top:1px solid rgba(255,255,255,.06);padding:26px 28px;display:flex;justify-content:space-between;color:#9fc7c0;font-size:13px}
+  @media(max-width:720px){.pl-serv,.pl-num{grid-template-columns:1fr}.pl-links{display:none}}
+
   @media (prefers-reduced-motion:reduce){
     *{animation:none!important;transition:none!important}
     .hero h1 .ch,.hero p.lead,.hero .cta,.by,.device,.sl-a{opacity:1!important;transform:none!important}
@@ -651,7 +715,7 @@
       </div>
       <div class="tv-bar"><span class="led"></span><div class="tv-meta"><b>Nimbus</b><span>SaaS / Web-App</span></div><span class="tv-hint">Klick</span></div>
     </div>
-    <div class="tv reveal" tabindex="0" role="button" aria-label="Studio Hain Design einschalten">
+    <div class="tv reveal" tabindex="0" role="button" aria-label="Studio Hain Design einschalten" data-modal="hain">
       <div class="tv-screen">
         <div class="pv b"><h5>WORK THAT POPS</h5><small>Studio Hain · Portfolio</small></div>
         <div class="scan"></div><div class="crt"></div>
@@ -659,7 +723,7 @@
       </div>
       <div class="tv-bar"><span class="led"></span><div class="tv-meta"><b>Studio Hain</b><span>Portfolio</span></div><span class="tv-hint">Klick</span></div>
     </div>
-    <div class="tv reveal" tabindex="0" role="button" aria-label="Pulse Design einschalten">
+    <div class="tv reveal" tabindex="0" role="button" aria-label="Pulse Design einschalten" data-modal="pulse">
       <div class="tv-screen">
         <div class="pv d"><h5>We build <b>brands.</b></h5><small>Pulse · Agentur</small></div>
         <div class="scan"></div><div class="crt"></div>
@@ -906,7 +970,7 @@
       <button class="sm-close" data-close aria-label="Schließen">✕</button>
     </div>
     <div class="sm-scroll">
-      <div class="nb">
+      <div class="sm-site show" data-site="nimbus"><div class="nb">
         <nav class="nb-nav">
           <div class="nb-logo"><span class="dot"></span>Nimbus</div>
           <div class="nb-links"><span>Produkt</span><span>Features</span><span>Preise</span><span>Docs</span></div>
@@ -961,6 +1025,58 @@
         </div>
         <footer class="nb-foot"><div class="nb-logo"><span class="dot"></span>Nimbus</div><div>© 2026 Nimbus Inc. · Alle Rechte vorbehalten</div></footer>
         <div class="nb-credit">🎨 Diese Website-Vorlage wurde von <b>FH Studio</b> gestaltet &amp; entwickelt</div>
+      </div></div>
+
+      <!-- STUDIO HAIN template -->
+      <div class="sm-site" data-site="hain">
+        <div class="hn">
+          <nav class="hn-nav"><div class="hn-logo">STUDIO HAIN</div><div class="hn-links"><span>Work</span><span>Studio</span><span>Journal</span><span>Kontakt</span></div><span class="hn-btn">Projekt anfragen</span></nav>
+          <header class="hn-hero">
+            <div class="hn-eyebrow">Kreativ-Studio · Berlin</div>
+            <h1>WORK<br><span>THAT POPS.</span></h1>
+            <p>Wir gestalten mutige Marken und Portfolios, die im Kopf bleiben.</p>
+          </header>
+          <div class="hn-grid">
+            <div class="hn-tile t1"><span class="cat">Branding</span><b>Aurora Cosmetics</b></div>
+            <div class="hn-tile t2"><span class="cat">Web</span><b>Nomad Travel</b></div>
+            <div class="hn-tile t3"><span class="cat">Editorial</span><b>Flux Magazine</b></div>
+            <div class="hn-tile t4"><span class="cat">Packaging</span><b>Bloom Tea</b></div>
+            <div class="hn-tile t5"><span class="cat">Identity</span><b>Vertex Studio</b></div>
+            <div class="hn-tile t6"><span class="cat">Art Direction</span><b>Neon Nights</b></div>
+          </div>
+          <section class="hn-about">
+            <h2>Marken, die auffallen.</h2>
+            <p>Von der ersten Idee bis zum fertigen Auftritt — Design mit Haltung, Typografie mit Charakter, Farben mit Mut.</p>
+            <div class="hn-stats"><div><b>120+</b><span>Projekte</span></div><div><b>14</b><span>Awards</span></div><div><b>8 J.</b><span>Erfahrung</span></div></div>
+          </section>
+          <div class="hn-cta"><h2>Lass uns was Großes bauen.</h2><span class="hn-btn">Projekt anfragen →</span></div>
+          <footer class="hn-foot"><span>STUDIO HAIN</span><span>© 2026 · Berlin</span></footer>
+          <div class="nb-credit">🎨 Website-Vorlage von <b>FH Studio</b></div>
+        </div>
+      </div>
+
+      <!-- PULSE template -->
+      <div class="sm-site" data-site="pulse">
+        <div class="pl">
+          <nav class="pl-nav"><div class="pl-logo">▲ PULSE</div><div class="pl-links"><span>Cases</span><span>Leistungen</span><span>Team</span><span>Kontakt</span></div><span class="pl-btn">Brief starten</span></nav>
+          <header class="pl-hero">
+            <h1>We build <span>brands.</span></h1>
+            <p>Branding, Web &amp; Motion für mutige Marken. Strategie trifft Ästhetik.</p>
+          </header>
+          <div class="pl-logos"><span>◆ acme</span><span>▲ vertex</span><span>● lumen</span><span>✦ orbit</span><span>■ flux</span></div>
+          <section class="pl-sec">
+            <h2>Was wir tun.</h2>
+            <div class="pl-serv">
+              <div class="pl-card"><span class="no">01</span><b>Branding</b><p>Logo, Identity &amp; Guidelines, die deine Marke unverwechselbar machen.</p></div>
+              <div class="pl-card"><span class="no">02</span><b>Web &amp; Dev</b><p>Schnelle, moderne Websites &amp; Apps — vom Konzept bis zum Launch.</p></div>
+              <div class="pl-card"><span class="no">03</span><b>Motion</b><p>Animationen &amp; Videos, die Aufmerksamkeit erzeugen und bleiben.</p></div>
+            </div>
+          </section>
+          <div class="pl-num"><div><b>+240%</b><span>Mehr Anfragen</span></div><div><b>50+</b><span>Marken gelauncht</span></div><div><b>12</b><span>Design-Awards</span></div></div>
+          <div class="pl-cta"><h2>Bereit für mehr Pulse?</h2><span class="pl-btn">Brief starten →</span></div>
+          <footer class="pl-foot"><span>▲ PULSE</span><span>© 2026 Pulse Agency</span></footer>
+          <div class="nb-credit">🎨 Website-Vorlage von <b>FH Studio</b></div>
+        </div>
       </div>
     </div>
   </div>
@@ -1240,7 +1356,14 @@
 
   /* PORTFOLIO TVs — click to power on */
   const siteModal=document.getElementById('siteModal');
-  function openSiteModal(){if(!siteModal)return;siteModal.classList.add('open');document.body.classList.add('modal-open');const sc=siteModal.querySelector('.sm-scroll');if(sc)sc.scrollTop=0;}
+  function openSiteModal(key){
+    if(!siteModal)return;
+    siteModal.querySelectorAll('.sm-site').forEach(s=>s.classList.toggle('show',s.dataset.site===key));
+    const urls={nimbus:'https://nimbus.app',hain:'https://studio-hain.de',pulse:'https://pulse-agency.co'};
+    const u=siteModal.querySelector('.sm-url');if(u)u.textContent=urls[key]||'https://preview';
+    siteModal.classList.add('open');document.body.classList.add('modal-open');
+    const sc=siteModal.querySelector('.sm-scroll');if(sc)sc.scrollTop=0;
+  }
   function closeSiteModal(){if(!siteModal)return;siteModal.classList.remove('open');document.body.classList.remove('modal-open');}
   if(siteModal){siteModal.querySelectorAll('[data-close]').forEach(el=>el.addEventListener('click',closeSiteModal));addEventListener('keydown',e=>{if(e.key==='Escape')closeSiteModal();});}
   document.querySelectorAll('.tv').forEach(tv=>{
@@ -1250,7 +1373,7 @@
       tv.classList.toggle('on');
       if(on&&crt){crt.style.animation='none';void crt.offsetWidth;crt.style.animation='';}
       if(hint)hint.textContent=on?'An':'Klick';
-      if(on&&tv.dataset.modal)setTimeout(openSiteModal,420);
+      if(on&&tv.dataset.modal)setTimeout(()=>openSiteModal(tv.dataset.modal),420);
     }
     scr.addEventListener('click',toggle);
     tv.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
