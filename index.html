@@ -104,12 +104,12 @@
   .pill{display:inline-flex;align-items:center;gap:9px;padding:8px 16px;border:1px solid var(--stroke);border-radius:100px;font-size:13px;color:var(--muted);background:var(--glass);width:fit-content;margin-bottom:26px}
   .pill .live{width:8px;height:8px;border-radius:50%;background:var(--c2);box-shadow:0 0 0 0 var(--c2);animation:pulse 2s infinite}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(22,224,199,.6)}70%{box-shadow:0 0 0 12px rgba(22,224,199,0)}}
-  .hero h1{font-size:clamp(32px,4.6vw,58px);font-weight:700;line-height:1.1}
-  .hero h1 .grad{background:linear-gradient(120deg,var(--c2),var(--c1) 45%,var(--c3));-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% auto;animation:shine 6s linear infinite;filter:drop-shadow(0 0 16px rgba(124,92,255,.35))}
+  .hero h1{font-size:clamp(48px,8.6vw,112px);font-weight:800;line-height:.94;letter-spacing:-.035em}
+  .hero h1 .grad{background:linear-gradient(120deg,#16e0c7,#2f6bdc 32%,#7c5cff 62%,#ff4d8d);-webkit-background-clip:text;background-clip:text;color:transparent;background-size:220% auto;animation:shine 5s linear infinite;filter:drop-shadow(0 10px 30px rgba(124,92,255,.5))}
   /* FIX: Nach dem Zeichen-Split traegt jedes .ch den Text. Verlauf + clip:text muessen daher AUFS .ch (sonst hat .grad keinen eigenen Text mehr -> unsichtbar). --gw/--gx werden per JS gesetzt, damit der Verlauf durchgehend ueber das ganze Wort laeuft. */
   .hero h1 .grad .ch{
     -webkit-background-clip:text;background-clip:text;color:transparent;
-    background-image:linear-gradient(120deg,var(--c2),var(--c1) 45%,var(--c3));
+    background-image:linear-gradient(120deg,#16e0c7,#2f6bdc 32%,#7c5cff 62%,#ff4d8d);
     background-repeat:no-repeat;
     background-size:var(--gw,100%) 100%;
     background-position:calc(var(--gx,0px) + var(--gshift,0px)) 0;
@@ -456,17 +456,11 @@
   .hero-particles .pt{position:absolute;font-family:'Space Grotesk',monospace;font-weight:700;color:var(--c1);opacity:.13;animation:ptFloat 16s linear infinite}
   @keyframes ptFloat{0%{transform:translateY(60px) rotate(0);opacity:0}12%,88%{opacity:.16}50%{transform:translateY(-120px) rotate(180deg);opacity:.24}100%{transform:translateY(-300px) rotate(360deg);opacity:0}}
   .hero-grid{position:relative;z-index:1}
-  .greet{font-family:'Space Grotesk',monospace;font-size:14px;letter-spacing:.02em;color:var(--c2);margin-bottom:18px;display:flex;align-items:center;gap:4px}
-  .greet .cur{color:var(--c2);font-weight:700;animation:cblink 1.1s steps(1) infinite}
   @keyframes cblink{50%{opacity:0}}
-  .codename{font-family:'Space Grotesk',monospace;font-weight:700;font-size:clamp(30px,4.7vw,56px);line-height:1.12;letter-spacing:-.02em;margin:0;min-height:1.2em}
-  .codename .kw{color:var(--c1)}
-  .codename .var{color:var(--c2)}
-  .codename .op{color:var(--muted);margin:0 .15em}
-  .codename .sc{color:var(--c3)}
-  .codename .val{background:linear-gradient(120deg,var(--c2),var(--c1) 50%,var(--c3));-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% auto;animation:shine 6s linear infinite;filter:drop-shadow(0 0 16px rgba(124,92,255,.35))}
-  .role{font-family:'Space Grotesk',monospace;font-size:clamp(13px,1.6vw,17px);color:var(--muted);margin-top:16px}
-  .role .cmt2{color:var(--c3);margin-right:6px}
+  .eyebrow{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(11px,1.1vw,13px);letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-bottom:22px;display:inline-flex;align-items:center;gap:10px}
+  .eyebrow .dot{width:9px;height:9px;border-radius:50%;background:linear-gradient(135deg,var(--c2),var(--c1) 55%,var(--c3));box-shadow:0 0 12px rgba(124,92,255,.55);animation:pulse 2.4s infinite}
+  .hero-tag{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(22px,3.4vw,40px);line-height:1.04;letter-spacing:-.02em;margin-top:18px;color:var(--ink)}
+  .hero-tag em{font-style:normal;background:linear-gradient(110deg,#16e0c7,#7c5cff 52%,#ff4d8d);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 6px 20px rgba(124,92,255,.4))}
   .hero-social{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
   .hero-social .soc{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:var(--glass);border:1px solid var(--stroke);color:var(--muted);font-family:'Space Grotesk',monospace;font-weight:700;font-size:14px;text-decoration:none;transition:.25s}
   .hero-social .soc:hover{color:var(--c2);border-color:var(--c2);transform:translateY(-3px);box-shadow:0 6px 18px rgba(22,224,199,.2)}
@@ -480,8 +474,8 @@
   .orb-ring .mark{width:120px;height:120px;filter:drop-shadow(0 8px 26px rgba(124,92,255,.6));position:relative;animation:floatMark 5s ease-in-out infinite}
   #hero3d{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
   #hero3d:active{cursor:grabbing}
-  .orb-hud{position:absolute;bottom:-34px;left:50%;transform:translateX(-50%);white-space:nowrap;font-family:'Rajdhani',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;z-index:6;pointer-events:none}
-  .orb-hud b{font-family:'Orbitron',monospace;color:var(--c1)}
+  .orb-hud{position:absolute;bottom:-34px;left:50%;transform:translateX(-50%);white-space:nowrap;display:inline-flex;align-items:center;gap:8px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;letter-spacing:.04em;color:var(--muted);z-index:6;pointer-events:none}
+  .orb-hud .orb-pulse{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--c2),var(--c1));box-shadow:0 0 10px var(--c1);animation:pulse 2.2s infinite}
   @keyframes floatMark{50%{transform:translateY(-12px)}}
   .hbadge{position:absolute;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.8);border-radius:14px;padding:10px 14px;backdrop-filter:blur(10px) saturate(1.4);box-shadow:0 14px 34px -14px rgba(60,70,130,.45);animation:floatBadge 4s ease-in-out infinite;white-space:nowrap}
   .hbadge .hi{font-size:22px}
@@ -705,11 +699,9 @@
   <div class="hero-particles" id="heroParticles"></div>
   <div class="hero-grid">
     <div class="hero-left">
-      <div class="greet"><span class="cmt">// Hallo, wir sind</span><span class="cur">_</span></div>
-      <h1 class="codename">
-        <span class="kw">const</span> <span class="var">studio</span> <span class="op">=</span> <span class="val" id="typeName">"FH Studio"</span><span class="sc">;</span>
-      </h1>
-      <div class="role"><span class="cmt2">//</span> Webdesign &amp; Entwicklung · Fynn Beckmann &amp; Hozan Shaker</div>
+      <div class="eyebrow"><span class="dot"></span>Webdesign &amp; Entwicklung · Fynn &amp; Hozan</div>
+      <h1 class="hero-title"><span class="grad"><span class="ch" style="animation-delay:.12s">F</span><span class="ch" style="animation-delay:.18s">H</span><span class="ch" style="animation-delay:.24s">&nbsp;</span><span class="ch" style="animation-delay:.30s">S</span><span class="ch" style="animation-delay:.36s">t</span><span class="ch" style="animation-delay:.42s">u</span><span class="ch" style="animation-delay:.48s">d</span><span class="ch" style="animation-delay:.54s">i</span><span class="ch" style="animation-delay:.60s">o</span></span></h1>
+      <p class="hero-tag">Websites, die <em>begeistern</em>.</p>
       <p class="lead">Wir bauen extrem moderne Websites, die deine <em>Besucher in Kunden</em> verwandeln — schnell, einzigartig und gebaut, um zu <em>beeindrucken</em>.</p>
       <div class="cta">
         <a href="#kontakt" class="btn btn-primary" data-hov><span>Projekt starten <i class="ar">→</i></span></a>
@@ -730,7 +722,7 @@
         <div class="orb-ring">
           <canvas id="hero3d" aria-label="Interaktiver 3D-Kristall – zum Drehen ziehen"></canvas>
         </div>
-        <div class="orb-hud">SPECIMEN · FH-01 · <b id="orbRot">000°</b> · DRAG ↔ ROTATE</div>
+        <div class="orb-hud"><span class="orb-pulse"></span>Interaktiv — zieh am Kristall</div>
         <div class="hbadge hb1"><span class="hi">⚛</span><div><b>React &amp; Next</b><small>Hooks · SSR · TS</small></div></div>
         <div class="hbadge hb2"><span class="hi">⚡</span><div><b>Performance</b><small>0.9s · 100/100</small></div></div>
         <div class="hbadge hb3"><span class="hi">🎨</span><div><b>Design</b><small>UI/UX · Motion</small></div></div>
