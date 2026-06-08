@@ -34,7 +34,7 @@
 <link rel="stylesheet" href="css/styles.css" />
 <link rel="stylesheet" href="css/journey.css" />
 
-<!-- Three.js via Importmap (buildless ES-Module) – von js/hero-crystal.js & js/crystal-city.js genutzt -->
+<!-- Three.js via Importmap (buildless ES-Module) – von js/crystal-city.js genutzt -->
 <script type="importmap">
 { "imports": {
   "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -113,44 +113,13 @@
 <main id="journey">
   <div class="journey-stage">
 
-    <!-- BEAT 0 — INTRO / HERO -->
+    <!-- BEAT 0 — INTRO: nur das Wahrzeichen, dezente Wortmarke, Scroll-Einladung -->
     <section class="beat beat-intro" id="intro" data-beat="0" aria-label="Intro">
-      <div class="beat-inner hero">
-        <div class="hero-code-bg"></div>
-        <div class="hero-particles" id="heroParticles"></div>
-        <div class="hero-grid">
-          <div class="hero-left">
-            <div class="hero-eyebrow"><span class="dot"></span>Webdesign &amp; Entwicklung · Fynn &amp; Hozan</div>
-            <h1 class="hero-title"><span class="grad"><span class="ch" style="animation-delay:.12s">F</span><span class="ch" style="animation-delay:.18s">H</span><span class="ch" style="animation-delay:.24s">&nbsp;</span><span class="ch" style="animation-delay:.30s">S</span><span class="ch" style="animation-delay:.36s">t</span><span class="ch" style="animation-delay:.42s">u</span><span class="ch" style="animation-delay:.48s">d</span><span class="ch" style="animation-delay:.54s">i</span><span class="ch" style="animation-delay:.60s">o</span></span></h1>
-            <p class="hero-tag">Eine Reise durch Websites, die <em>begeistern</em>.</p>
-            <p class="lead">Scroll los — und flieg mit uns durch die Kristallstadt. An jeder Station zeigen wir, wie wir <em>Besucher in Kunden</em> verwandeln: schnell, einzigartig, gebaut um zu <em>beeindrucken</em>.</p>
-            <div class="cta">
-              <a href="#prozess" class="btn btn-primary" data-hov><span>Die Reise starten <i class="ar">↓</i></span></a>
-              <a href="#kontakt" class="btn btn-ghost" data-hov>Direkt zum Kontakt <i class="ar">→</i></a>
-            </div>
-            <div class="hero-social">
-              <a href="#" class="soc" aria-label="GitHub">&lt;/&gt;</a>
-              <a href="#" class="soc" aria-label="LinkedIn">in</a>
-              <a href="#" class="soc" aria-label="Instagram">ig</a>
-              <a href="#" class="soc" aria-label="Dribbble">dr</a>
-              <a href="mailto:hallo@fh-studio.de" class="soc" aria-label="Mail">@</a>
-            </div>
-          </div>
-          <div class="hero-right">
-            <div class="orb">
-              <div class="orb-glow"></div>
-              <div class="orb-ring">
-                <canvas id="hero3d" aria-label="Interaktiver 3D-Kristall – zum Drehen ziehen"></canvas>
-              </div>
-              <div class="orb-hud"><span class="orb-pulse"></span>Interaktiv — zieh am Kristall</div>
-              <div class="hbadge hb1"><span class="hi">⚛</span><div><b>React &amp; Next</b><small>Hooks · SSR · TS</small></div></div>
-              <div class="hbadge hb2"><span class="hi">⚡</span><div><b>Performance</b><small>0.9s · 100/100</small></div></div>
-              <div class="hbadge hb3"><span class="hi">🎨</span><div><b>Design</b><small>UI/UX · Motion</small></div></div>
-            </div>
-          </div>
-        </div>
+      <div class="beat-inner hero intro-min">
+        <p class="intro-eyebrow"><span class="dot"></span>FH Studio · Fynn &amp; Hozan</p>
+        <h1 class="hero-title"><span class="grad"><span class="ch" style="animation-delay:.12s">F</span><span class="ch" style="animation-delay:.18s">H</span><span class="ch" style="animation-delay:.24s">&nbsp;</span><span class="ch" style="animation-delay:.30s">S</span><span class="ch" style="animation-delay:.36s">t</span><span class="ch" style="animation-delay:.42s">u</span><span class="ch" style="animation-delay:.48s">d</span><span class="ch" style="animation-delay:.54s">i</span><span class="ch" style="animation-delay:.60s">o</span></span></h1>
+        <p class="intro-sub">Websites, die <em>begeistern</em>.</p>
       </div>
-      <div class="scroll-hint" id="scrollHint">SCROLL<div class="line"></div></div>
     </section>
 
     <!-- BEAT 1 — LEISTUNGEN -->
@@ -172,40 +141,19 @@
       </div>
     </section>
 
-    <!-- BEAT 2 — PROZESS: die Live-Demo baut sich beim Durchfliegen Schritt fuer Schritt auf -->
+    <!-- BEAT 2 — PROZESS: vier klare Schritte (3D-Element: die Stadt, die wir bauen) -->
     <section class="beat beat-prozess" id="prozess" data-beat="2" aria-label="Prozess">
       <div class="beat-inner">
-        <div class="lab-head">
-          <div class="eyebrow">Station 02 · So entsteht deine Seite</div>
-          <h2 class="sec-title">Von der Idee zur Live-Website.</h2>
-          <p class="sec-sub" style="margin-inline:auto">Flieg weiter — und sieh zu, wie sich eine Website Schritt für Schritt aufbaut. Genau so arbeiten wir.</p>
+        <div class="beat-head beat-head--center">
+          <div class="eyebrow">Station 02 · So arbeiten wir</div>
+          <h2 class="sec-title" data-scramble>Von der Idee zur Live-Website.</h2>
+          <p class="sec-sub" style="margin-inline:auto">In klaren Schritten — transparent, schnell, ohne Überraschungen.</p>
         </div>
-        <div class="lab-grid">
-          <ol class="lab-rail" id="labRail">
-            <li data-s="0"><span class="ls-n">01</span><span class="ls-t">Blueprint</span></li>
-            <li data-s="1"><span class="ls-n">02</span><span class="ls-t">Struktur</span></li>
-            <li data-s="2"><span class="ls-n">03</span><span class="ls-t">Design</span></li>
-            <li data-s="3"><span class="ls-n">04</span><span class="ls-t">Feinschliff</span></li>
-            <li data-s="4"><span class="ls-n">05</span><span class="ls-t">Live</span></li>
-          </ol>
-          <div class="lab-stage" id="labStage" data-step="0" role="img" aria-label="Eine Website baut sich beim Scrollen Schritt für Schritt auf: Blueprint, Struktur, Design, Feinschliff, Live.">
-            <div class="bb">
-              <div class="bb-bar"><i></i><i></i><i></i><span class="bb-url">fh-studio.de</span><span class="bb-live">● LIVE</span></div>
-              <div class="bb-screen">
-                <div class="bb-grid"></div>
-                <div class="bb-nav"><span></span><span></span><span></span><span class="bb-cta"></span></div>
-                <div class="bb-hero">
-                  <div class="bb-h-txt"><b></b><b></b><b class="sm"></b></div>
-                  <div class="bb-h-vis"></div>
-                </div>
-                <div class="bb-cards"><div></div><div></div><div></div></div>
-                <div class="bb-dim bb-dim-w"><span>1280</span></div>
-                <div class="bb-dim bb-dim-h"><span>auto</span></div>
-                <div class="bb-badge">✓ LIVE · 0.9s · 100/100</div>
-              </div>
-            </div>
-            <div class="lab-progress"><i id="labProg"></i></div>
-          </div>
+        <div class="steps">
+          <div class="step"><span class="step-n">01</span><h3>Kennenlernen</h3><p>Wir verstehen dein Business, deine Ziele und deine Vision.</p><span class="step-tag">Tag 1 · Gratis</span></div>
+          <div class="step"><span class="step-n">02</span><h3>Konzept &amp; Design</h3><p>Ein einzigartiges Design, das genau zu deiner Marke passt.</p><span class="step-tag">Tag 2–5</span></div>
+          <div class="step"><span class="step-n">03</span><h3>Entwicklung</h3><p>Pixelgenau umgesetzt — schnell, responsive und SEO-ready.</p><span class="step-tag">Tag 6–12</span></div>
+          <div class="step"><span class="step-n">04</span><h3>Launch &amp; Support</h3><p>Deine Seite geht live. Und wir bleiben für dich da.</p><span class="step-tag">Tag 14 · Live</span></div>
         </div>
       </div>
     </section>
@@ -313,6 +261,9 @@
         </div>
       </div>
     </section>
+
+    <!-- Scroll-Einladung im ersten (Drachen-)Moment, danach ausgeblendet -->
+    <div class="scroll-hint" id="scrollHint">SCROLL<div class="line"></div></div>
 
   </div>
 </main>

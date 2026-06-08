@@ -10,7 +10,7 @@ import { Loader } from './loader.js';
 const loader = new Loader();
 loader.start();
 
-// erstes "Szene gerendert"-Signal aus hero-crystal.js / crystal-city.js
+// erstes "Wahrzeichen sichtbar"-Signal aus crystal-city.js
 const sceneReady = new Promise(res => addEventListener('fh:scene-ready', res, { once:true }));
 const cap = ms => new Promise(res => setTimeout(res, ms));
 const quiet = p => p.catch(err => console.warn('[FH] Modul-Fehler:', err));
@@ -29,11 +29,10 @@ const quiet = p => p.catch(err => console.warn('[FH] Modul-Fehler:', err));
     loader.setTask('Fonts');
     if (document.fonts?.ready) await Promise.race([document.fonts.ready, cap(1500)]);
 
-    // 3) 3D-Welten — laden und auf ersten gerenderten Frame warten (sonst Cap)
+    // 3) 3D-Reise — Modelle laden und auf erstes sichtbares Wahrzeichen warten (sonst Cap)
     loader.setTask('Scene');
-    quiet(import('./hero-crystal.js'));
     quiet(import('./crystal-city.js'));
-    await Promise.race([sceneReady, cap(2600)]);
+    await Promise.race([sceneReady, cap(4200)]);
   } catch (err) {
     console.warn('[FH] Boot-Fehler:', err);
   } finally {

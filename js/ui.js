@@ -113,20 +113,6 @@
     el.addEventListener('mouseleave',()=>ring.classList.remove('grow'));
   });
 
-  /* LIVE-DEMO — Maus-Tilt auf dem Browser-Mock (Schritt-Aufbau steuert js/journey.js) */
-  const labStage=document.getElementById('labStage');
-  if(labStage&&!reduce){
-    const bb=labStage.querySelector('.bb');
-    if(bb){
-      labStage.addEventListener('pointermove',e=>{
-        const r=labStage.getBoundingClientRect();
-        const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
-        bb.style.transform='perspective(1300px) rotateY('+(px*6).toFixed(2)+'deg) rotateX('+(-py*6).toFixed(2)+'deg)';
-      });
-      labStage.addEventListener('pointerleave',()=>{bb.style.transform='';});
-    }
-  }
-
   /* NAV + PROGRESS */
   const nav=document.getElementById('nav'),bar=document.getElementById('bar');
   function onScroll(){const y=scrollY;nav.classList.toggle('scrolled',y>40);const max=document.documentElement.scrollHeight-innerHeight;bar.style.width=(y/max*100)+'%';}
