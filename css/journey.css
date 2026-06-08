@@ -1,0 +1,107 @@
+/* =============================================================================
+   FH Studio – DIE REISE (Journey)
+   Eine gepinnte Buehne; 5 Szenen-Beats werden per Scroll cross-faded, synchron
+   zur Kamerafahrt durch die Kristallstadt (js/journey.js + js/crystal-city.js).
+
+   PROGRESSIVE ENHANCEMENT
+   - Standard (kein JS / mobil / kurze Viewports / reduced-motion):
+     Beats = ganz normale, gestapelte, lesbare Dokument-Sektionen.
+   - Erst wenn js/journey.js `html.journey-on` setzt, wird gepinnt & cross-faded.
+   ============================================================================= */
+
+/* ---- gemeinsame Beat-Basis (gilt in BEIDEN Modi) ---- */
+.beat-inner{ width:100%; max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+.beat-head{ max-width:820px; margin-bottom:38px; }
+.beat-intro .beat-inner.hero{ max-width:var(--maxw); }   /* Hero nutzt sein eigenes Grid */
+
+/* ---- Standard-Fallback: normale Sektionen ---- */
+.beat{ position:relative; padding:118px 0; }
+.beat-intro{ padding:0; }                                  /* Hero bringt eigene 100vh mit */
+#journey{ position:relative; }
+
+/* =========================================================================
+   AKTIVE REISE — nur mit html.journey-on
+   ========================================================================= */
+.journey-on #journey{ height:var(--journey-h, 600vh); }
+
+.journey-on .journey-stage{
+  position:sticky; top:0;
+  height:100vh; height:100svh;
+  overflow:hidden;
+}
+
+.journey-on .beat{
+  position:absolute; inset:0;
+  display:grid; place-items:center;
+  padding:90px 0 56px;
+  opacity:0; pointer-events:none;
+  z-index:1;
+  will-change:opacity;
+}
+/* weiches Lese-Halo hinter dem Beat-Inhalt, damit Text ueber der 3D-Stadt lesbar bleibt */
+.journey-on .beat::before{
+  content:""; position:absolute; inset:0; pointer-events:none; z-index:0;
+  background:radial-gradient(58% 64% at 50% 48%, rgba(233,236,243,.5), rgba(233,236,243,0) 76%);
+  opacity:var(--scrim, 0);
+}
+.journey-on .beat > *{ position:relative; z-index:1; }
+
+.journey-on .beat-inner{
+  transform:translateY(var(--by, 40px));
+  will-change:transform;
+}
+
+/* Hero im Reise-Modus: kein doppeltes Padding/Min-Height — die Buehne zentriert */
+.journey-on .beat-intro .beat-inner.hero{
+  min-height:auto; padding-top:0; padding-bottom:0;
+}
+
+/* Lesbarkeit ueber der bewegten Szene */
+.journey-on .beat .sec-title,
+.journey-on .beat .hero-title,
+.journey-on .beat .final h2,
+.journey-on .beat .lab-head h2{
+  text-shadow:0 2px 34px rgba(233,236,243,.65);
+}
+
+/* etwas kompakter, damit jeder Beat in 100vh passt */
+.journey-on .beat .grid{ margin-top:30px; gap:16px; }
+.journey-on .beat .card{ padding:24px; }
+.journey-on .beat .card .ic{ margin-bottom:16px; width:48px; height:48px; }
+.journey-on .beat-head{ margin-bottom:26px; }
+.journey-on .beat .team{ margin-top:30px; }
+
+/* Scroll-Hinweis nur im Intro, blendet nach dem ersten Scroll aus */
+.journey-on .scroll-hint{ transition:opacity .4s ease; }
+.journey-on .scroll-hint.gone{ opacity:0; }
+
+/* ---- Stations-Navigation (Punkte rechts, von js/journey.js erzeugt) ---- */
+.journey-dots{
+  position:fixed; right:22px; top:50%; transform:translateY(-50%);
+  display:flex; flex-direction:column; gap:14px; z-index:90;
+  opacity:0; transition:opacity .5s ease;
+}
+.journey-on .journey-dots{ opacity:1; }
+.journey-dots button{
+  --d:11px; width:var(--d); height:var(--d); padding:0; border-radius:50%;
+  border:1.5px solid rgba(20,24,45,.32); background:transparent; cursor:pointer;
+  position:relative; transition:transform .3s, border-color .3s, background .3s;
+}
+.journey-dots button::after{
+  content:attr(data-label); position:absolute; right:22px; top:50%;
+  transform:translateY(-50%) translateX(6px);
+  font-size:11px; letter-spacing:.12em; text-transform:uppercase; white-space:nowrap;
+  color:var(--muted); opacity:0; transition:opacity .25s, transform .25s; pointer-events:none;
+}
+.journey-dots button:hover::after{ opacity:1; transform:translateY(-50%) translateX(0); }
+.journey-dots button:hover{ border-color:var(--c2); }
+.journey-dots button.on{
+  background:linear-gradient(135deg,var(--c2),var(--c1));
+  border-color:transparent; transform:scale(1.35);
+  box-shadow:0 0 16px rgba(124,92,255,.6);
+}
+@media (max-width:820px){ .journey-dots{ display:none; } }
+
+/* Falls die Reise NICHT aktiv ist, soll die Live-Demo trotzdem fertig gebaut aussehen
+   (js/journey.js setzt dann data-step=4; dieser Fallback greift, falls JS ganz fehlt). */
+html:not(.journey-on) #labStage{ }

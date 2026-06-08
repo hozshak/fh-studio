@@ -113,28 +113,11 @@
     el.addEventListener('mouseleave',()=>ring.classList.remove('grow'));
   });
 
-  /* BUILD-UP LAB — scroll-getriebener Aufbau (Steps 0..4) + Maus-Tilt */
-  const labSec=document.getElementById('lab');
+  /* LIVE-DEMO — Maus-Tilt auf dem Browser-Mock (Schritt-Aufbau steuert js/journey.js) */
   const labStage=document.getElementById('labStage');
-  if(labSec&&labStage){
-    const labProg=document.getElementById('labProg');
-    const labRail=[...document.querySelectorAll('#labRail li')];
+  if(labStage&&!reduce){
     const bb=labStage.querySelector('.bb');
-    let labCur=-1;
-    function labScroll(){
-      const total=labSec.offsetHeight-innerHeight;
-      const scrolled=Math.min(Math.max(-labSec.getBoundingClientRect().top,0),Math.max(1,total));
-      const p=total>0?scrolled/total:0;
-      const step=Math.max(0,Math.min(4,Math.floor(p*5)));
-      if(step!==labCur){
-        labCur=step;labStage.dataset.step=step;
-        labRail.forEach(li=>li.classList.toggle('on',+li.dataset.s<=step));
-      }
-      if(labProg)labProg.style.height=(p*100)+'%';
-    }
-    addEventListener('scroll',labScroll,{passive:true});
-    addEventListener('resize',labScroll);labScroll();
-    if(!reduce&&bb){
+    if(bb){
       labStage.addEventListener('pointermove',e=>{
         const r=labStage.getBoundingClientRect();
         const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
@@ -222,7 +205,7 @@
   /* robust scroll fallback (works even where IntersectionObserver is flaky) */
   function checkReveal(){
     const vh=innerHeight;
-    document.querySelectorAll('.reveal:not(.in),.tl-step:not(.in)').forEach(el=>{
+    document.querySelectorAll('.reveal:not(.in)').forEach(el=>{
       const r=el.getBoundingClientRect();
       if(r.top<vh*0.88)el.classList.add('in');
     });
@@ -237,9 +220,6 @@
   const sio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const el=e.target;el.dataset.text=el.textContent;scramble(el);sio.unobserve(el);}}),{threshold:.5});
   if(!reduce)document.querySelectorAll('[data-scramble]').forEach(el=>sio.observe(el));
 
-  /* TL-CARD SPOTLIGHT (timeline) */
-  document.querySelectorAll('.tl-card').forEach(c=>{c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px');});});
-
   /* SERVICE CARDS — interactive 3D tilt + depth parallax + glare */
   document.querySelectorAll('.card').forEach(c=>{
     const glare=document.createElement('span');glare.className='glare';c.appendChild(glare);
@@ -253,13 +233,6 @@
     });
     c.addEventListener('mouseleave',()=>{c.style.transform='';});
   });
-
-  /* PROCESS TIMELINE */
-  const tl=document.getElementById('timeline'),tlfill=document.getElementById('tlfill');
-  const tio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.35});
-  document.querySelectorAll('.tl-step').forEach(s=>tio.observe(s));
-  function tlScroll(){if(!tl)return;const r=tl.getBoundingClientRect();const p=Math.max(0,Math.min(1,(innerHeight*0.72-r.top)/r.height));tlfill.style.height=(p*100)+'%';}
-  addEventListener('scroll',tlScroll,{passive:true});tlScroll();
 
   /* DEVELOPERS — typing on hover */
   function setupDev(card){
@@ -287,64 +260,6 @@
     card.addEventListener('mouseleave',()=>{if(raf){cancelAnimationFrame(raf);raf=null;}idle();});
   }
   document.querySelectorAll('.member').forEach(setupDev);
-
-  /* TESTIMONIAL BOOK */
-  const book=document.getElementById('book');
-  if(book){
-    const pagesEl=book.querySelector('.book-pages');
-    const pages=[...book.querySelectorAll('.page')];
-    const N=pages.length;
-    const prevBtn=document.getElementById('bprev'),nextBtn=document.getElementById('bnext'),counter=document.getElementById('bnow');
-    let cur=0;
-    function render(){
-      pages.forEach((p,i)=>{
-        p.style.transform='';
-        if(i<cur){p.classList.add('flipped');p.style.zIndex=i;}
-        else{p.classList.remove('flipped');p.style.zIndex=N-i;}
-      });
-      if(counter)counter.textContent=cur+1;
-      if(prevBtn)prevBtn.disabled=cur<=0;
-      if(nextBtn)nextBtn.disabled=cur>=N-1;
-    }
-    function next(){if(cur<N-1){cur++;render();}}
-    function prev(){if(cur>0){cur--;render();}}
-    nextBtn&&nextBtn.addEventListener('click',next);
-    prevBtn&&prevBtn.addEventListener('click',prev);
-    /* drag / swipe to turn pages */
-    let dragging=false,startX=0,active=null,dir=0;
-    book.addEventListener('pointerdown',e=>{
-      if(e.target.closest('.book-btn'))return;
-      dragging=true;startX=e.clientX;dir=0;active=null;
-      try{book.setPointerCapture(e.pointerId);}catch(_){}
-    });
-    book.addEventListener('pointermove',e=>{
-      if(!dragging)return;
-      const dx=e.clientX-startX;
-      if(!dir){
-        if(dx<-6&&cur<N-1){dir=1;active=pages[cur];active.classList.add('dragging');active.style.zIndex=99;}
-        else if(dx>6&&cur>0){dir=-1;active=pages[cur-1];active.classList.add('dragging');active.style.zIndex=99;}
-      }
-      if(!active)return;
-      const w=pagesEl.clientWidth||1;
-      let ang;
-      if(dir===1){ang=Math.min(0,Math.max(-180,(dx/w)*180));}
-      else{ang=-180+Math.min(180,Math.max(0,(dx/w)*180));}
-      active.style.transform='rotateY('+ang+'deg)';
-    });
-    function endDrag(e){
-      if(!dragging)return;dragging=false;
-      if(active){
-        const dx=(e.clientX||startX)-startX,w=pagesEl.clientWidth||1,frac=Math.abs(dx)/w;
-        active.classList.remove('dragging');active.style.transform='';
-        if(frac>0.32){if(dir===1)cur++;else if(dir===-1)cur--;}
-        render();
-      }
-      active=null;dir=0;
-    }
-    book.addEventListener('pointerup',endDrag);
-    book.addEventListener('pointercancel',endDrag);
-    render();
-  }
 
   /* MAGNETIC BUTTONS */
   document.querySelectorAll('.btn').forEach(b=>{

@@ -32,6 +32,7 @@
 <!-- Stylesheets (modular, buildless): Loader zuerst -> sofortiger, flackerfreier Ladescreen -->
 <link rel="stylesheet" href="css/loader.css" />
 <link rel="stylesheet" href="css/styles.css" />
+<link rel="stylesheet" href="css/journey.css" />
 
 <!-- Three.js via Importmap (buildless ES-Module) – von js/hero-crystal.js & js/crystal-city.js genutzt -->
 <script type="importmap">
@@ -94,291 +95,227 @@
     </div>
     <div class="nav-links">
       <a href="#leistungen" data-hov>Leistungen</a>
-      <a href="#lab" data-hov>Live-Demo</a>
       <a href="#prozess" data-hov>Prozess</a>
       <a href="#team" data-hov>Team</a>
+      <a href="#kontakt" data-hov>Kontakt</a>
     </div>
     <a href="#kontakt" class="btn btn-primary" data-hov><span>Projekt starten →</span></a>
   </div>
 </nav>
 
-<!-- HERO -->
-<header class="hero wrap">
-  <div class="hero-code-bg"></div>
-  <div class="hero-particles" id="heroParticles"></div>
-  <div class="hero-grid">
-    <div class="hero-left">
-      <div class="hero-eyebrow"><span class="dot"></span>Webdesign &amp; Entwicklung · Fynn &amp; Hozan</div>
-      <h1 class="hero-title"><span class="grad"><span class="ch" style="animation-delay:.12s">F</span><span class="ch" style="animation-delay:.18s">H</span><span class="ch" style="animation-delay:.24s">&nbsp;</span><span class="ch" style="animation-delay:.30s">S</span><span class="ch" style="animation-delay:.36s">t</span><span class="ch" style="animation-delay:.42s">u</span><span class="ch" style="animation-delay:.48s">d</span><span class="ch" style="animation-delay:.54s">i</span><span class="ch" style="animation-delay:.60s">o</span></span></h1>
-      <p class="hero-tag">Websites, die <em>begeistern</em>.</p>
-      <p class="lead">Wir bauen extrem moderne Websites, die deine <em>Besucher in Kunden</em> verwandeln — schnell, einzigartig und gebaut, um zu <em>beeindrucken</em>.</p>
-      <div class="cta">
-        <a href="#kontakt" class="btn btn-primary" data-hov><span>Projekt starten <i class="ar">→</i></span></a>
-        <a href="#lab" class="btn btn-ghost" data-hov>Live-Demo ansehen <i class="ar">↓</i></a>
-      </div>
-      <div class="hero-social">
-        <a href="#" class="soc" aria-label="GitHub">&lt;/&gt;</a>
-        <a href="#" class="soc" aria-label="LinkedIn">in</a>
-        <a href="#" class="soc" aria-label="Instagram">ig</a>
-        <a href="#" class="soc" aria-label="Dribbble">dr</a>
-        <a href="mailto:hallo@fh-studio.de" class="soc" aria-label="Mail">@</a>
-      </div>
-    </div>
+<!-- ========================= DIE REISE (Journey) =========================
+     5 Szenen-Beats in EINER gepinnten Buehne, per Scroll cross-faded und
+     synchron zur Kamerafahrt durch die Kristallstadt (js/journey.js +
+     js/crystal-city.js teilen sich denselben Scroll-Fortschritt).
+     Progressive Enhancement: ohne html.journey-on (kein JS / mobil /
+     reduced-motion) fallen die Beats auf normale Dokument-Sektionen zurueck.
+======================================================================== -->
+<main id="journey">
+  <div class="journey-stage">
 
-    <div class="hero-right">
-      <div class="orb">
-        <div class="orb-glow"></div>
-        <div class="orb-ring">
-          <canvas id="hero3d" aria-label="Interaktiver 3D-Kristall – zum Drehen ziehen"></canvas>
-        </div>
-        <div class="orb-hud"><span class="orb-pulse"></span>Interaktiv — zieh am Kristall</div>
-        <div class="hbadge hb1"><span class="hi">⚛</span><div><b>React &amp; Next</b><small>Hooks · SSR · TS</small></div></div>
-        <div class="hbadge hb2"><span class="hi">⚡</span><div><b>Performance</b><small>0.9s · 100/100</small></div></div>
-        <div class="hbadge hb3"><span class="hi">🎨</span><div><b>Design</b><small>UI/UX · Motion</small></div></div>
-      </div>
-    </div>
-  </div>
-  <div class="scroll-hint">SCROLL<div class="line"></div></div>
-</header>
-
-
-<!-- SERVICES -->
-<section id="leistungen" class="wrap">
-  <div class="reveal">
-    <div class="eyebrow">Was wir können</div>
-    <h2 class="sec-title" data-scramble>Alles für deinen perfekten Auftritt im Netz.</h2>
-    <p class="sec-sub">Von der ersten Idee bis zum fertigen Launch — alles aus einer Hand, kompromisslos modern.</p>
-  </div>
-  <div class="grid">
-    <div class="card reveal"><div class="ic">🎨</div><h3>Webdesign</h3><p>Maßgeschneiderte Designs mit Wow-Effekt. Kein Template von der Stange — jedes Pixel sitzt.</p></div>
-    <div class="card reveal"><div class="ic">⚡</div><h3>Entwicklung</h3><p>Blitzschnelle, responsive Websites mit sauberem Code. Performance, die Google liebt.</p></div>
-    <div class="card reveal"><div class="ic">✨</div><h3>Animationen</h3><p>Micro-Interaktionen und Scroll-Effekte, die deine Seite lebendig und edel wirken lassen.</p></div>
-    <div class="card reveal"><div class="ic">🚀</div><h3>SEO &amp; Speed</h3><p>Gefunden werden &amp; schnell sein. Wir optimieren für Suchmaschinen und Ladezeit.</p></div>
-    <div class="card reveal"><div class="ic">🛍️</div><h3>Online-Shops</h3><p>Verkaufe rund um die Uhr. Shops, die Vertrauen schaffen und konvertieren.</p></div>
-    <div class="card reveal"><div class="ic">🛟</div><h3>Support</h3><p>Wir lassen dich nicht allein. Wartung, Updates und Hilfe, wann immer du sie brauchst.</p></div>
-  </div>
-</section>
-
-<!-- BUILD-UP LAB (hell, scroll-getrieben / aufeinander aufbauend) -->
-<section id="lab" class="lab">
-  <div class="lab-sticky">
-    <div class="wrap">
-      <div class="lab-head">
-        <div class="eyebrow">Live · so entsteht deine Seite</div>
-        <h2 class="sec-title">Von der Idee zur Live-Website.</h2>
-        <p class="sec-sub" style="margin-inline:auto">Scroll weiter — und sieh zu, wie sich eine Website Schritt für Schritt aufbaut. Genau so arbeiten wir.</p>
-      </div>
-      <div class="lab-grid">
-        <ol class="lab-rail" id="labRail">
-          <li data-s="0"><span class="ls-n">01</span><span class="ls-t">Blueprint</span></li>
-          <li data-s="1"><span class="ls-n">02</span><span class="ls-t">Struktur</span></li>
-          <li data-s="2"><span class="ls-n">03</span><span class="ls-t">Design</span></li>
-          <li data-s="3"><span class="ls-n">04</span><span class="ls-t">Feinschliff</span></li>
-          <li data-s="4"><span class="ls-n">05</span><span class="ls-t">Live</span></li>
-        </ol>
-        <div class="lab-stage" id="labStage" data-step="0" role="img" aria-label="Eine Website baut sich beim Scrollen Schritt für Schritt auf: Blueprint, Struktur, Design, Feinschliff, Live.">
-          <div class="bb">
-            <div class="bb-bar"><i></i><i></i><i></i><span class="bb-url">fh-studio.de</span><span class="bb-live">● LIVE</span></div>
-            <div class="bb-screen">
-              <div class="bb-grid"></div>
-              <div class="bb-nav"><span></span><span></span><span></span><span class="bb-cta"></span></div>
-              <div class="bb-hero">
-                <div class="bb-h-txt"><b></b><b></b><b class="sm"></b></div>
-                <div class="bb-h-vis"></div>
-              </div>
-              <div class="bb-cards"><div></div><div></div><div></div></div>
-              <div class="bb-dim bb-dim-w"><span>1280</span></div>
-              <div class="bb-dim bb-dim-h"><span>auto</span></div>
-              <div class="bb-badge">✓ LIVE · 0.9s · 100/100</div>
+    <!-- BEAT 0 — INTRO / HERO -->
+    <section class="beat beat-intro" id="intro" data-beat="0" aria-label="Intro">
+      <div class="beat-inner hero">
+        <div class="hero-code-bg"></div>
+        <div class="hero-particles" id="heroParticles"></div>
+        <div class="hero-grid">
+          <div class="hero-left">
+            <div class="hero-eyebrow"><span class="dot"></span>Webdesign &amp; Entwicklung · Fynn &amp; Hozan</div>
+            <h1 class="hero-title"><span class="grad"><span class="ch" style="animation-delay:.12s">F</span><span class="ch" style="animation-delay:.18s">H</span><span class="ch" style="animation-delay:.24s">&nbsp;</span><span class="ch" style="animation-delay:.30s">S</span><span class="ch" style="animation-delay:.36s">t</span><span class="ch" style="animation-delay:.42s">u</span><span class="ch" style="animation-delay:.48s">d</span><span class="ch" style="animation-delay:.54s">i</span><span class="ch" style="animation-delay:.60s">o</span></span></h1>
+            <p class="hero-tag">Eine Reise durch Websites, die <em>begeistern</em>.</p>
+            <p class="lead">Scroll los — und flieg mit uns durch die Kristallstadt. An jeder Station zeigen wir, wie wir <em>Besucher in Kunden</em> verwandeln: schnell, einzigartig, gebaut um zu <em>beeindrucken</em>.</p>
+            <div class="cta">
+              <a href="#prozess" class="btn btn-primary" data-hov><span>Die Reise starten <i class="ar">↓</i></span></a>
+              <a href="#kontakt" class="btn btn-ghost" data-hov>Direkt zum Kontakt <i class="ar">→</i></a>
+            </div>
+            <div class="hero-social">
+              <a href="#" class="soc" aria-label="GitHub">&lt;/&gt;</a>
+              <a href="#" class="soc" aria-label="LinkedIn">in</a>
+              <a href="#" class="soc" aria-label="Instagram">ig</a>
+              <a href="#" class="soc" aria-label="Dribbble">dr</a>
+              <a href="mailto:hallo@fh-studio.de" class="soc" aria-label="Mail">@</a>
             </div>
           </div>
-          <div class="lab-progress"><i id="labProg"></i></div>
+          <div class="hero-right">
+            <div class="orb">
+              <div class="orb-glow"></div>
+              <div class="orb-ring">
+                <canvas id="hero3d" aria-label="Interaktiver 3D-Kristall – zum Drehen ziehen"></canvas>
+              </div>
+              <div class="orb-hud"><span class="orb-pulse"></span>Interaktiv — zieh am Kristall</div>
+              <div class="hbadge hb1"><span class="hi">⚛</span><div><b>React &amp; Next</b><small>Hooks · SSR · TS</small></div></div>
+              <div class="hbadge hb2"><span class="hi">⚡</span><div><b>Performance</b><small>0.9s · 100/100</small></div></div>
+              <div class="hbadge hb3"><span class="hi">🎨</span><div><b>Design</b><small>UI/UX · Motion</small></div></div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+      <div class="scroll-hint" id="scrollHint">SCROLL<div class="line"></div></div>
+    </section>
 
-<!-- PROCESS -->
-<section id="prozess" class="wrap">
-  <div class="reveal">
-    <div class="eyebrow">So arbeiten wir</div>
-    <h2 class="sec-title" data-scramble>Vier Schritte zu deiner neuen Website.</h2>
-  </div>
-  <div class="timeline" id="timeline">
-    <div class="tl-track"><div class="tl-fill" id="tlfill"></div></div>
-    <div class="tl-step" data-side="l">
-      <span class="tl-ghost">01</span>
-      <div class="tl-card"><div class="tl-ic">🤝</div><h3>Kennenlernen</h3><p>Wir verstehen dein Business, deine Ziele und deine Vision — kostenlos &amp; unverbindlich.</p><span class="tl-tag">Tag 1 · Gratis</span></div>
-      <div class="tl-node">01</div>
-    </div>
-    <div class="tl-step" data-side="r">
-      <span class="tl-ghost">02</span>
-      <div class="tl-node">02</div>
-      <div class="tl-card"><div class="tl-ic">🎨</div><h3>Konzept &amp; Design</h3><p>Du bekommst ein einzigartiges Design, das genau zu deiner Marke passt.</p><span class="tl-tag">Tag 2–5</span></div>
-    </div>
-    <div class="tl-step" data-side="l">
-      <span class="tl-ghost">03</span>
-      <div class="tl-card"><div class="tl-ic">⚡</div><h3>Entwicklung</h3><p>Wir setzen alles pixelgenau um — schnell, responsive und SEO-ready.</p><span class="tl-tag">Tag 6–12</span></div>
-      <div class="tl-node">03</div>
-    </div>
-    <div class="tl-step" data-side="r">
-      <span class="tl-ghost">04</span>
-      <div class="tl-node">04</div>
-      <div class="tl-card"><div class="tl-ic">🚀</div><h3>Launch &amp; Support</h3><p>Deine Seite geht live. Und wir bleiben für dich da.</p><span class="tl-tag">Tag 14 · Live</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- TEAM -->
-<section id="team" class="wrap">
-  <div class="reveal">
-    <div class="eyebrow">Die Köpfe dahinter</div>
-    <h2 class="sec-title" data-scramble>Zwei Macher. Ein Studio.</h2>
-  </div>
-  <div class="team">
-    <!-- FYNN -->
-    <div class="member reveal">
-      <div class="dev-scene">
-        <svg viewBox="0 0 300 220" role="img" aria-label="Fynn Beckmann am Rechner – tippt, wenn die Maus darüber liegt">
-          <defs>
-            <linearGradient id="shirtF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16e0c7"/><stop offset="1" stop-color="#7c5cff"/></linearGradient>
-            <linearGradient id="edgeF" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16e0c7"/><stop offset="1" stop-color="#7c5cff"/></linearGradient>
-            <radialGradient id="glowF" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="rgba(22,224,199,.28)"/><stop offset="1" stop-color="rgba(22,224,199,0)"/></radialGradient>
-            <linearGradient id="deskF" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="rgba(255,255,255,.1)"/><stop offset="1" stop-color="rgba(255,255,255,.02)"/></linearGradient>
-          </defs>
-          <ellipse cx="150" cy="122" rx="132" ry="80" fill="url(#glowF)"/>
-          <path d="M92 168 Q92 110 150 110 Q208 110 208 168 Z" fill="url(#shirtF)"/>
-          <rect x="141" y="74" width="18" height="24" rx="8" fill="#d9a073"/>
-          <circle cx="150" cy="56" r="23" fill="#ecbb93"/>
-          <path d="M127 53 Q128 30 150 30 Q172 30 173 53 Q164 41 150 41 Q136 41 127 53 Z" fill="#3a2d27"/>
-          <path d="M144 156 h12 l4 14 h-20 Z" fill="#0e1120"/>
-          <rect x="124" y="170" width="52" height="4" rx="2" fill="#0e1120"/>
-          <rect x="106" y="98" width="88" height="60" rx="9" fill="#0d1020" stroke="url(#edgeF)" stroke-width="2"/>
-          <rect x="112" y="104" width="76" height="48" rx="4" fill="#060912"/>
-          <rect class="scr-glow" x="112" y="104" width="76" height="48" rx="4" fill="rgba(22,224,199,.16)" opacity="0"/>
-          <g class="code">
-            <rect class="ln" x="118" y="110" width="46" height="4" rx="2" fill="#16e0c7" data-w="46"/>
-            <rect class="ln" x="125" y="118" width="30" height="4" rx="2" fill="rgba(255,255,255,.7)" data-w="30"/>
-            <rect class="ln" x="125" y="126" width="58" height="4" rx="2" fill="#7c5cff" data-w="58"/>
-            <rect class="ln" x="118" y="134" width="38" height="4" rx="2" fill="#ff4d8d" data-w="38"/>
-            <rect class="ln" x="118" y="142" width="22" height="4" rx="2" fill="#16e0c7" data-w="22"/>
-            <rect class="cur" x="166" y="109" width="4" height="6" rx="1" fill="#16e0c7" opacity="0"/>
-          </g>
-          <rect x="26" y="176" width="248" height="12" rx="6" fill="url(#deskF)"/>
-          <rect x="26" y="187" width="248" height="4" rx="2" fill="rgba(0,0,0,.35)"/>
-          <rect x="98" y="167" width="104" height="12" rx="3" fill="#161a28" stroke="rgba(255,255,255,.07)"/>
-          <g fill="rgba(255,255,255,.16)"><rect x="104" y="170" width="8" height="3" rx="1"/><rect x="116" y="170" width="8" height="3" rx="1"/><rect x="128" y="170" width="8" height="3" rx="1"/><rect x="140" y="170" width="8" height="3" rx="1"/><rect x="152" y="170" width="8" height="3" rx="1"/><rect x="164" y="170" width="8" height="3" rx="1"/><rect x="176" y="170" width="8" height="3" rx="1"/><rect x="188" y="170" width="8" height="3" rx="1"/></g>
-          <path d="M112 118 Q88 148 120 169" fill="none" stroke="url(#shirtF)" stroke-width="13" stroke-linecap="round"/>
-          <path d="M188 118 Q212 148 180 169" fill="none" stroke="url(#shirtF)" stroke-width="13" stroke-linecap="round"/>
-          <g class="hand"><ellipse cx="120" cy="168" rx="9" ry="7" fill="#ecbb93"/></g>
-          <g class="hand"><ellipse cx="180" cy="168" rx="9" ry="7" fill="#ecbb93"/></g>
-        </svg>
-      </div>
-      <div class="info"><small>Design &amp; Kreativ-Lead</small><h3>Fynn Beckmann</h3><p>„Gut ist erst der Anfang." Verwandelt Ideen in pixelgenaue Designs mit dem gewissen Wow-Effekt, den man nicht mehr vergisst.</p></div>
-    </div>
-
-    <!-- HOZAN -->
-    <div class="member reveal">
-      <div class="dev-scene">
-        <svg viewBox="0 0 300 220" role="img" aria-label="Hozan Shaker am Rechner – tippt, wenn die Maus darüber liegt">
-          <defs>
-            <linearGradient id="shirtH" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#ff4d8d"/></linearGradient>
-            <linearGradient id="edgeH" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#ff4d8d"/></linearGradient>
-            <radialGradient id="glowH" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="rgba(124,92,255,.28)"/><stop offset="1" stop-color="rgba(124,92,255,0)"/></radialGradient>
-            <linearGradient id="deskH" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="rgba(255,255,255,.1)"/><stop offset="1" stop-color="rgba(255,255,255,.02)"/></linearGradient>
-          </defs>
-          <ellipse cx="150" cy="122" rx="132" ry="80" fill="url(#glowH)"/>
-          <path d="M92 168 Q92 110 150 110 Q208 110 208 168 Z" fill="url(#shirtH)"/>
-          <rect x="141" y="74" width="18" height="24" rx="8" fill="#c28f63"/>
-          <circle cx="150" cy="56" r="23" fill="#d9a679"/>
-          <path d="M126 54 Q126 28 150 28 Q174 28 174 54 Q172 44 162 42 Q160 38 150 38 Q137 38 134 44 Q129 45 126 54 Z" fill="#17141c"/>
-          <path d="M144 156 h12 l4 14 h-20 Z" fill="#0e1120"/>
-          <rect x="124" y="170" width="52" height="4" rx="2" fill="#0e1120"/>
-          <rect x="106" y="98" width="88" height="60" rx="9" fill="#0d1020" stroke="url(#edgeH)" stroke-width="2"/>
-          <rect x="112" y="104" width="76" height="48" rx="4" fill="#060912"/>
-          <rect class="scr-glow" x="112" y="104" width="76" height="48" rx="4" fill="rgba(124,92,255,.18)" opacity="0"/>
-          <g class="code">
-            <rect class="ln" x="118" y="110" width="40" height="4" rx="2" fill="#7c5cff" data-w="40"/>
-            <rect class="ln" x="125" y="118" width="54" height="4" rx="2" fill="rgba(255,255,255,.7)" data-w="54"/>
-            <rect class="ln" x="125" y="126" width="32" height="4" rx="2" fill="#ff4d8d" data-w="32"/>
-            <rect class="ln" x="118" y="134" width="50" height="4" rx="2" fill="#16e0c7" data-w="50"/>
-            <rect class="ln" x="118" y="142" width="26" height="4" rx="2" fill="#7c5cff" data-w="26"/>
-            <rect class="cur" x="160" y="109" width="4" height="6" rx="1" fill="#ff4d8d" opacity="0"/>
-          </g>
-          <rect x="26" y="176" width="248" height="12" rx="6" fill="url(#deskH)"/>
-          <rect x="26" y="187" width="248" height="4" rx="2" fill="rgba(0,0,0,.35)"/>
-          <rect x="98" y="167" width="104" height="12" rx="3" fill="#161a28" stroke="rgba(255,255,255,.07)"/>
-          <g fill="rgba(255,255,255,.16)"><rect x="104" y="170" width="8" height="3" rx="1"/><rect x="116" y="170" width="8" height="3" rx="1"/><rect x="128" y="170" width="8" height="3" rx="1"/><rect x="140" y="170" width="8" height="3" rx="1"/><rect x="152" y="170" width="8" height="3" rx="1"/><rect x="164" y="170" width="8" height="3" rx="1"/><rect x="176" y="170" width="8" height="3" rx="1"/><rect x="188" y="170" width="8" height="3" rx="1"/></g>
-          <path d="M112 118 Q88 148 120 169" fill="none" stroke="url(#shirtH)" stroke-width="13" stroke-linecap="round"/>
-          <path d="M188 118 Q212 148 180 169" fill="none" stroke="url(#shirtH)" stroke-width="13" stroke-linecap="round"/>
-          <g class="hand"><ellipse cx="120" cy="168" rx="9" ry="7" fill="#d9a679"/></g>
-          <g class="hand"><ellipse cx="180" cy="168" rx="9" ry="7" fill="#d9a679"/></g>
-        </svg>
-      </div>
-      <div class="info"><small>Frontend &amp; Performance</small><h3>Hozan Shaker</h3><p>„Wenn's irgendwo ruckelt, kann ich nicht schlafen." Jagt jede Millisekunde, bis die Seite fliegt — sauberer Code, kompromisslose Geschwindigkeit.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- TESTIMONIALS -->
-<section id="stimmen" class="wrap">
-  <div class="reveal">
-    <div class="eyebrow">Kundenstimmen</div>
-    <h2 class="sec-title" data-scramble>Andere reden. Wir liefern.</h2>
-  </div>
-  <div class="book-wrap reveal">
-    <div class="book" id="book">
-      <div class="book-cover">
-        <div class="cover-inner">
-          <div class="ce">Gästebuch</div>
-          <h3>Was unsere<br>Kunden sagen</h3>
-          <div class="big-rating">4.9 <span>★★★★★</span></div>
-          <p class="cp">Echte Stimmen aus echten Projekten. Blättere durch das Buch — zieh die Seiten oder nutze die Pfeile.</p>
-          <div class="book-counter">Stimme <b id="bnow">1</b> von 6</div>
+    <!-- BEAT 1 — LEISTUNGEN -->
+    <section class="beat" id="leistungen" data-beat="1" aria-label="Leistungen">
+      <div class="beat-inner">
+        <div class="beat-head">
+          <div class="eyebrow">Station 01 · Was wir können</div>
+          <h2 class="sec-title" data-scramble>Alles für deinen perfekten Auftritt im Netz.</h2>
+          <p class="sec-sub">Von der ersten Idee bis zum fertigen Launch — alles aus einer Hand, kompromisslos modern.</p>
+        </div>
+        <div class="grid">
+          <div class="card"><div class="ic">🎨</div><h3>Webdesign</h3><p>Maßgeschneiderte Designs mit Wow-Effekt. Kein Template von der Stange — jedes Pixel sitzt.</p></div>
+          <div class="card"><div class="ic">⚡</div><h3>Entwicklung</h3><p>Blitzschnelle, responsive Websites mit sauberem Code. Performance, die Google liebt.</p></div>
+          <div class="card"><div class="ic">✨</div><h3>Animationen</h3><p>Micro-Interaktionen und Scroll-Effekte, die deine Seite lebendig und edel wirken lassen.</p></div>
+          <div class="card"><div class="ic">🚀</div><h3>SEO &amp; Speed</h3><p>Gefunden werden &amp; schnell sein. Wir optimieren für Suchmaschinen und Ladezeit.</p></div>
+          <div class="card"><div class="ic">🛍️</div><h3>Online-Shops</h3><p>Verkaufe rund um die Uhr. Shops, die Vertrauen schaffen und konvertieren.</p></div>
+          <div class="card"><div class="ic">🛟</div><h3>Support</h3><p>Wir lassen dich nicht allein. Wartung, Updates und Hilfe, wann immer du sie brauchst.</p></div>
         </div>
       </div>
-      <div class="book-pages">
-        <div class="page">
-          <div class="face front"><div class="qmark">”</div><div class="stars">★★★★★</div><p class="qt">Unsere neue Website sieht aus wie aus einem Sci-Fi-Film — und die Anfragen haben sich verdoppelt. Absolute Empfehlung.</p><div class="who"><div class="av">LK</div><div><b>Lena K.</b><small>Inhaberin, Studio Hain</small></div></div></div>
-          <div class="face back"><div class="back-logo"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><use href="#fhmark"/></svg><span>FH.Studio</span></div></div>
+    </section>
+
+    <!-- BEAT 2 — PROZESS: die Live-Demo baut sich beim Durchfliegen Schritt fuer Schritt auf -->
+    <section class="beat beat-prozess" id="prozess" data-beat="2" aria-label="Prozess">
+      <div class="beat-inner">
+        <div class="lab-head">
+          <div class="eyebrow">Station 02 · So entsteht deine Seite</div>
+          <h2 class="sec-title">Von der Idee zur Live-Website.</h2>
+          <p class="sec-sub" style="margin-inline:auto">Flieg weiter — und sieh zu, wie sich eine Website Schritt für Schritt aufbaut. Genau so arbeiten wir.</p>
         </div>
-        <div class="page">
-          <div class="face front"><div class="qmark">”</div><div class="stars">★★★★★</div><p class="qt">Schnell, professionell und kreativ. In zwei Wochen stand alles. So muss Zusammenarbeit sein.</p><div class="who"><div class="av">MT</div><div><b>Marco T.</b><small>Gründer, FitLab</small></div></div></div>
-          <div class="face back"><div class="back-logo"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><use href="#fhmark"/></svg><span>FH.Studio</span></div></div>
-        </div>
-        <div class="page">
-          <div class="face front"><div class="qmark">”</div><div class="stars">★★★★★</div><p class="qt">Endlich eine Seite, auf die ich stolz bin. Die Animationen begeistern jeden einzelnen Besucher.</p><div class="who"><div class="av">SB</div><div><b>Sara B.</b><small>Café Lumen</small></div></div></div>
-          <div class="face back"><div class="back-logo"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><use href="#fhmark"/></svg><span>FH.Studio</span></div></div>
-        </div>
-        <div class="page">
-          <div class="face front"><div class="qmark">”</div><div class="stars">★★★★★</div><p class="qt">Vom ersten Gespräch bis zum Launch top betreut. Die Seite lädt schneller als alles, was wir vorher hatten.</p><div class="who"><div class="av">DR</div><div><b>Daniel R.</b><small>Immobilien Nord</small></div></div></div>
-          <div class="face back"><div class="back-logo"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><use href="#fhmark"/></svg><span>FH.Studio</span></div></div>
-        </div>
-        <div class="page">
-          <div class="face front"><div class="qmark">”</div><div class="stars">★★★★★</div><p class="qt">Mein Online-Shop verkauft jetzt sogar nachts. Das Design trifft meine Marke einfach perfekt.</p><div class="who"><div class="av">AÖ</div><div><b>Aylin Ö.</b><small>Boutique Mara</small></div></div></div>
-          <div class="face back"><div class="back-logo"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><use href="#fhmark"/></svg><span>FH.Studio</span></div></div>
-        </div>
-        <div class="page">
-          <div class="face front"><div class="qmark">”</div><div class="stars">★★★★★</div><p class="qt">Diese beiden liefern auf Agentur-Niveau — aber persönlicher und schneller. Klare Empfehlung von mir.</p><div class="who"><div class="av">TW</div><div><b>Tom W.</b><small>TechVolt</small></div></div></div>
-          <div class="face back"><div class="back-logo"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><use href="#fhmark"/></svg><span>FH.Studio</span></div></div>
+        <div class="lab-grid">
+          <ol class="lab-rail" id="labRail">
+            <li data-s="0"><span class="ls-n">01</span><span class="ls-t">Blueprint</span></li>
+            <li data-s="1"><span class="ls-n">02</span><span class="ls-t">Struktur</span></li>
+            <li data-s="2"><span class="ls-n">03</span><span class="ls-t">Design</span></li>
+            <li data-s="3"><span class="ls-n">04</span><span class="ls-t">Feinschliff</span></li>
+            <li data-s="4"><span class="ls-n">05</span><span class="ls-t">Live</span></li>
+          </ol>
+          <div class="lab-stage" id="labStage" data-step="0" role="img" aria-label="Eine Website baut sich beim Scrollen Schritt für Schritt auf: Blueprint, Struktur, Design, Feinschliff, Live.">
+            <div class="bb">
+              <div class="bb-bar"><i></i><i></i><i></i><span class="bb-url">fh-studio.de</span><span class="bb-live">● LIVE</span></div>
+              <div class="bb-screen">
+                <div class="bb-grid"></div>
+                <div class="bb-nav"><span></span><span></span><span></span><span class="bb-cta"></span></div>
+                <div class="bb-hero">
+                  <div class="bb-h-txt"><b></b><b></b><b class="sm"></b></div>
+                  <div class="bb-h-vis"></div>
+                </div>
+                <div class="bb-cards"><div></div><div></div><div></div></div>
+                <div class="bb-dim bb-dim-w"><span>1280</span></div>
+                <div class="bb-dim bb-dim-h"><span>auto</span></div>
+                <div class="bb-badge">✓ LIVE · 0.9s · 100/100</div>
+              </div>
+            </div>
+            <div class="lab-progress"><i id="labProg"></i></div>
+          </div>
         </div>
       </div>
-      <div class="book-nav"><button class="book-btn" id="bprev" aria-label="Vorherige Stimme">‹</button><button class="book-btn" id="bnext" aria-label="Nächste Stimme">›</button></div>
-    </div>
-    <div class="book-hint">↔ Seiten ziehen oder mit den Pfeilen blättern</div>
-  </div>
-</section>
+    </section>
 
-<!-- FINAL CTA -->
-<section id="kontakt" class="wrap">
-  <div class="final reveal">
-    <h2>Bereit, <span class="grad">aufzufallen?</span></h2>
-    <p>Lass uns deine Website bauen, über die alle reden. Kostenloses Erstgespräch — unverbindlich &amp; ehrlich.</p>
-    <a href="mailto:hallo@fh-studio.de?subject=Ich%20will%20eine%20neue%20Website" class="btn btn-primary" data-hov><span>Kostenloses Gespräch sichern →</span></a>
-  </div>
-</section>
+    <!-- BEAT 3 — TEAM -->
+    <section class="beat" id="team" data-beat="3" aria-label="Team">
+      <div class="beat-inner">
+        <div class="beat-head">
+          <div class="eyebrow">Station 03 · Die Köpfe dahinter</div>
+          <h2 class="sec-title" data-scramble>Zwei Macher. Ein Studio.</h2>
+        </div>
+        <div class="team">
+          <!-- FYNN -->
+          <div class="member">
+            <div class="dev-scene">
+              <svg viewBox="0 0 300 220" role="img" aria-label="Fynn Beckmann am Rechner – tippt, wenn die Maus darüber liegt">
+                <defs>
+                  <linearGradient id="shirtF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16e0c7"/><stop offset="1" stop-color="#7c5cff"/></linearGradient>
+                  <linearGradient id="edgeF" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16e0c7"/><stop offset="1" stop-color="#7c5cff"/></linearGradient>
+                  <radialGradient id="glowF" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="rgba(22,224,199,.28)"/><stop offset="1" stop-color="rgba(22,224,199,0)"/></radialGradient>
+                  <linearGradient id="deskF" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="rgba(255,255,255,.1)"/><stop offset="1" stop-color="rgba(255,255,255,.02)"/></linearGradient>
+                </defs>
+                <ellipse cx="150" cy="122" rx="132" ry="80" fill="url(#glowF)"/>
+                <path d="M92 168 Q92 110 150 110 Q208 110 208 168 Z" fill="url(#shirtF)"/>
+                <rect x="141" y="74" width="18" height="24" rx="8" fill="#d9a073"/>
+                <circle cx="150" cy="56" r="23" fill="#ecbb93"/>
+                <path d="M127 53 Q128 30 150 30 Q172 30 173 53 Q164 41 150 41 Q136 41 127 53 Z" fill="#3a2d27"/>
+                <path d="M144 156 h12 l4 14 h-20 Z" fill="#0e1120"/>
+                <rect x="124" y="170" width="52" height="4" rx="2" fill="#0e1120"/>
+                <rect x="106" y="98" width="88" height="60" rx="9" fill="#0d1020" stroke="url(#edgeF)" stroke-width="2"/>
+                <rect x="112" y="104" width="76" height="48" rx="4" fill="#060912"/>
+                <rect class="scr-glow" x="112" y="104" width="76" height="48" rx="4" fill="rgba(22,224,199,.16)" opacity="0"/>
+                <g class="code">
+                  <rect class="ln" x="118" y="110" width="46" height="4" rx="2" fill="#16e0c7" data-w="46"/>
+                  <rect class="ln" x="125" y="118" width="30" height="4" rx="2" fill="rgba(255,255,255,.7)" data-w="30"/>
+                  <rect class="ln" x="125" y="126" width="58" height="4" rx="2" fill="#7c5cff" data-w="58"/>
+                  <rect class="ln" x="118" y="134" width="38" height="4" rx="2" fill="#ff4d8d" data-w="38"/>
+                  <rect class="ln" x="118" y="142" width="22" height="4" rx="2" fill="#16e0c7" data-w="22"/>
+                  <rect class="cur" x="166" y="109" width="4" height="6" rx="1" fill="#16e0c7" opacity="0"/>
+                </g>
+                <rect x="26" y="176" width="248" height="12" rx="6" fill="url(#deskF)"/>
+                <rect x="26" y="187" width="248" height="4" rx="2" fill="rgba(0,0,0,.35)"/>
+                <rect x="98" y="167" width="104" height="12" rx="3" fill="#161a28" stroke="rgba(255,255,255,.07)"/>
+                <g fill="rgba(255,255,255,.16)"><rect x="104" y="170" width="8" height="3" rx="1"/><rect x="116" y="170" width="8" height="3" rx="1"/><rect x="128" y="170" width="8" height="3" rx="1"/><rect x="140" y="170" width="8" height="3" rx="1"/><rect x="152" y="170" width="8" height="3" rx="1"/><rect x="164" y="170" width="8" height="3" rx="1"/><rect x="176" y="170" width="8" height="3" rx="1"/><rect x="188" y="170" width="8" height="3" rx="1"/></g>
+                <path d="M112 118 Q88 148 120 169" fill="none" stroke="url(#shirtF)" stroke-width="13" stroke-linecap="round"/>
+                <path d="M188 118 Q212 148 180 169" fill="none" stroke="url(#shirtF)" stroke-width="13" stroke-linecap="round"/>
+                <g class="hand"><ellipse cx="120" cy="168" rx="9" ry="7" fill="#ecbb93"/></g>
+                <g class="hand"><ellipse cx="180" cy="168" rx="9" ry="7" fill="#ecbb93"/></g>
+              </svg>
+            </div>
+            <div class="info"><small>Design &amp; Kreativ-Lead</small><h3>Fynn Beckmann</h3><p>„Gut ist erst der Anfang." Verwandelt Ideen in pixelgenaue Designs mit dem gewissen Wow-Effekt, den man nicht mehr vergisst.</p></div>
+          </div>
+          <!-- HOZAN -->
+          <div class="member">
+            <div class="dev-scene">
+              <svg viewBox="0 0 300 220" role="img" aria-label="Hozan Shaker am Rechner – tippt, wenn die Maus darüber liegt">
+                <defs>
+                  <linearGradient id="shirtH" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#ff4d8d"/></linearGradient>
+                  <linearGradient id="edgeH" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#ff4d8d"/></linearGradient>
+                  <radialGradient id="glowH" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="rgba(124,92,255,.28)"/><stop offset="1" stop-color="rgba(124,92,255,0)"/></radialGradient>
+                  <linearGradient id="deskH" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="rgba(255,255,255,.1)"/><stop offset="1" stop-color="rgba(255,255,255,.02)"/></linearGradient>
+                </defs>
+                <ellipse cx="150" cy="122" rx="132" ry="80" fill="url(#glowH)"/>
+                <path d="M92 168 Q92 110 150 110 Q208 110 208 168 Z" fill="url(#shirtH)"/>
+                <rect x="141" y="74" width="18" height="24" rx="8" fill="#c28f63"/>
+                <circle cx="150" cy="56" r="23" fill="#d9a679"/>
+                <path d="M126 54 Q126 28 150 28 Q174 28 174 54 Q172 44 162 42 Q160 38 150 38 Q137 38 134 44 Q129 45 126 54 Z" fill="#17141c"/>
+                <path d="M144 156 h12 l4 14 h-20 Z" fill="#0e1120"/>
+                <rect x="124" y="170" width="52" height="4" rx="2" fill="#0e1120"/>
+                <rect x="106" y="98" width="88" height="60" rx="9" fill="#0d1020" stroke="url(#edgeH)" stroke-width="2"/>
+                <rect x="112" y="104" width="76" height="48" rx="4" fill="#060912"/>
+                <rect class="scr-glow" x="112" y="104" width="76" height="48" rx="4" fill="rgba(124,92,255,.18)" opacity="0"/>
+                <g class="code">
+                  <rect class="ln" x="118" y="110" width="40" height="4" rx="2" fill="#7c5cff" data-w="40"/>
+                  <rect class="ln" x="125" y="118" width="54" height="4" rx="2" fill="rgba(255,255,255,.7)" data-w="54"/>
+                  <rect class="ln" x="125" y="126" width="32" height="4" rx="2" fill="#ff4d8d" data-w="32"/>
+                  <rect class="ln" x="118" y="134" width="50" height="4" rx="2" fill="#16e0c7" data-w="50"/>
+                  <rect class="ln" x="118" y="142" width="26" height="4" rx="2" fill="#7c5cff" data-w="26"/>
+                  <rect class="cur" x="160" y="109" width="4" height="6" rx="1" fill="#ff4d8d" opacity="0"/>
+                </g>
+                <rect x="26" y="176" width="248" height="12" rx="6" fill="url(#deskH)"/>
+                <rect x="26" y="187" width="248" height="4" rx="2" fill="rgba(0,0,0,.35)"/>
+                <rect x="98" y="167" width="104" height="12" rx="3" fill="#161a28" stroke="rgba(255,255,255,.07)"/>
+                <g fill="rgba(255,255,255,.16)"><rect x="104" y="170" width="8" height="3" rx="1"/><rect x="116" y="170" width="8" height="3" rx="1"/><rect x="128" y="170" width="8" height="3" rx="1"/><rect x="140" y="170" width="8" height="3" rx="1"/><rect x="152" y="170" width="8" height="3" rx="1"/><rect x="164" y="170" width="8" height="3" rx="1"/><rect x="176" y="170" width="8" height="3" rx="1"/><rect x="188" y="170" width="8" height="3" rx="1"/></g>
+                <path d="M112 118 Q88 148 120 169" fill="none" stroke="url(#shirtH)" stroke-width="13" stroke-linecap="round"/>
+                <path d="M188 118 Q212 148 180 169" fill="none" stroke="url(#shirtH)" stroke-width="13" stroke-linecap="round"/>
+                <g class="hand"><ellipse cx="120" cy="168" rx="9" ry="7" fill="#d9a679"/></g>
+                <g class="hand"><ellipse cx="180" cy="168" rx="9" ry="7" fill="#d9a679"/></g>
+              </svg>
+            </div>
+            <div class="info"><small>Frontend &amp; Performance</small><h3>Hozan Shaker</h3><p>„Wenn's irgendwo ruckelt, kann ich nicht schlafen." Jagt jede Millisekunde, bis die Seite fliegt — sauberer Code, kompromisslose Geschwindigkeit.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <!-- BEAT 4 — KONTAKT (Ziel der Reise) -->
+    <section class="beat beat-kontakt" id="kontakt" data-beat="4" aria-label="Kontakt">
+      <div class="beat-inner">
+        <div class="final">
+          <div class="eyebrow">Endstation · Dein Projekt</div>
+          <h2>Bereit, <span class="grad">aufzufallen?</span></h2>
+          <p>Du hast die Reise gesehen — jetzt bauen wir deine. Kostenloses Erstgespräch, unverbindlich &amp; ehrlich.</p>
+          <a href="mailto:hallo@fh-studio.de?subject=Ich%20will%20eine%20neue%20Website" class="btn btn-primary" data-hov><span>Kostenloses Gespräch sichern →</span></a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
 <!-- FOOTER -->
 <footer class="wrap">
   <div class="inner">
