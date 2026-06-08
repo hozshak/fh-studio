@@ -13,3 +13,7 @@ CLAUDE.md
 *.key
 *-password.txt
 *.env
+
+# Referenz-Bundles von igloo.inc (nur lokale Design-/Pattern-Analyse, fremdes Eigentum, ~1,5 MB) – NICHT committen
+App3D-f554a111.js
+index-2eb69c09.js

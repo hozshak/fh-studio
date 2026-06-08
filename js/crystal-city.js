@@ -228,7 +228,7 @@
     resize(); addEventListener('resize', resize);
 
     // --- Loop: Scroll choreografiert die Kamerareise über die ganze Seite ---
-    let last = performance.now(), t = 0, reveal = 0, p = 0;
+    let last = performance.now(), t = 0, reveal = 0, p = 0, sentReady = false;
     function loop(now){
       const dt = Math.min((now - last)/1000, 0.05); last = now; t += dt;
 
@@ -267,6 +267,7 @@
       cam.lookAt(0, 8 - 3*ease, 0);
 
       composer.render();
+      if (!sentReady) { sentReady = true; dispatchEvent(new Event('fh:scene-ready')); }  // erster Frame -> Loader darf weichen
       requestAnimationFrame(loop);
     }
     requestAnimationFrame(loop);
