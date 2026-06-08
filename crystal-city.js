@@ -87,7 +87,7 @@
     const poleGeo = new THREE.CylinderGeometry(0.05, 0.07, 1, 6); poleGeo.translate(0, 0.5, 0);
     const poleMat = new THREE.MeshStandardMaterial({ color: 0xb6bfd0, metalness: 0.85, roughness: 0.3 });
     const poles   = new THREE.InstancedMesh(poleGeo, poleMat, COUNT);
-    const beaconMat = new THREE.MeshStandardMaterial({ color: 0x000000, emissive: 0xff5e9c, emissiveIntensity: 3.2 });
+    const beaconMat = new THREE.MeshStandardMaterial({ color: 0x000000, emissive: 0xff2e4d, emissiveIntensity: 3.4 });
     const beacons = new THREE.InstancedMesh(new THREE.SphereGeometry(0.42, 10, 10), beaconMat, COUNT);
 
     const m = new THREE.Matrix4(), q = new THREE.Quaternion(), pos = new THREE.Vector3(), scl = new THREE.Vector3(), tint = new THREE.Color();
