@@ -478,6 +478,10 @@
   .orb-ring::before{content:"";position:absolute;inset:-2px;border-radius:50%;border:2px dashed rgba(22,224,199,.3);animation:orbSpin 18s linear infinite}
   @keyframes orbSpin{to{transform:rotate(360deg)}}
   .orb-ring .mark{width:120px;height:120px;filter:drop-shadow(0 8px 26px rgba(124,92,255,.6));position:relative;animation:floatMark 5s ease-in-out infinite}
+  #hero3d{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
+  #hero3d:active{cursor:grabbing}
+  .orb-hud{position:absolute;bottom:-34px;left:50%;transform:translateX(-50%);white-space:nowrap;font-family:'Rajdhani',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;z-index:6;pointer-events:none}
+  .orb-hud b{font-family:'Orbitron',monospace;color:var(--c1)}
   @keyframes floatMark{50%{transform:translateY(-12px)}}
   .hbadge{position:absolute;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.8);border-radius:14px;padding:10px 14px;backdrop-filter:blur(10px) saturate(1.4);box-shadow:0 14px 34px -14px rgba(60,70,130,.45);animation:floatBadge 4s ease-in-out infinite;white-space:nowrap}
   .hbadge .hi{font-size:22px}
@@ -724,8 +728,9 @@
       <div class="orb">
         <div class="orb-glow"></div>
         <div class="orb-ring">
-          <svg class="mark" viewBox="0 0 48 48" aria-label="FH Studio"><use href="#fhmark"/></svg>
+          <canvas id="hero3d" aria-label="Interaktiver 3D-Kristall – zum Drehen ziehen"></canvas>
         </div>
+        <div class="orb-hud">SPECIMEN · FH-01 · <b id="orbRot">000°</b> · DRAG ↔ ROTATE</div>
         <div class="hbadge hb1"><span class="hi">⚛</span><div><b>React &amp; Next</b><small>Hooks · SSR · TS</small></div></div>
         <div class="hbadge hb2"><span class="hi">⚡</span><div><b>Performance</b><small>0.9s · 100/100</small></div></div>
         <div class="hbadge hb3"><span class="hi">🎨</span><div><b>Design</b><small>UI/UX · Motion</small></div></div>
@@ -1995,6 +2000,64 @@ function drawSpeedUpMsg(){
 loop();
 startGame();
 })();
+</script>
+
+<!-- Interaktiver 3D-Kristall im Hero-Orb (Three.js / WebGL) -->
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+}}
+</script>
+<script type="module">
+  try {
+    const canvas = document.getElementById('hero3d');
+    if (canvas) {
+      const THREE = await import('three');
+      const { RoomEnvironment } = await import('three/addons/environments/RoomEnvironment.js');
+      const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha:true, antialias:true });
+      renderer.setPixelRatio(Math.min(devicePixelRatio||1, 2));
+      const scene = new THREE.Scene();
+      const pmrem = new THREE.PMREMGenerator(renderer);
+      scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+      const cam = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+      cam.position.set(0, 0, 4.2);
+      const geo = new THREE.IcosahedronGeometry(1.3, 0);
+      const mat = new THREE.MeshPhysicalMaterial({
+        color: 0xdfe7f7, metalness: 0.15, roughness: 0.06,
+        clearcoat: 1, clearcoatRoughness: 0.12,
+        iridescence: 1, iridescenceIOR: 1.4, flatShading: true, envMapIntensity: 1.25
+      });
+      const crystal = new THREE.Mesh(geo, mat);
+      scene.add(crystal);
+      // technische Wireframe-Kanten (igloo-Anmutung)
+      crystal.add(new THREE.LineSegments(
+        new THREE.WireframeGeometry(geo),
+        new THREE.LineBasicMaterial({ color: 0x6b4eff, transparent:true, opacity:0.22 })
+      ));
+      scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+      [[0x7c5cff,3,2,3],[0x16e0c7,-3,-1,2],[0xff4d8d,0,3,-2]].forEach(([c,x,y,z])=>{
+        const p = new THREE.PointLight(c, 1.1, 20); p.position.set(x,y,z); scene.add(p);
+      });
+      let rx=0.2, ry=0, trx=0.2, trY=0, drag=false, lx=0, ly=0;
+      canvas.addEventListener('pointerdown', e=>{ drag=true; lx=e.clientX; ly=e.clientY; });
+      addEventListener('pointermove', e=>{ if(!drag) return; trY+=(e.clientX-lx)*0.01; trx+=(e.clientY-ly)*0.01; trx=Math.max(-1.2,Math.min(1.2,trx)); lx=e.clientX; ly=e.clientY; });
+      addEventListener('pointerup', ()=>{ drag=false; });
+      const rotOut = document.getElementById('orbRot');
+      function resize(){ const s = canvas.clientWidth || 300; renderer.setSize(s, s, false); cam.aspect=1; cam.updateProjectionMatrix(); }
+      resize(); addEventListener('resize', resize);
+      function loop(){
+        if(!drag && !reduce) trY += 0.004;
+        rx += (trx-rx)*0.08; ry += (trY-ry)*0.08;
+        crystal.rotation.x = rx; crystal.rotation.y = ry;
+        if(rotOut){ const deg=((Math.round(ry*57.2958)%360)+360)%360; rotOut.textContent=String(deg).padStart(3,'0')+'°'; }
+        renderer.render(scene, cam);
+        requestAnimationFrame(loop);
+      }
+      loop();
+    }
+  } catch(err) { console.warn('3D-Kristall konnte nicht geladen werden:', err); }
 </script>
 </body>
 </html>
