@@ -346,32 +346,6 @@
     render();
   }
 
-  /* PORTFOLIO TVs — click to power on */
-  const siteModal=document.getElementById('siteModal');
-  function openSiteModal(key){
-    if(!siteModal)return;
-    siteModal.querySelectorAll('.sm-site').forEach(s=>s.classList.toggle('show',s.dataset.site===key));
-    const urls={nimbus:'https://nimbus.app',hain:'https://studio-hain.de',pulse:'https://pulse-agency.co'};
-    const u=siteModal.querySelector('.sm-url');if(u)u.textContent=urls[key]||'https://preview';
-    siteModal.classList.add('open');document.body.classList.add('modal-open');
-    const sc=siteModal.querySelector('.sm-scroll');if(sc)sc.scrollTop=0;
-  }
-  function closeSiteModal(){if(!siteModal)return;siteModal.classList.remove('open');document.body.classList.remove('modal-open');}
-  if(siteModal){siteModal.querySelectorAll('[data-close]').forEach(el=>el.addEventListener('click',closeSiteModal));addEventListener('keydown',e=>{if(e.key==='Escape')closeSiteModal();});}
-  document.querySelectorAll('.tv').forEach(tv=>{
-    const scr=tv.querySelector('.tv-screen'),crt=tv.querySelector('.crt'),hint=tv.querySelector('.tv-hint');
-    function toggle(){
-      const on=!tv.classList.contains('on');
-      tv.classList.toggle('on');
-      if(on&&crt){crt.style.animation='none';void crt.offsetWidth;crt.style.animation='';}
-      if(hint)hint.textContent=on?'An':'Klick';
-      if(on&&tv.dataset.modal)setTimeout(()=>openSiteModal(tv.dataset.modal),420);
-    }
-    scr.addEventListener('click',toggle);
-    tv.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
-  });
-
-
   /* MAGNETIC BUTTONS */
   document.querySelectorAll('.btn').forEach(b=>{
     b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();const x=e.clientX-r.left-r.width/2;const y=e.clientY-r.top-r.height/2;b.style.transform=`translate(${x*.25}px,${y*.35}px)`;});

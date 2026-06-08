@@ -94,7 +94,7 @@
     </div>
     <div class="nav-links">
       <a href="#leistungen" data-hov>Leistungen</a>
-      <a href="#arbeit" data-hov>Arbeit</a>
+      <a href="#lab" data-hov>Live-Demo</a>
       <a href="#prozess" data-hov>Prozess</a>
       <a href="#team" data-hov>Team</a>
     </div>
@@ -114,7 +114,7 @@
       <p class="lead">Wir bauen extrem moderne Websites, die deine <em>Besucher in Kunden</em> verwandeln — schnell, einzigartig und gebaut, um zu <em>beeindrucken</em>.</p>
       <div class="cta">
         <a href="#kontakt" class="btn btn-primary" data-hov><span>Projekt starten <i class="ar">→</i></span></a>
-        <a href="#arbeit" class="btn btn-ghost" data-hov>Arbeiten ansehen <i class="ar">↓</i></a>
+        <a href="#lab" class="btn btn-ghost" data-hov>Live-Demo ansehen <i class="ar">↓</i></a>
       </div>
       <div class="hero-social">
         <a href="#" class="soc" aria-label="GitHub">&lt;/&gt;</a>
@@ -156,40 +156,6 @@
     <div class="card reveal"><div class="ic">🚀</div><h3>SEO &amp; Speed</h3><p>Gefunden werden &amp; schnell sein. Wir optimieren für Suchmaschinen und Ladezeit.</p></div>
     <div class="card reveal"><div class="ic">🛍️</div><h3>Online-Shops</h3><p>Verkaufe rund um die Uhr. Shops, die Vertrauen schaffen und konvertieren.</p></div>
     <div class="card reveal"><div class="ic">🛟</div><h3>Support</h3><p>Wir lassen dich nicht allein. Wartung, Updates und Hilfe, wann immer du sie brauchst.</p></div>
-  </div>
-</section>
-
-<!-- PORTFOLIO -->
-<section id="arbeit" class="wrap">
-  <div class="reveal">
-    <div class="eyebrow">Unsere Arbeit</div>
-    <h2 class="sec-title" data-scramble>Designs, über die man spricht.</h2>
-  </div>
-  <div class="gallery">
-    <div class="tv reveal" tabindex="0" role="button" aria-label="Nimbus Design einschalten" data-modal="nimbus">
-      <div class="tv-screen">
-        <div class="pv a"><h5>Skaliere <b>schneller.</b></h5><small>Nimbus · SaaS-Plattform</small></div>
-        <div class="scan"></div><div class="crt"></div>
-        <div class="tv-off"><div class="power">⏻</div><div class="lbl">Einschalten</div></div>
-      </div>
-      <div class="tv-bar"><span class="led"></span><div class="tv-meta"><b>Nimbus</b><span>SaaS / Web-App</span></div><span class="tv-hint">Klick</span></div>
-    </div>
-    <div class="tv reveal" tabindex="0" role="button" aria-label="Studio Hain Design einschalten" data-modal="hain">
-      <div class="tv-screen">
-        <div class="pv b"><h5>WORK THAT POPS</h5><small>Studio Hain · Portfolio</small></div>
-        <div class="scan"></div><div class="crt"></div>
-        <div class="tv-off"><div class="power">⏻</div><div class="lbl">Einschalten</div></div>
-      </div>
-      <div class="tv-bar"><span class="led"></span><div class="tv-meta"><b>Studio Hain</b><span>Portfolio</span></div><span class="tv-hint">Klick</span></div>
-    </div>
-    <div class="tv reveal" tabindex="0" role="button" aria-label="Pulse Design einschalten" data-modal="pulse">
-      <div class="tv-screen">
-        <div class="pv d"><h5>We build <b>brands.</b></h5><small>Pulse · Agentur</small></div>
-        <div class="scan"></div><div class="crt"></div>
-        <div class="tv-off"><div class="power">⏻</div><div class="lbl">Einschalten</div></div>
-      </div>
-      <div class="tv-bar"><span class="led"></span><div class="tv-meta"><b>Pulse</b><span>Branding / Web</span></div><span class="tv-hint">Klick</span></div>
-    </div>
   </div>
 </section>
 
@@ -412,174 +378,6 @@
     <a href="mailto:hallo@fh-studio.de?subject=Ich%20will%20eine%20neue%20Website" class="btn btn-primary" data-hov><span>Kostenloses Gespräch sichern →</span></a>
   </div>
 </section>
-
-<!-- AIR HOCKEY GAME -->
-<section id="game" class="wrap reveal">
-  <div class="eyebrow">Kurze Pause?</div>
-  <h2 class="sec-title" data-scramble>Spiel eine Runde Air Hockey.</h2>
-  <p class="sec-sub">Maus bewegen = Schläger steuern. Erster mit 7 Toren gewinnt. (Klar bauen wir auch sowas — Spaß inklusive.)</p>
-  <div class="ah">
-    <div id="outer">
-      <div id="stat-left" class="stat-panel">
-        <div class="stat-name" style="color:#00d4ff">YOU</div>
-        <div class="stat-score" id="score-p" style="color:#00d4ff;text-shadow:0 0 20px #00d4ff">0</div>
-        <div class="stat-divider"></div>
-        <div class="stat-row"><span class="stat-label">STREAK</span><span class="stat-val" id="stat-p-streak">0</span></div>
-        <div class="stat-row"><span class="stat-label">TOP SPEED</span><span class="stat-val" id="stat-p-speed">0</span></div>
-        <div class="stat-row"><span class="stat-label">POWER HITS</span><span class="stat-val" id="stat-p-power">0</span></div>
-        <div class="stat-divider"></div>
-        <div class="stat-footer">FIRST TO 7 WINS</div>
-      </div>
-      <div id="arena">
-        <canvas id="c"></canvas>
-        <div id="mute-btn"></div>
-        <div id="ui"></div>
-        <div id="gameover-screen" class="screen">
-          <div class="go-inner">
-            <div class="go-face" id="go-face">😄</div>
-            <div class="go-who" id="go-who">YOU WIN</div>
-            <div class="go-wins" id="go-wins">GAME · SET · MATCH</div>
-            <div class="go-final" id="go-final">7 – 3</div>
-            <button id="btn-again">PLAY AGAIN</button>
-          </div>
-        </div>
-      </div>
-      <div id="stat-right" class="stat-panel">
-        <div class="stat-name" style="color:#ff2d55">CPU</div>
-        <div class="stat-score" id="score-cpu" style="color:#ff2d55;text-shadow:0 0 20px #ff2d55">0</div>
-        <div class="stat-divider"></div>
-        <div class="stat-row"><span class="stat-label">STREAK</span><span class="stat-val" id="stat-cpu-streak">0</span></div>
-        <div class="stat-row"><span class="stat-label">TOP SPEED</span><span class="stat-val" id="stat-cpu-speed">0</span></div>
-        <div class="stat-row"><span class="stat-label">POWER HITS</span><span class="stat-val" id="stat-cpu-power">0</span></div>
-        <div class="stat-divider"></div>
-        <div class="stat-footer">FIRST TO 7 WINS</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SITE MODAL: Nimbus template -->
-<div class="site-modal" id="siteModal" aria-hidden="true" role="dialog" aria-label="Nimbus Website-Vorlage">
-  <div class="sm-backdrop" data-close></div>
-  <div class="sm-window">
-    <div class="sm-bar">
-      <span class="d"></span><span class="d"></span><span class="d"></span>
-      <span class="sm-url">https://nimbus.app</span>
-      <span class="sm-tag">Vorlage von FH Studio</span>
-      <button class="sm-close" data-close aria-label="Schließen">✕</button>
-    </div>
-    <div class="sm-scroll">
-      <div class="sm-site show" data-site="nimbus"><div class="nb">
-        <nav class="nb-nav">
-          <div class="nb-logo"><span class="dot"></span>Nimbus</div>
-          <div class="nb-links"><span>Produkt</span><span>Features</span><span>Preise</span><span>Docs</span></div>
-          <div class="nb-cta"><span class="nb-btn g">Login</span><span class="nb-btn p">Kostenlos starten</span></div>
-        </nav>
-        <header class="nb-hero">
-          <span class="nb-pill">✦ Neu: KI-Automatisierung</span>
-          <h1>Skaliere <b>schneller.</b><br>Stress weniger.</h1>
-          <p>Die All-in-One-Plattform, die mit deinem Business mitwächst. Automatisiere Workflows, behalte den Überblick, wachse.</p>
-          <div class="row"><span class="nb-btn p">14 Tage gratis testen</span><span class="nb-btn g">▶ Demo ansehen</span></div>
-          <div class="nb-shot">
-            <div class="sbar"><i></i><i></i><i></i></div>
-            <div class="nb-dash">
-              <div class="nb-side"><div class="si act"></div><div class="si"></div><div class="si"></div><div class="si"></div><div class="si"></div></div>
-              <div class="nb-main">
-                <div class="nb-cards3">
-                  <div class="nb-mc"><div class="big">€48.2k</div><div class="lb">Umsatz</div></div>
-                  <div class="nb-mc"><div class="big">1.284</div><div class="lb">Neue Nutzer</div></div>
-                  <div class="nb-mc"><div class="big">+24%</div><div class="lb">Wachstum</div></div>
-                </div>
-                <div class="nb-chart"><i style="height:40%"></i><i style="height:65%"></i><i style="height:50%"></i><i style="height:80%"></i><i style="height:60%"></i><i style="height:95%"></i><i style="height:72%"></i><i style="height:88%"></i></div>
-              </div>
-            </div>
-          </div>
-        </header>
-        <div class="nb-logos"><span>◆ acme</span><span>▲ vertex</span><span>● lumen</span><span>✦ orbit</span><span>■ flux</span></div>
-        <section class="nb-sec">
-          <h2>Alles, was du brauchst.</h2>
-          <p class="sub">Leistungsstarke Tools, die zusammenarbeiten — damit dein Team mehr schafft.</p>
-          <div class="nb-feats">
-            <div class="nb-feat"><div class="ic">⚡</div><h3>Blitzschnell</h3><p>Reaktionszeiten unter 50&nbsp;ms. Deine Nutzer warten nie.</p></div>
-            <div class="nb-feat"><div class="ic">🔒</div><h3>Sicher</h3><p>Ende-zu-Ende verschlüsselt, DSGVO-konform, SOC2.</p></div>
-            <div class="nb-feat"><div class="ic">🤖</div><h3>KI-gestützt</h3><p>Automatisiere wiederkehrende Aufgaben mit smarter KI.</p></div>
-            <div class="nb-feat"><div class="ic">📊</div><h3>Analytics</h3><p>Echtzeit-Dashboards für alle wichtigen Kennzahlen.</p></div>
-            <div class="nb-feat"><div class="ic">🔗</div><h3>Integrationen</h3><p>100+ Apps mit einem Klick verbunden.</p></div>
-            <div class="nb-feat"><div class="ic">🌍</div><h3>Global</h3><p>Server weltweit. Niedrige Latenz, überall.</p></div>
-          </div>
-        </section>
-        <section class="nb-sec">
-          <h2>Faire Preise.</h2>
-          <p class="sub">Starte kostenlos. Upgrade, wenn du wächst.</p>
-          <div class="nb-prices">
-            <div class="nb-price"><div class="pn">Starter</div><div class="pp">€0<small>/Mo</small></div><ul><li>Bis 3 Projekte</li><li>1&nbsp;GB Speicher</li><li>Community-Support</li></ul><span class="nb-btn g" style="display:block">Loslegen</span></div>
-            <div class="nb-price hot"><div class="pn">Pro</div><div class="pp">€29<small>/Mo</small></div><ul><li>Unbegrenzte Projekte</li><li>100&nbsp;GB Speicher</li><li>KI-Automatisierung</li><li>Prioritäts-Support</li></ul><span class="nb-btn p" style="display:block">Pro testen</span></div>
-            <div class="nb-price"><div class="pn">Team</div><div class="pp">€79<small>/Mo</small></div><ul><li>Alles aus Pro</li><li>Team-Rollen</li><li>SSO &amp; Audit-Logs</li><li>Dedizierter Manager</li></ul><span class="nb-btn g" style="display:block">Kontakt</span></div>
-          </div>
-        </section>
-        <div class="nb-cta-band">
-          <h2>Bereit durchzustarten?</h2>
-          <p>Schließe dich 12.000+ Teams an, die schneller wachsen.</p>
-          <span class="nb-btn p">Jetzt kostenlos starten →</span>
-        </div>
-        <footer class="nb-foot"><div class="nb-logo"><span class="dot"></span>Nimbus</div><div>© 2026 Nimbus Inc. · Alle Rechte vorbehalten</div></footer>
-        <div class="nb-credit">🎨 Diese Website-Vorlage wurde von <b>FH Studio</b> gestaltet &amp; entwickelt</div>
-      </div></div>
-
-      <!-- STUDIO HAIN template -->
-      <div class="sm-site" data-site="hain">
-        <div class="hn">
-          <nav class="hn-nav"><div class="hn-logo">STUDIO HAIN</div><div class="hn-links"><span>Work</span><span>Studio</span><span>Journal</span><span>Kontakt</span></div><span class="hn-btn">Projekt anfragen</span></nav>
-          <header class="hn-hero">
-            <div class="hn-eyebrow">Kreativ-Studio · Berlin</div>
-            <h1>WORK<br><span>THAT POPS.</span></h1>
-            <p>Wir gestalten mutige Marken und Portfolios, die im Kopf bleiben.</p>
-          </header>
-          <div class="hn-grid">
-            <div class="hn-tile t1"><span class="cat">Branding</span><b>Aurora Cosmetics</b></div>
-            <div class="hn-tile t2"><span class="cat">Web</span><b>Nomad Travel</b></div>
-            <div class="hn-tile t3"><span class="cat">Editorial</span><b>Flux Magazine</b></div>
-            <div class="hn-tile t4"><span class="cat">Packaging</span><b>Bloom Tea</b></div>
-            <div class="hn-tile t5"><span class="cat">Identity</span><b>Vertex Studio</b></div>
-            <div class="hn-tile t6"><span class="cat">Art Direction</span><b>Neon Nights</b></div>
-          </div>
-          <section class="hn-about">
-            <h2>Marken, die auffallen.</h2>
-            <p>Von der ersten Idee bis zum fertigen Auftritt — Design mit Haltung, Typografie mit Charakter, Farben mit Mut.</p>
-            <div class="hn-stats"><div><b>120+</b><span>Projekte</span></div><div><b>14</b><span>Awards</span></div><div><b>8 J.</b><span>Erfahrung</span></div></div>
-          </section>
-          <div class="hn-cta"><h2>Lass uns was Großes bauen.</h2><span class="hn-btn">Projekt anfragen →</span></div>
-          <footer class="hn-foot"><span>STUDIO HAIN</span><span>© 2026 · Berlin</span></footer>
-          <div class="nb-credit">🎨 Website-Vorlage von <b>FH Studio</b></div>
-        </div>
-      </div>
-
-      <!-- PULSE template -->
-      <div class="sm-site" data-site="pulse">
-        <div class="pl">
-          <nav class="pl-nav"><div class="pl-logo">▲ PULSE</div><div class="pl-links"><span>Cases</span><span>Leistungen</span><span>Team</span><span>Kontakt</span></div><span class="pl-btn">Brief starten</span></nav>
-          <header class="pl-hero">
-            <h1>We build <span>brands.</span></h1>
-            <p>Branding, Web &amp; Motion für mutige Marken. Strategie trifft Ästhetik.</p>
-          </header>
-          <div class="pl-logos"><span>◆ acme</span><span>▲ vertex</span><span>● lumen</span><span>✦ orbit</span><span>■ flux</span></div>
-          <section class="pl-sec">
-            <h2>Was wir tun.</h2>
-            <div class="pl-serv">
-              <div class="pl-card"><span class="no">01</span><b>Branding</b><p>Logo, Identity &amp; Guidelines, die deine Marke unverwechselbar machen.</p></div>
-              <div class="pl-card"><span class="no">02</span><b>Web &amp; Dev</b><p>Schnelle, moderne Websites &amp; Apps — vom Konzept bis zum Launch.</p></div>
-              <div class="pl-card"><span class="no">03</span><b>Motion</b><p>Animationen &amp; Videos, die Aufmerksamkeit erzeugen und bleiben.</p></div>
-            </div>
-          </section>
-          <div class="pl-num"><div><b>+240%</b><span>Mehr Anfragen</span></div><div><b>50+</b><span>Marken gelauncht</span></div><div><b>12</b><span>Design-Awards</span></div></div>
-          <div class="pl-cta"><h2>Bereit für mehr Pulse?</h2><span class="pl-btn">Brief starten →</span></div>
-          <footer class="pl-foot"><span>▲ PULSE</span><span>© 2026 Pulse Agency</span></footer>
-          <div class="nb-credit">🎨 Website-Vorlage von <b>FH Studio</b></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- FOOTER -->
 <footer class="wrap">
