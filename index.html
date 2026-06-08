@@ -2025,20 +2025,21 @@ startGame();
       cam.position.set(0, 0, 4.2);
       const geo = new THREE.IcosahedronGeometry(1.3, 0);
       const mat = new THREE.MeshPhysicalMaterial({
-        color: 0xdfe7f7, metalness: 0.15, roughness: 0.06,
-        clearcoat: 1, clearcoatRoughness: 0.12,
-        iridescence: 1, iridescenceIOR: 1.4, flatShading: true, envMapIntensity: 1.25
+        color: 0xeaf0ff, metalness: 0.0, roughness: 0.12,
+        clearcoat: 1, clearcoatRoughness: 0.18,
+        iridescence: 1, iridescenceIOR: 1.5, sheen: 1, sheenColor: 0x8fd8ff,
+        flatShading: true, envMapIntensity: 0.6
       });
       const crystal = new THREE.Mesh(geo, mat);
       scene.add(crystal);
       // technische Wireframe-Kanten (igloo-Anmutung)
       crystal.add(new THREE.LineSegments(
         new THREE.WireframeGeometry(geo),
-        new THREE.LineBasicMaterial({ color: 0x6b4eff, transparent:true, opacity:0.22 })
+        new THREE.LineBasicMaterial({ color: 0x6b4eff, transparent:true, opacity:0.3 })
       ));
-      scene.add(new THREE.AmbientLight(0xffffff, 0.55));
-      [[0x7c5cff,3,2,3],[0x16e0c7,-3,-1,2],[0xff4d8d,0,3,-2]].forEach(([c,x,y,z])=>{
-        const p = new THREE.PointLight(c, 1.1, 20); p.position.set(x,y,z); scene.add(p);
+      scene.add(new THREE.AmbientLight(0xffffff, 0.28));
+      [[0x7c5cff,3,2,3],[0x16e0c7,-3,-1,2],[0xff4d8d,0,3,-2],[0x2f6bdc,2,-3,1]].forEach(([c,x,y,z])=>{
+        const p = new THREE.DirectionalLight(c, 2.4); p.position.set(x,y,z); scene.add(p);
       });
       let rx=0.2, ry=0, trx=0.2, trY=0, drag=false, lx=0, ly=0;
       canvas.addEventListener('pointerdown', e=>{ drag=true; lx=e.clientX; ly=e.clientY; });
