@@ -47,8 +47,9 @@
   :focus-visible{outline:2px solid var(--c2);outline-offset:3px;border-radius:6px}
   a:focus-visible,.btn:focus-visible,.nav-links a:focus-visible{outline-offset:5px}
 
-  /* canvas – Nightcity im hellen Theme deaktiviert */
-  #stars{display:none}
+  /* Interaktive 3D-Kristallstadt im Hintergrund (WebGL) */
+  #city{position:fixed;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none;opacity:0;transition:opacity 1.4s ease}
+  #city.ready{opacity:1}
   /* eisiger, heller Hintergrund (igloo-Stil) */
   .bg-wrap{position:fixed;inset:0;z-index:-3;overflow:hidden;background:radial-gradient(120% 120% at 50% 0%,#e9ecf3 0%,#cdd2dd 48%,#b3b9c8 100%)}
   .blob{display:none;position:absolute;border-radius:50%;filter:blur(90px);opacity:.2;mix-blend-mode:screen;will-change:transform}
@@ -656,7 +657,7 @@
 </head>
 <body>
 
-<canvas id="stars"></canvas>
+<canvas id="city" aria-hidden="true"></canvas>
 <div class="bg-wrap"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
 <div class="grain"></div>
 <div class="progress" id="bar"></div>
@@ -2059,6 +2060,185 @@ startGame();
       loop();
     }
   } catch(err) { console.warn('3D-Kristall konnte nicht geladen werden:', err); }
+</script>
+
+<!-- Interaktive 3D-Kristallstadt im Hintergrund (Three.js / WebGL) -->
+<script type="module">
+  (async () => {
+    const canvas = document.getElementById('city');
+    if (!canvas) return;
+    try {
+      const THREE = await import('three');
+      const { RoomEnvironment } = await import('three/addons/environments/RoomEnvironment.js');
+      const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha:true, antialias:true, powerPreference:'high-performance' });
+      renderer.setPixelRatio(Math.min(devicePixelRatio||1, 2));
+
+      const scene = new THREE.Scene();
+      const SKY = new THREE.Color(0xd9dde8);
+      scene.fog = new THREE.Fog(SKY, 16, 78);
+
+      const pmrem = new THREE.PMREMGenerator(renderer);
+      scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+      const cam = new THREE.PerspectiveCamera(58, innerWidth/innerHeight, 0.1, 220);
+      const CAM_Y = 6.5, CAM_Z = 11;
+      cam.position.set(0, CAM_Y, CAM_Z);
+
+      // --- prozedurale Fenster-Textur (Emissive) ---
+      const wc = document.createElement('canvas'); wc.width = 96; wc.height = 192;
+      const wx = wc.getContext('2d');
+      wx.fillStyle = '#0c1018'; wx.fillRect(0,0,96,192);
+      for (let y=5; y<192; y+=8) for (let x=5; x<92; x+=9) {
+        const r = Math.random();
+        // dezente, leicht bunte Stockwerks-Beleuchtung
+        const col = r > 0.55
+          ? (r > 0.92 ? '#c9a8ff' : r > 0.86 ? '#9af0e2' : r > 0.80 ? '#ffc4dd' : (r > 0.68 ? '#bfe9ff' : '#eef4ff'))
+          : (r > 0.40 ? '#1b2336' : '#11192a');
+        wx.fillStyle = col;
+        wx.fillRect(x, y, 5, 4);
+      }
+      const winTex = new THREE.CanvasTexture(wc);
+      winTex.wrapS = winTex.wrapT = THREE.RepeatWrapping;
+      winTex.repeat.set(2, 5);
+
+      // --- Turm-Material (mattes Eisglas) ---
+      const towerMat = new THREE.MeshStandardMaterial({
+        color: 0xeef2fb, metalness: 0.25, roughness: 0.42,
+        emissive: 0x2a3a52, emissiveMap: winTex, emissiveIntensity: 0.9,
+        envMapIntensity: 0.8
+      });
+
+      const box = new THREE.BoxGeometry(1, 1, 1);
+      box.translate(0, 0.5, 0); // Basis bei y=0
+
+      const COLS = 11, ROWS = 24, SP = 4.0;
+      const COUNT = COLS * ROWS;
+      const DEPTH = ROWS * SP;
+      const RECYCLE = CAM_Z + 6;            // hinter der Kamera -> nach hinten versetzen
+
+      const towers = new THREE.InstancedMesh(box, towerMat, COUNT);
+      towers.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+
+      // Dach-Antennen (dünne Masten) + Signallichter
+      const poleGeo = new THREE.BoxGeometry(0.16, 1, 0.16); poleGeo.translate(0, 0.5, 0);
+      const poleMat = new THREE.MeshStandardMaterial({ color: 0xaab2c4, metalness: 0.7, roughness: 0.35 });
+      const poles = new THREE.InstancedMesh(poleGeo, poleMat, COUNT);
+      poles.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+
+      const beaconGeo = new THREE.BoxGeometry(0.42, 0.42, 0.42);
+      const beaconMat = new THREE.MeshStandardMaterial({ color: 0xff4d8d, emissive: 0xff4d8d, emissiveIntensity: 2.2 });
+      const beacons = new THREE.InstancedMesh(beaconGeo, beaconMat, COUNT);
+      beacons.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+
+      const data = [];
+      const m = new THREE.Matrix4(), q = new THREE.Quaternion(), pos = new THREE.Vector3(), scl = new THREE.Vector3();
+      const tint = new THREE.Color();
+      function newHeight(){ return 2.5 + Math.pow(Math.random(), 1.7) * 18; }
+      function reroll(d){ d.h = newHeight(); d.sp = d.h > 11 ? (1.4 + Math.random()*3) : 0; }
+      for (let c=0; c<COLS; c++) for (let r=0; r<ROWS; r++) {
+        const gap = SP * 0.55; // freie Mittelachse (Avenue)
+        const x = (c - (COLS-1)/2) * SP + (c < (COLS-1)/2 ? -gap : gap) + (Math.random()-0.5)*0.8;
+        const d = { x, z: -r*SP, w: 1.6+Math.random()*1.4, d: 1.6+Math.random()*1.4, h: 0, sp: 0 };
+        reroll(d); data.push(d);
+      }
+      function write(idx){
+        const t = data[idx];
+        pos.set(t.x, 0, t.z); scl.set(t.w, t.h, t.d);
+        towers.setMatrixAt(idx, m.compose(pos, q, scl));
+        if (t.sp > 0) {
+          pos.set(t.x, t.h, t.z); scl.set(1, t.sp, 1);
+          poles.setMatrixAt(idx, m.compose(pos, q, scl));
+          pos.set(t.x, t.h + t.sp, t.z); scl.set(1, 1, 1);
+          beacons.setMatrixAt(idx, m.compose(pos, q, scl));
+        } else { // Mast/Licht unsichtbar wenn kein Spire
+          pos.set(0, -999, 0); scl.set(0, 0, 0);
+          poles.setMatrixAt(idx, m.compose(pos, q, scl));
+          beacons.setMatrixAt(idx, m.compose(pos, q, scl));
+        }
+      }
+      for (let k=0; k<COUNT; k++) {
+        write(k);
+        const h = 0.56 + Math.random()*0.2; // Blau->Violett Schimmer pro Turm
+        towers.setColorAt(k, tint.setHSL(h, 0.30*Math.random(), 0.92));
+      }
+      towers.instanceMatrix.needsUpdate = true;
+      if (towers.instanceColor) towers.instanceColor.needsUpdate = true;
+      scene.add(towers, poles, beacons);
+
+      // --- Straßen-Ebene mit glühendem Tech-Raster ---
+      const gc = document.createElement('canvas'); gc.width = gc.height = 256;
+      const gg = gc.getContext('2d');
+      gg.fillStyle = '#05070c'; gg.fillRect(0,0,256,256);
+      gg.strokeStyle = '#1c5f59'; gg.lineWidth = 3;
+      for (let i=0; i<=256; i+=32){ gg.beginPath(); gg.moveTo(i,0); gg.lineTo(i,256); gg.stroke(); gg.beginPath(); gg.moveTo(0,i); gg.lineTo(256,i); gg.stroke(); }
+      const gridTex = new THREE.CanvasTexture(gc);
+      gridTex.wrapS = gridTex.wrapT = THREE.RepeatWrapping; gridTex.repeat.set(70, 70);
+      const ground = new THREE.Mesh(
+        new THREE.PlaneGeometry(600, 600),
+        new THREE.MeshStandardMaterial({ color: 0xaeb6c6, metalness: 0.45, roughness: 0.55,
+          emissive: 0x39e0c7, emissiveMap: gridTex, emissiveIntensity: 0.5, envMapIntensity: 0.6 })
+      );
+      ground.rotation.x = -Math.PI/2; ground.position.y = -0.02; scene.add(ground);
+
+      // --- Licht: kühles Grundlicht + Marken-Farbstrahler ---
+      scene.add(new THREE.HemisphereLight(0xeaf1ff, 0x99a4bf, 0.9));
+      const dirs = [
+        [0x7c5cff, 1.0, 0.7, 0.6], [0x16e0c7, -1.0, 0.5, 0.4], [0xff4d8d, 0.2, 0.9, -0.7]
+      ].map(([c,x,y,z]) => { const d = new THREE.DirectionalLight(c, 1.5); d.position.set(x,y,z); scene.add(d); return d; });
+      const pA = new THREE.PointLight(0x7c5cff, 90, 60); pA.position.set(0, 9, 2); scene.add(pA);
+      const pB = new THREE.PointLight(0x16e0c7, 60, 55); pB.position.set(-7, 6, -10); scene.add(pB);
+
+      // --- Interaktion: Maus-Parallaxe ---
+      let tmx = 0, tmy = 0, mx = 0, my = 0;
+      addEventListener('pointermove', e => {
+        tmx = (e.clientX / innerWidth) * 2 - 1;
+        tmy = (e.clientY / innerHeight) * 2 - 1;
+      }, { passive: true });
+
+      function resize(){
+        renderer.setSize(innerWidth, innerHeight, false);
+        cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix();
+      }
+      resize(); addEventListener('resize', resize);
+
+      const SPEED = reduce ? 0.7 : 3.0; // Drift-Geschwindigkeit (Einheiten/Sek)
+      let last = performance.now(), shown = false, t = 0;
+      function loop(now){
+        const dt = Math.min((now - last) / 1000, 0.05); last = now; t += dt;
+
+        // endlose Drift Richtung Kamera + Recycling
+        for (let k=0; k<COUNT; k++) {
+          const d = data[k];
+          d.z += SPEED * dt;
+          if (d.z > RECYCLE) { d.z -= DEPTH; reroll(d); }
+          write(k);
+        }
+        towers.instanceMatrix.needsUpdate = true;
+        poles.instanceMatrix.needsUpdate = true;
+        beacons.instanceMatrix.needsUpdate = true;
+        // langsam pulsierende Signallichter
+        beaconMat.emissiveIntensity = 1.6 + Math.sin(t * 2.2) * 0.9;
+
+        // sanfte Maus-Parallaxe
+        mx += (tmx - mx) * 0.045; my += (tmy - my) * 0.045;
+        cam.position.x = mx * 5.5;
+        cam.position.y = CAM_Y - my * 2.2;
+        cam.lookAt(mx * 3, 4.2, -26);
+
+        // lebendige, kreisende Farbstrahler
+        pA.position.x = Math.sin(t*0.4) * 9;
+        pA.position.z = Math.cos(t*0.4) * 6 - 2;
+        pB.position.x = Math.sin(t*0.33 + 2) * 11;
+
+        renderer.render(scene, cam);
+        if (!shown) { shown = true; canvas.classList.add('ready'); }
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+    } catch (err) { console.warn('Kristallstadt konnte nicht geladen werden:', err); }
+  })();
 </script>
 </body>
 </html>
