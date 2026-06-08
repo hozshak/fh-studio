@@ -2049,7 +2049,7 @@ startGame();
       function resize(){ const s = canvas.clientWidth || 300; renderer.setSize(s, s, false); cam.aspect=1; cam.updateProjectionMatrix(); }
       resize(); addEventListener('resize', resize);
       function loop(){
-        if(!drag && !reduce) trY += 0.004;
+        if(!drag) trY += reduce ? 0.0015 : 0.004;
         rx += (trx-rx)*0.08; ry += (trY-ry)*0.08;
         crystal.rotation.x = rx; crystal.rotation.y = ry;
         if(rotOut){ const deg=((Math.round(ry*57.2958)%360)+360)%360; rotOut.textContent=String(deg).padStart(3,'0')+'°'; }
