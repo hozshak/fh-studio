@@ -20,7 +20,7 @@
   /* Interaktive 3D-Kristallstadt-Insel (Diorama) im Hero – Opacity per JS (Scroll-Fade) */
   #city{position:fixed;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none;opacity:0}
   /* eisiger, heller Hintergrund (igloo-Stil) */
-  .bg-wrap{position:fixed;inset:0;z-index:-3;overflow:hidden;background:radial-gradient(125% 130% at 50% 36%,#1e0a1a 0%,#0f0712 52%,#060309 100%)}
+  .bg-wrap{position:fixed;inset:0;z-index:-3;overflow:hidden;background:radial-gradient(125% 130% at 50% 36%,#1c1f27 0%,#121319 52%,#0a0b0e 100%)}
   .blob{display:none;position:absolute;border-radius:50%;filter:blur(90px);opacity:.2;mix-blend-mode:screen;will-change:transform}
   .b1{width:50vw;height:50vw;background:var(--c1);top:-10%;left:-6%;animation:float1 22s ease-in-out infinite}
   .b2{width:42vw;height:42vw;background:var(--c2);top:16%;right:-10%;animation:float2 26s ease-in-out infinite}
