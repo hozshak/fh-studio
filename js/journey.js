@@ -57,8 +57,12 @@ if (journey) {
   }
 
   function scrollToStation(k){
-    const top = journey.offsetTop + stationStart(k) * (journey.offsetHeight - innerHeight) + 4;
-    scrollTo({ top, behavior: reduce ? 'auto' : 'smooth' });
+    // Auf die TEXT-Seite der Station zielen (Mitte des Text-Beats) -> dort ist der Inhalt sichtbar.
+    const [a, b] = txtRange(k); const center = (a + b) / 2;
+    const top = journey.offsetTop + center * (journey.offsetHeight - innerHeight);
+    scrollTo({ top, behavior: 'instant' });         // SPRINGEN (instant) – 'auto' wuerde das CSS scroll-behavior:smooth erben -> durchscrollen
+    sp = rawP(); render(sp);                        // Text-Beats sofort aufs Ziel snappen (kein Huschen)
+    dispatchEvent(new Event('fh:jump'));            // 3D-Wortwolke (crystal-city) ebenfalls sofort snappen
   }
 
   function interceptLinks(){
