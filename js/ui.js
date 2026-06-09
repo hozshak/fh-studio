@@ -115,7 +115,7 @@
 
   /* NAV + PROGRESS */
   const nav=document.getElementById('nav'),bar=document.getElementById('bar');
-  function onScroll(){const y=scrollY;nav.classList.toggle('scrolled',y>40);const max=document.documentElement.scrollHeight-innerHeight;bar.style.width=(y/max*100)+'%';}
+  function onScroll(){const y=scrollY;if(nav)nav.classList.toggle('scrolled',y>40);if(bar){const max=document.documentElement.scrollHeight-innerHeight;bar.style.width=(y/max*100)+'%';}}
   addEventListener('scroll',onScroll,{passive:true});onScroll();
 
   /* HERO CHAR SPLIT */

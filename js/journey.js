@@ -38,7 +38,7 @@ if (journey) {
     return smooth(Math.min(tin, tout));
   };
 
-  let active = false, dots = null, curLink = null;
+  let active = false, dots = null, curLink = null, sp = 0;   // sp = geglätteter Fortschritt
 
   function buildDots(){
     if (dots) return;
@@ -72,12 +72,14 @@ if (journey) {
     });
   }
 
-  // ---- Kernupdate ----
-  function update(){
-    if (!active) return;
+  // ---- Roh-Fortschritt 0..1 aus der Scroll-Position ----
+  function rawP(){
     const span = journey.offsetHeight - innerHeight;
-    const p = span > 0 ? clamp(-journey.getBoundingClientRect().top / span, 0, 1) : 0;
+    return span > 0 ? clamp(-journey.getBoundingClientRect().top / span, 0, 1) : 0;
+  }
 
+  // ---- Render je Frame (p = geglätteter Fortschritt) ----
+  function render(p){
     for (let k = 0; k < beats.length; k++){
       const [a, b] = txtRange(k), c = (a + b) / 2;
       const op = vis(p, a, b);
@@ -112,7 +114,7 @@ if (journey) {
     active = true;
     document.documentElement.classList.add('journey-on');
     journey.style.setProperty('--journey-h', (TOTAL * 100).toFixed(2) + 'vh');
-    buildDots(); interceptLinks(); update();
+    buildDots(); interceptLinks(); sp = rawP(); render(sp);
   }
 
   function deactivate(){
@@ -127,6 +129,13 @@ if (journey) {
   function evaluate(){ if (capable()){ if (!active) activate(); } else if (active) deactivate(); }
 
   if (capable()) activate(); else deactivate();
-  addEventListener('scroll', update, { passive: true });
-  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { evaluate(); update(); }, 150); });
+
+  // EINE geglättete rAF-Schleife – identische Glättung wie js/crystal-city.js,
+  // damit Text-Fades und 3D-Kamera exakt im Gleichtakt laufen (buttrig statt ruckelig).
+  (function tick(){
+    if (active){ sp += (rawP() - sp) * 0.09; render(sp); }
+    requestAnimationFrame(tick);
+  })();
+
+  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(evaluate, 150); });
 }

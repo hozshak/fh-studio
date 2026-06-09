@@ -1,11 +1,11 @@
   :root{
-    --bg:#c5cad5; --ink:#13161f; --muted:#565d70;
-    --c1:#6b4eff; --c2:#0fae9c; --c3:#ff4d8d; --c4:#2f6bdc; --c5:#ff2e4d;
-    --glass:rgba(255,255,255,.55); --stroke:rgba(20,24,45,.12);
+    --bg:#0a0510; --ink:#f3eef6; --muted:#a99fb3;
+    --c1:#ff2e7a; --c2:#ff3a55; --c3:#ff63cf; --c4:#c026d3; --c5:#ff2e4d;
+    --glass:rgba(255,255,255,.05); --stroke:rgba(255,255,255,.12);
     --radius:22px; --maxw:1180px;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth;color-scheme:light;scrollbar-gutter:stable}
+  html{scroll-behavior:smooth;color-scheme:dark;scrollbar-gutter:stable}
   section[id]{scroll-margin-top:92px}   /* Anker landen unter der fixen Nav, nicht dahinter */
   body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:none}
   h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif;letter-spacing:-.02em;line-height:1.02;text-wrap:balance}
@@ -20,7 +20,7 @@
   /* Interaktive 3D-Kristallstadt-Insel (Diorama) im Hero – Opacity per JS (Scroll-Fade) */
   #city{position:fixed;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none;opacity:0}
   /* eisiger, heller Hintergrund (igloo-Stil) */
-  .bg-wrap{position:fixed;inset:0;z-index:-3;overflow:hidden;background:radial-gradient(120% 120% at 50% 0%,#e9ecf3 0%,#cdd2dd 48%,#b3b9c8 100%)}
+  .bg-wrap{position:fixed;inset:0;z-index:-3;overflow:hidden;background:radial-gradient(125% 130% at 50% 36%,#1e0a1a 0%,#0f0712 52%,#060309 100%)}
   .blob{display:none;position:absolute;border-radius:50%;filter:blur(90px);opacity:.2;mix-blend-mode:screen;will-change:transform}
   .b1{width:50vw;height:50vw;background:var(--c1);top:-10%;left:-6%;animation:float1 22s ease-in-out infinite}
   .b2{width:42vw;height:42vw;background:var(--c2);top:16%;right:-10%;animation:float2 26s ease-in-out infinite}
@@ -28,16 +28,16 @@
   @keyframes float1{50%{transform:translate(8vw,6vh) scale(1.15)}}
   @keyframes float2{50%{transform:translate(-7vw,9vh) scale(1.1)}}
   @keyframes float3{50%{transform:translate(6vw,-8vh) scale(1.2)}}
-  .grain{position:fixed;inset:0;z-index:-1;opacity:.05;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .grain{position:fixed;inset:0;z-index:-1;opacity:.08;pointer-events:none;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
   .progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:200;background:linear-gradient(90deg,var(--c2),var(--c1),var(--c3));box-shadow:0 0 14px var(--c1)}
 
-  .cursor{position:fixed;top:0;left:0;width:7px;height:7px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 2px rgba(255,255,255,.6);z-index:9999;pointer-events:none;transform:translate(-50%,-50%)}
-  .cursor-ring{position:fixed;top:0;left:0;width:30px;height:30px;border:1.5px solid rgba(20,24,45,.4);border-radius:50%;z-index:9998;pointer-events:none;transform:translate(-50%,-50%);transition:width .22s cubic-bezier(.2,.8,.2,1),height .22s cubic-bezier(.2,.8,.2,1),border-color .22s,background .22s}
-  .cursor-ring::before{content:"";position:absolute;inset:-6px;border-radius:50%;border:1.5px dashed rgba(107,78,255,.4);animation:curspin 6s linear infinite}
+  .cursor{position:fixed;top:0;left:0;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 8px var(--c1);z-index:9999;pointer-events:none;transform:translate(-50%,-50%)}
+  .cursor-ring{position:fixed;top:0;left:0;width:30px;height:30px;border:1.5px solid rgba(255,255,255,.45);border-radius:50%;z-index:9998;pointer-events:none;transform:translate(-50%,-50%);transition:width .22s cubic-bezier(.2,.8,.2,1),height .22s cubic-bezier(.2,.8,.2,1),border-color .22s,background .22s}
+  .cursor-ring::before{content:"";position:absolute;inset:-6px;border-radius:50%;border:1.5px dashed rgba(255,46,122,.5);animation:curspin 6s linear infinite}
   @keyframes curspin{to{transform:rotate(360deg)}}
-  .cursor-ring.grow{width:60px;height:60px;border-color:rgba(107,78,255,.7);background:rgba(107,78,255,.10)}
-  .cursor-ring.grow::before{border-color:rgba(22,224,199,.6);animation-duration:3s}
+  .cursor-ring.grow{width:60px;height:60px;border-color:rgba(255,46,122,.8);background:rgba(255,46,122,.12)}
+  .cursor-ring.grow::before{border-color:rgba(255,99,207,.7);animation-duration:3s}
   @media (hover:none){.cursor,.cursor-ring{display:none}body{cursor:auto}}
 
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
@@ -76,11 +76,11 @@
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(22,224,199,.6)}70%{box-shadow:0 0 0 12px rgba(22,224,199,0)}}
   @keyframes pulseRed{0%{box-shadow:0 0 0 0 rgba(255,46,77,.6)}70%{box-shadow:0 0 0 12px rgba(255,46,77,0)}}
   .hero h1{font-size:clamp(48px,8.6vw,112px);font-weight:800;line-height:.94;letter-spacing:-.035em}
-  .hero h1 .grad{background:linear-gradient(120deg,#16e0c7,#2f6bdc 28%,#7c5cff 54%,#ff2e7a 78%,#ff2e4d);-webkit-background-clip:text;background-clip:text;color:transparent;background-size:220% auto;animation:shine 5s linear infinite;filter:drop-shadow(0 10px 30px rgba(255,46,77,.4))}
+  .hero h1 .grad{background:linear-gradient(120deg,#ff7ad6,#ff2e7a 42%,#ff2e4d 100%);-webkit-background-clip:text;background-clip:text;color:transparent;background-size:220% auto;animation:shine 5s linear infinite;filter:drop-shadow(0 10px 30px rgba(255,46,77,.4))}
   /* FIX: Nach dem Zeichen-Split traegt jedes .ch den Text. Verlauf + clip:text muessen daher AUFS .ch (sonst hat .grad keinen eigenen Text mehr -> unsichtbar). --gw/--gx werden per JS gesetzt, damit der Verlauf durchgehend ueber das ganze Wort laeuft. */
   .hero h1 .grad .ch{
     -webkit-background-clip:text;background-clip:text;color:transparent;
-    background-image:linear-gradient(120deg,#16e0c7,#2f6bdc 28%,#7c5cff 54%,#ff2e7a 78%,#ff2e4d);
+    background-image:linear-gradient(120deg,#ff7ad6,#ff2e7a 42%,#ff2e4d 100%);
     background-repeat:no-repeat;
     background-size:var(--gw,100%) 100%;
     background-position:calc(var(--gx,0px) + var(--gshift,0px)) 0;
@@ -183,7 +183,7 @@
   .card::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(130deg,transparent 35%,rgba(22,224,199,.65),transparent 65%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:.35s}
   .card:hover{border-color:rgba(255,46,77,.45);box-shadow:0 34px 70px -34px rgba(255,46,77,.5)}
   .card:hover::before,.card:hover::after{opacity:1}
-  .card .ic{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;font-size:26px;margin-bottom:22px;background:linear-gradient(135deg,rgba(124,92,255,.3),rgba(22,224,199,.18));border:1px solid var(--stroke);transform:translateZ(55px);box-shadow:0 14px 26px -12px rgba(0,0,0,.7)}
+  .card .ic{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;font-size:26px;margin-bottom:22px;background:linear-gradient(135deg,rgba(255,46,122,.32),rgba(255,46,77,.18));border:1px solid var(--stroke);transform:translateZ(55px);box-shadow:0 14px 26px -12px rgba(0,0,0,.7)}
   .card h3{font-size:22px;margin-bottom:12px;transform:translateZ(34px)}
   .card p{color:var(--muted);font-size:15px;line-height:1.6;transform:translateZ(18px)}
   .card .glare{position:absolute;inset:0;border-radius:inherit;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.10) 50%,transparent 60%);opacity:0;transition:opacity .35s;pointer-events:none}
@@ -200,7 +200,7 @@
   @media(max-width:760px){.team{grid-template-columns:1fr}}
   .member{border-radius:var(--radius);background:var(--glass);border:1px solid var(--stroke);overflow:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s}
   .member:hover{border-color:rgba(124,92,255,.5);transform:translateY(-5px)}
-  .dev-scene{position:relative;height:218px;background:radial-gradient(circle at 50% 38%,rgba(124,92,255,.12),transparent 62%),linear-gradient(180deg,#eef1f8,#dde2ee);border-bottom:1px solid var(--stroke);overflow:hidden}
+  .dev-scene{position:relative;height:218px;background:radial-gradient(circle at 50% 38%,rgba(255,46,122,.16),transparent 62%),linear-gradient(180deg,#1a0e1c,#100912);border-bottom:1px solid var(--stroke);overflow:hidden}
   .dev-scene svg{width:100%;height:100%;display:block}
   .scr-glow{transition:opacity .35s}
   .member.active .scr-glow{opacity:1!important}
@@ -211,7 +211,7 @@
   .member small{color:var(--c2);font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
   .member p{color:var(--muted);font-size:14px;margin-top:8px;line-height:1.5}
 
-  .final{text-align:center;padding:110px 24px;border-radius:32px;border:1px solid var(--stroke);background:radial-gradient(circle at 50% 0%,rgba(124,92,255,.25),transparent 60%),var(--glass);overflow:hidden;position:relative}
+  .final{text-align:center;padding:110px 24px;border-radius:32px;border:1px solid var(--stroke);background:radial-gradient(circle at 50% 0%,rgba(255,46,122,.28),transparent 60%),var(--glass);overflow:hidden;position:relative}
   .final h2{font-size:clamp(36px,6vw,68px);font-weight:700}
   .final p{color:var(--muted);margin:22px auto 36px;max-width:520px;font-size:18px}
   .final .grad{background:linear-gradient(120deg,var(--c2),var(--c1),var(--c3));-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200%;animation:shine 6s linear infinite}
