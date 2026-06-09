@@ -223,7 +223,7 @@
     // ---- Loop ----
     let last = performance.now(), t = 0, p = 0, op = 0, sentReady = false;
     function loop(now){
-      const dt = Math.min((now-last)/1000, 0.05); last = now; t += dt;
+      const dt = Math.min((now-last)/1000, 0.05); last = now; t += reduce ? 0 : dt;   // reduced-motion -> Leerlauf-Bewegung einfrieren (Morph bleibt scroll-getrieben)
       p += (progress() - p) * 0.09;
       mx += (tmx-mx)*0.05; my += (tmy-my)*0.05;
 

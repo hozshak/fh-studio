@@ -108,12 +108,17 @@ if (journey) {
   }
 
   // ---- Progressive Enhancement ----
-  function capable(){ return !reduce && matchMedia('(min-width:760px)').matches && innerHeight >= 600; }
+  // Großzügig aktivieren (sonst sehen kleinere/niedrigere Fenster ALLE Beats gestapelt,
+  // d.h. "FH Studio" sofort über der Wolke). reduced-motion -> sauberer Fallback (Wolke aus).
+  const cityEl = document.getElementById('city');
+  function capable(){ return matchMedia('(min-width:760px)').matches && innerHeight >= 480; }   // scroll-getrieben -> auch bei reduced-motion ok (Wolke dämpft Leerlauf)
 
   function activate(){
     active = true;
     document.documentElement.classList.add('journey-on');
     journey.style.setProperty('--journey-h', (TOTAL * 100).toFixed(2) + 'vh');
+    if (cityEl) cityEl.style.display = '';
+    if (hint) hint.style.display = '';
     buildDots(); interceptLinks(); sp = rawP(); render(sp);
   }
 
@@ -123,7 +128,8 @@ if (journey) {
     journey.style.removeProperty('--journey-h');
     beats.forEach(el => { el.style.cssText = ''; const i = el.querySelector('.beat-inner'); i && i.style.removeProperty('--by'); });
     navLinks.forEach(a => a.classList.remove('active')); curLink = null;
-    if (hint) hint.classList.remove('gone');
+    if (hint){ hint.classList.remove('gone'); hint.style.display = 'none'; }   // im Fallback kein Scroll-Hinweis
+    if (cityEl) cityEl.style.display = 'none';                                 // im Fallback Wolke aus -> nie Text über Wolke
   }
 
   function evaluate(){ if (capable()){ if (!active) activate(); } else if (active) deactivate(); }
