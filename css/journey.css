@@ -102,6 +102,21 @@
 }
 @media (max-width:820px){ .journey-dots{ display:none; } }
 
+/* ---- Cleane Studio-HUD über dem Intro (Viewfinder-Ecken + Monospace-Labels) ---- */
+.intro-hud{ position:fixed; inset:0; z-index:88; pointer-events:none; transition:opacity .6s ease; }
+.intro-hud.gone{ opacity:0; }
+.ih-corner{ position:absolute; width:24px; height:24px; border:1.5px solid rgba(255,255,255,.18); }
+.ih-tl{ top:18px; left:18px; border-right:none; border-bottom:none; }
+.ih-tr{ top:18px; right:18px; border-left:none; border-bottom:none; }
+.ih-bl{ bottom:18px; left:18px; border-right:none; border-top:none; }
+.ih-br{ bottom:18px; right:18px; border-left:none; border-top:none; }
+.ih-meta{ position:absolute; font-family:'Orbitron',ui-monospace,monospace; font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
+.ih-tr-label{ top:25px; right:54px; }
+.ih-bl-label{ bottom:25px; left:54px; display:flex; align-items:center; gap:9px; }
+.ih-br-label{ bottom:25px; right:54px; }
+.ih-live{ width:7px; height:7px; border-radius:50%; background:var(--c5); box-shadow:0 0 0 0 var(--c5); animation:pulseRed 2.2s infinite; }
+@media (max-width:760px){ .ih-tr-label, .ih-br-label{ display:none; } }
+
 /* ---- schwebende Wortmarke statt Nav-Leiste (igloo-Stil) ---- */
 .brand{
   position:fixed; top:22px; left:24px; z-index:95;

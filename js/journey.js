@@ -15,6 +15,7 @@ if (journey) {
   const stage    = journey.querySelector('.journey-stage');
   const beats    = [...journey.querySelectorAll('.beat')];   // 5 TEXT-Beats (DOM)
   const hint     = document.getElementById('scrollHint');
+  const hud      = document.getElementById('introHud');
   const navLinks = [...document.querySelectorAll('.nav-links a')];
   const reduce   = matchMedia('(prefers-reduced-motion:reduce)').matches;
 
@@ -104,7 +105,9 @@ if (journey) {
       curLink = link;
     }
     if (dots) [...dots.children].forEach((d, i) => d.classList.toggle('on', i === st));
-    if (hint) hint.classList.toggle('gone', p > B[1] * 0.7);    // Hinweis nur im ersten Objekt-Moment
+    const introGone = p > B[1] * 0.7;                            // Hinweis + HUD nur im ersten Objekt-Moment
+    if (hint) hint.classList.toggle('gone', introGone);
+    if (hud) hud.classList.toggle('gone', introGone);
   }
 
   // ---- Progressive Enhancement ----
@@ -119,6 +122,7 @@ if (journey) {
     journey.style.setProperty('--journey-h', (TOTAL * 100).toFixed(2) + 'vh');
     if (cityEl) cityEl.style.display = '';
     if (hint) hint.style.display = '';
+    if (hud) hud.style.display = '';
     buildDots(); interceptLinks(); sp = rawP(); render(sp);
   }
 
@@ -129,6 +133,7 @@ if (journey) {
     beats.forEach(el => { el.style.cssText = ''; const i = el.querySelector('.beat-inner'); i && i.style.removeProperty('--by'); });
     navLinks.forEach(a => a.classList.remove('active')); curLink = null;
     if (hint){ hint.classList.remove('gone'); hint.style.display = 'none'; }   // im Fallback kein Scroll-Hinweis
+    if (hud) hud.style.display = 'none';                                       // im Fallback keine HUD
     if (cityEl) cityEl.style.display = 'none';                                 // im Fallback Wolke aus -> nie Text über Wolke
   }
 
