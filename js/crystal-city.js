@@ -75,32 +75,35 @@
     const bgField = new THREE.Points(bgGeo, new THREE.PointsMaterial({ size:small?0.5:0.62, map:glint(), transparent:true, opacity:0.6, depthWrite:false, vertexColors:true, sizeAttenuation:true }));
     scene.add(bgField);
 
-    // ---- Wort-/Form-Targets: Text per Canvas in Punkte gesampelt ----
-    function sampleText(lines){
+    // ---- Wort-Targets: Text per Canvas in Punkte gesampelt (Füllung ODER Kontur/Stroke) ----
+    const N_OUT = small ? 1600 : 3000;                 // Kontur-Punkte (feiner als die Füllung)
+    let _xf;                                            // letzte Transform (Füllung) -> Kontur nutzt sie -> sitzt AUSSEN herum
+    function sampleText(lines, stroke, count, xform){
+      count = count || N;
       const W=1100,H=560,c=document.createElement('canvas'); c.width=W; c.height=H; const g=c.getContext('2d');
-      g.fillStyle='#fff'; g.textAlign='center'; g.textBaseline='middle';
+      g.textAlign='center'; g.textBaseline='middle';
       let fs=lines.length>1?210:300; const fam="'Space Grotesk','Arial Black',system-ui,sans-serif"; g.font=`800 ${fs}px ${fam}`;
       let widest=0; lines.forEach(l=>widest=Math.max(widest,g.measureText(l).width)); const maxW=W*0.92;
       if(widest>maxW){ fs*=maxW/widest; g.font=`800 ${fs}px ${fam}`; }
-      const lh=fs*1.04, total=lh*lines.length; lines.forEach((l,i)=>g.fillText(l,W/2,H/2-total/2+lh*(i+0.5)));
-      const data=g.getImageData(0,0,W,H).data, pts=[], step=small?4:3;
-      for(let y=0;y<H;y+=step) for(let x=0;x<W;x+=step) if(data[(y*W+x)*4+3]>128) pts.push([x,y]);
+      const lh=fs*1.04, total=lh*lines.length, yOf=i=>H/2-total/2+lh*(i+0.5);
+      if(stroke){ g.lineWidth=Math.max(3,fs*0.02); g.lineJoin='round'; g.strokeStyle='#fff'; lines.forEach((l,i)=>g.strokeText(l,W/2,yOf(i))); }
+      else { g.fillStyle='#fff'; lines.forEach((l,i)=>g.fillText(l,W/2,yOf(i))); }
+      const data=g.getImageData(0,0,W,H).data, pts=[], step=stroke?(small?3:2):(small?4:3);
+      for(let y=0;y<H;y+=step) for(let x=0;x<W;x+=step) if(data[(y*W+x)*4+3]>110) pts.push([x,y]);
       let minX=1e9,maxX=-1e9,minY=1e9,maxY=-1e9; for(const[x,y]of pts){ if(x<minX)minX=x; if(x>maxX)maxX=x; if(y<minY)minY=y; if(y>maxY)maxY=y; }
-      const bw=maxX-minX||1, bh=maxY-minY||1, cx=(minX+maxX)/2, cy=(minY+maxY)/2;
-      let scale=18/bh; if(bw*scale>46) scale=46/bw;
+      const bw=maxX-minX||1, bh=maxY-minY||1; let cx=(minX+maxX)/2, cy=(minY+maxY)/2, scale;
+      if(xform){ scale=xform.scale; cx=xform.cx; cy=xform.cy; }   // Kontur: gleiche Skalierung wie Füllung
+      else { scale=18/bh; if(bw*scale>46) scale=46/bw; }
+      _xf={scale,cx,cy};
       for(let i=pts.length-1;i>0;i--){ const j=(Math.random()*(i+1))|0; const t=pts[i]; pts[i]=pts[j]; pts[j]=t; }
-      const out=new Float32Array(N*3);
-      for(let i=0;i<N;i++){ const s=pts[i%pts.length];
-        out[i*3]=(s[0]-cx)*scale+(Math.random()-0.5)*0.3; out[i*3+1]=-(s[1]-cy)*scale+(Math.random()-0.5)*0.3; out[i*3+2]=(Math.random()-0.5)*5; }
+      const out=new Float32Array(count*3), zJ=stroke?2.2:5;
+      for(let i=0;i<count;i++){ const s=pts.length?pts[i%pts.length]:[W/2,H/2];
+        out[i*3]=(s[0]-cx)*scale+(Math.random()-0.5)*0.3; out[i*3+1]=-(s[1]-cy)*scale+(Math.random()-0.5)*0.3; out[i*3+2]=(Math.random()-0.5)*zJ; }
       return out;
     }
-    const targets = [
-      sampleText(['FH','STUDIO']),   // Intro
-      sampleText(['DESIGN']),        // Leistungen
-      sampleText(['BUILD']),         // Prozess
-      sampleText(['FYNN','HOZAN']),  // Team
-      sampleText(["LET'S","TALK"]),  // Kontakt
-    ];
+    const WORDS = [['FH','STUDIO'], ['DESIGN'], ['BUILD'], ['FYNN','HOZAN'], ["LET'S","TALK"]];
+    const targets=[], outlineTargets=[];
+    for(const w of WORDS){ targets.push(sampleText(w)); outlineTargets.push(sampleText(w, true, N_OUT, _xf)); }  // Kontur nutzt Füllungs-Transform
 
     // ---- Geometrie: helle BLAUE Partikel (Hellblau -> Weiß-Blau -> kräftiges Blau) + Twinkle ----
     const geo=new THREE.BufferGeometry();
@@ -121,6 +124,17 @@
         void main(){ float a=texture2D(uTex,gl_PointCoord).a; if(a<0.02) discard; gl_FragColor=vec4(vColor*(0.75+0.55*vTw), a*uOpacity*(0.6+0.4*vTw)); }`
     });
     const points=new THREE.Points(geo,mat); scene.add(points);
+
+    // ---- KONTUR: feine Partikel-Linie entlang der Buchstaben-Ränder (morpht synchron mit) ----
+    const oGeo=new THREE.BufferGeometry();
+    const oPos=new Float32Array(outlineTargets[0]), oCol=new Float32Array(N_OUT*3), oSeed=new Float32Array(N_OUT);
+    const oColor=new THREE.Color(0xff4156);            // Kontur-Farbe (Rot-Koralle) – HIER umstellbar (z.B. 0x9fd8ff für Eisblau)
+    for(let i=0;i<N_OUT;i++){ oCol[i*3]=oColor.r; oCol[i*3+1]=oColor.g; oCol[i*3+2]=oColor.b; oSeed[i]=Math.random(); }
+    oGeo.setAttribute('position', new THREE.BufferAttribute(oPos,3));
+    oGeo.setAttribute('aColor',   new THREE.BufferAttribute(oCol,3));
+    oGeo.setAttribute('aSeed',    new THREE.BufferAttribute(oSeed,1));
+    const omat=mat.clone(); omat.uniforms.uSize.value=small?3.1:4.3;   // feiner als die Füllung
+    const outline=new THREE.Points(oGeo,omat); scene.add(outline);
 
     // dunkler Scrim hinter dem Wort -> Foto dahinter abdunkeln, Schrift hebt sich ab
     function radialDark(){ const c=document.createElement('canvas'); c.width=c.height=256; const g=c.getContext('2d');
@@ -144,33 +158,35 @@
         '  float vig=smoothstep(0.95,0.22,rad*2.2); gl_FragColor=vec4(vec3(r,g,b)*mix(0.62,1.0,vig),1.0); }'].join('\n')
     }));
 
-    // ---- Morph: Aufbau aus Kugel + Wort-Morph + Cursor-Abstoßung + Flow ----
-    const arr=geo.attributes.position.array;
-    const scatter=new Float32Array(N*3);
-    for(let i=0;i<N;i++){ const th=Math.random()*6.2831, ph=Math.acos(2*Math.random()-1), r=18+Math.random()*28;
-      scatter[i*3]=r*Math.sin(ph)*Math.cos(th); scatter[i*3+1]=r*Math.sin(ph)*Math.sin(th); scatter[i*3+2]=r*Math.cos(ph)*0.5-6; }
+    // ---- Morph: Aufbau aus Kugel + Wort-Morph + Cursor-Abstoßung + Flow (Füllung UND Kontur) ----
+    const arr=geo.attributes.position.array, oArr=oGeo.attributes.position.array;
+    function makeScatter(cnt){ const s=new Float32Array(cnt*3);
+      for(let i=0;i<cnt;i++){ const th=Math.random()*6.2831, ph=Math.acos(2*Math.random()-1), r=18+Math.random()*28;
+        s[i*3]=r*Math.sin(ph)*Math.cos(th); s[i*3+1]=r*Math.sin(ph)*Math.sin(th); s[i*3+2]=r*Math.cos(ph)*0.5-6; } return s; }
+    const scatter=makeScatter(N), oScatter=makeScatter(N_OUT);
     let tmx=0,tmy=0,mx=0,my=0,cursorActive=false,clx=0,cly=0;
     addEventListener('pointermove', e=>{ tmx=(e.clientX/innerWidth)*2-1; tmy=(e.clientY/innerHeight)*2-1; cursorActive=true; }, {passive:true});
     addEventListener('pointerleave', ()=>{ cursorActive=false; }, {passive:true});
-    function updatePoints(p, eI, curX, curY, tt){
-      let a=0,b=0,t=0;
+    function frameAB(p){ let a=0,b=0,fb=0;
       if(p<=objC[0]){ a=b=0; } else if(p>=objC[objC.length-1]){ a=b=objC.length-1; }
-      else { for(let k=0;k<objC.length-1;k++){ if(p>=objC[k]&&p<=objC[k+1]){ a=k;b=k+1; t=smooth((p-objC[k])/(objC[k+1]-objC[k])); break; } } }
-      const A=targets[a],B=targets[b], R2=14, rep=(reduce||!cursorActive)?0:4.2, flow=reduce?0:1;
-      for(let i=0;i<N;i++){ const i3=i*3, ph=i*0.37;
-        let x=A[i3]+(B[i3]-A[i3])*t, y=A[i3+1]+(B[i3+1]-A[i3+1])*t, z=A[i3+2]+(B[i3+2]-A[i3+2])*t;
-        if(eI<1){ const s=1-eI; x=scatter[i3]*s+x*eI; y=scatter[i3+1]*s+y*eI; z=scatter[i3+2]*s+z*eI; }
+      else { for(let k=0;k<objC.length-1;k++){ if(p>=objC[k]&&p<=objC[k+1]){ a=k;b=k+1; fb=smooth((p-objC[k])/(objC[k+1]-objC[k])); break; } } }
+      return [a,b,fb]; }
+    function morph(TG, dst, attr, scat, cnt, eI, curX, curY, tt, a, b, fb){
+      const A=TG[a],B=TG[b], R2=14, rep=(reduce||!cursorActive)?0:4.2, flow=reduce?0:1;
+      for(let i=0;i<cnt;i++){ const i3=i*3, ph=i*0.37;
+        let x=A[i3]+(B[i3]-A[i3])*fb, y=A[i3+1]+(B[i3+1]-A[i3+1])*fb, z=A[i3+2]+(B[i3+2]-A[i3+2])*fb;
+        if(eI<1){ const s=1-eI; x=scat[i3]*s+x*eI; y=scat[i3+1]*s+y*eI; z=scat[i3+2]*s+z*eI; }
         if(flow){ x+=Math.sin(tt*0.8+ph)*0.18; y+=Math.cos(tt*0.7+ph*1.3)*0.18; z+=Math.sin(tt*0.95+ph*0.7)*0.55; }
         if(rep){ const dx=x-curX,dy=y-curY,d2=dx*dx+dy*dy; if(d2<R2&&d2>0.04){ const f=1-d2/R2,kk=rep*f*f/Math.sqrt(d2); x+=dx*kk; y+=dy*kk; } }
-        arr[i3]=x; arr[i3+1]=y; arr[i3+2]=z; }
-      geo.attributes.position.needsUpdate=true;
+        dst[i3]=x; dst[i3+1]=y; dst[i3+2]=z; }
+      attr.needsUpdate=true;
     }
     const TW=0.03;
     function objVis(p){ let m=0; for(let k=0;k<5;k++){ const aa=BD[2*k],bb=BD[2*k+1];
       const tin=aa<=0?1:clamp((p-aa)/TW,0,1), tout=bb>=1?1:clamp((bb-p)/TW,0,1); m=Math.max(m,smooth(Math.min(tin,tout))); } return m; }
 
     function resize(){ renderer.setSize(innerWidth,innerHeight,false); composer.setSize(innerWidth,innerHeight); bloom.setSize(innerWidth,innerHeight);
-      mat.uniforms.uPR.value=renderer.getPixelRatio(); cam.aspect=innerWidth/innerHeight; cam.updateProjectionMatrix(); }
+      mat.uniforms.uPR.value=omat.uniforms.uPR.value=renderer.getPixelRatio(); cam.aspect=innerWidth/innerHeight; cam.updateProjectionMatrix(); }
     resize(); addEventListener('resize', resize);
 
     // ---- Loop ----
@@ -180,10 +196,13 @@
       p += (progress() - p)*0.09; mx+=(tmx-mx)*0.05; my+=(tmy-my)*0.05;
 
       const introF=reduce?1:smooth(clamp(t/1.7,0,1));
-      const tanH=Math.tan(48*Math.PI/360)*34, halfW=tanH*(innerWidth/innerHeight);
-      updatePoints(p, introF, tmx*halfW, -tmy*tanH, t);
-      mat.uniforms.uTime.value=t;
-      points.rotation.y=Math.sin(t*0.18)*0.10+mx*0.22; points.rotation.x=Math.cos(t*0.15)*0.05-my*0.10;
+      const tanH=Math.tan(48*Math.PI/360)*34, halfW=tanH*(innerWidth/innerHeight), cwx=tmx*halfW, cwy=-tmy*tanH;
+      const ab=frameAB(p);
+      morph(targets,        arr,  geo.attributes.position,  scatter,  N,     introF, cwx, cwy, t, ab[0], ab[1], ab[2]);
+      morph(outlineTargets, oArr, oGeo.attributes.position, oScatter, N_OUT, introF, cwx, cwy, t, ab[0], ab[1], ab[2]);
+      mat.uniforms.uTime.value=t; omat.uniforms.uTime.value=t;
+      const ry=Math.sin(t*0.18)*0.10+mx*0.22, rx=Math.cos(t*0.15)*0.05-my*0.10;
+      points.rotation.set(rx,ry,0); outline.rotation.set(rx,ry,0);
 
       // interaktiver Grau-Hintergrund: schwebendes Punktfeld + Parallaxe + driftende Blobs + Cursor-Licht
       { const ba=bgGeo.attributes.position.array;
@@ -198,7 +217,7 @@
       cursorLight.material.opacity += ((cursorActive?0.34:0.16) - cursorLight.material.opacity)*0.05;
 
       op += (objVis(p) - op)*0.12;
-      mat.uniforms.uOpacity.value = op;                // nur das WORT fadet bei Text-Momenten; Grau-BG bleibt sichtbar
+      mat.uniforms.uOpacity.value = op; omat.uniforms.uOpacity.value = op;   // Wort + Kontur faden zusammen
       wordScrim.material.opacity = 0.5*op;
       cam.position.x = mx*1.6; cam.position.y = -my*1.0; cam.lookAt(0,0,0);
 
