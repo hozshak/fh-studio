@@ -40,6 +40,7 @@ if (journey) {
   };
 
   let active = false, dots = null, curLink = null, sp = 0;   // sp = geglätteter Fortschritt
+  const stepEls = [...journey.querySelectorAll('.steps .step')];
 
   function buildDots(){
     if (dots) return;
@@ -97,6 +98,14 @@ if (journey) {
       el.style.pointerEvents = op > 0.55 ? 'auto' : 'none';
       el.style.zIndex = op > 0.5 ? 3 : 1;
       el.classList.toggle('is-active', op > 0.5);
+    }
+
+    // Prozess (Beat 2): lokaler Fortschritt -> Linie fuellt sich GESCRUBBT mit dem Scroll,
+    // die Schritte zuenden nacheinander, sobald die Linie sie erreicht.
+    if (beats[2]){
+      const [pa, pb] = txtRange(2), bp = clamp((p - pa) / (pb - pa), 0, 1);
+      beats[2].style.setProperty('--bp', bp.toFixed(3));
+      stepEls.forEach((s, i) => s.classList.toggle('on', bp > 0.12 + i * 0.2));
     }
 
     // aktive Station = die, deren Bereich [Objekt..Text] p enthält

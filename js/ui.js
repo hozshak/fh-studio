@@ -220,6 +220,14 @@
     c.addEventListener('mouseleave',()=>{c.style.transform='';});
   });
 
+  /* LIVE-MIKRO-DEMO — SEO-Gauge laedt bei jedem Hover live von 0 auf 100 */
+  document.querySelectorAll('.card').forEach(c=>{
+    const num=c.querySelector('.g-num');
+    if(num){let raf=null;
+      c.addEventListener('mouseenter',()=>{if(reduce)return;cancelAnimationFrame(raf);let v=0;
+        (function tick(){v+=3;if(v>=100){num.textContent='100';raf=null;return;}num.textContent=v;raf=requestAnimationFrame(tick);})();});}
+  });
+
   /* DEVELOPERS — typing on hover */
   function setupDev(card){
     const hands=card.querySelectorAll('.hand');

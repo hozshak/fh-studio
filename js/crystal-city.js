@@ -62,6 +62,20 @@
     // weiches Licht, das dem Cursor folgt -> klar interaktiv
     const cursorLight = new THREE.Sprite(new THREE.SpriteMaterial({ map:glint(), color:0x7390cc, transparent:true, opacity:0.34, blending:THREE.AdditiveBlending, depthWrite:false }));
     cursorLight.scale.set(78,78,1); cursorLight.position.set(0,0,-26); scene.add(cursorLight);
+    // Aurora-Band: langsam wandernde Blau/Teal-Lichtwellen hinter dem Wort (rein analytisch -> butterweich, kann nicht flackern)
+    const aurora = new THREE.Mesh(new THREE.PlaneGeometry(340,190), new THREE.ShaderMaterial({
+      transparent:true, depthWrite:false, uniforms:{ uT:{value:0} },
+      vertexShader:'varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }',
+      fragmentShader:`varying vec2 vUv; uniform float uT;
+        void main(){
+          float yC=0.56 + 0.10*sin(vUv.x*2.3+uT*0.10) + 0.05*sin(vUv.x*5.1-uT*0.07);
+          float band=smoothstep(0.34,0.0,abs(vUv.y-yC));
+          float w=0.5+0.5*sin(vUv.x*3.7+uT*0.13);
+          vec3 c=mix(vec3(0.07,0.16,0.30), vec3(0.16,0.42,0.75), w);
+          c=mix(c, vec3(0.10,0.50,0.58), 0.5+0.5*sin(vUv.x*1.7-uT*0.06));
+          gl_FragColor=vec4(c, band*0.30);
+        }`}));
+    aurora.position.set(0,6,-70); scene.add(aurora);
     // feines, schwebendes Punktfeld (Grau -> Blaugrau), Tiefe via sizeAttenuation
     const BG_N = small?1100:2300;
     const bgGeo = new THREE.BufferGeometry();
@@ -75,19 +89,10 @@
     const bgField = new THREE.Points(bgGeo, new THREE.PointsMaterial({ size:small?1.6:2.0, map:glint(), transparent:true, opacity:0.5, depthWrite:false, vertexColors:true, sizeAttenuation:false }));
     scene.add(bgField);
 
-    // ---- Wort-Targets: Text per Canvas in Punkte gesampelt (Füllung ODER Kontur/Stroke) ----
+    // ---- Targets: Canvas-Pixel -> Punktwolke (Text ODER Form, Füllung ODER Kontur/Stroke) ----
     const N_OUT = small ? 1600 : 3000;                 // Kontur-Punkte (feiner als die Füllung)
     let _xf;                                            // letzte Transform (Füllung) -> Kontur nutzt sie -> sitzt AUSSEN herum
-    function sampleText(lines, stroke, count, xform){
-      count = count || N;
-      const W=1100,H=560,c=document.createElement('canvas'); c.width=W; c.height=H; const g=c.getContext('2d');
-      g.textAlign='center'; g.textBaseline='middle';
-      let fs=lines.length>1?210:300; const fam="'Space Grotesk','Arial Black',system-ui,sans-serif"; g.font=`800 ${fs}px ${fam}`;
-      let widest=0; lines.forEach(l=>widest=Math.max(widest,g.measureText(l).width)); const maxW=W*0.92;
-      if(widest>maxW){ fs*=maxW/widest; g.font=`800 ${fs}px ${fam}`; }
-      const lh=fs*1.04, total=lh*lines.length, yOf=i=>H/2-total/2+lh*(i+0.5);
-      if(stroke){ g.lineWidth=Math.max(3,fs*0.02); g.lineJoin='round'; g.strokeStyle='#fff'; lines.forEach((l,i)=>g.strokeText(l,W/2,yOf(i))); }
-      else { g.fillStyle='#fff'; lines.forEach((l,i)=>g.fillText(l,W/2,yOf(i))); }
+    function packFrom(g, W, H, stroke, count, xform){
       const data=g.getImageData(0,0,W,H).data, pts=[], step=stroke?(small?3:2):(small?4:3);
       for(let y=0;y<H;y+=step) for(let x=0;x<W;x+=step) if(data[(y*W+x)*4+3]>110) pts.push([x,y]);
       let minX=1e9,maxX=-1e9,minY=1e9,maxY=-1e9; for(const[x,y]of pts){ if(x<minX)minX=x; if(x>maxX)maxX=x; if(y<minY)minY=y; if(y>maxY)maxY=y; }
@@ -101,9 +106,55 @@
         out[i*3]=(s[0]-cx)*scale+(Math.random()-0.5)*0.3; out[i*3+1]=-(s[1]-cy)*scale+(Math.random()-0.5)*0.3; out[i*3+2]=(Math.random()-0.5)*zJ; }
       return out;
     }
-    const WORDS = [['FH','STUDIO'], ['DESIGN'], ['BUILD'], ['FYNN','HOZAN'], ["LET'S","TALK"]];
+    function sampleText(lines, stroke, count, xform){
+      const W=1100,H=560,c=document.createElement('canvas'); c.width=W; c.height=H; const g=c.getContext('2d');
+      g.textAlign='center'; g.textBaseline='middle';
+      let fs=lines.length>1?210:300; const fam="'Space Grotesk','Arial Black',system-ui,sans-serif"; g.font=`800 ${fs}px ${fam}`;
+      let widest=0; lines.forEach(l=>widest=Math.max(widest,g.measureText(l).width)); const maxW=W*0.92;
+      if(widest>maxW){ fs*=maxW/widest; g.font=`800 ${fs}px ${fam}`; }
+      const lh=fs*1.04, total=lh*lines.length, yOf=i=>H/2-total/2+lh*(i+0.5);
+      if(stroke){ g.lineWidth=Math.max(3,fs*0.02); g.lineJoin='round'; g.strokeStyle='#fff'; lines.forEach((l,i)=>g.strokeText(l,W/2,yOf(i))); }
+      else { g.fillStyle='#fff'; lines.forEach((l,i)=>g.fillText(l,W/2,yOf(i))); }
+      return packFrom(g, W, H, stroke, count||N, xform);
+    }
+    // Supercar-Silhouette (eigene Zeichnung, kein Modell): flacher Keil, Kabine, Spoiler, Räder
+    function sampleCar(stroke, count, xform){
+      const W=1100,H=560,c=document.createElement('canvas'); c.width=W; c.height=H; const g=c.getContext('2d');
+      const P=new Path2D();
+      P.moveTo(75,360); P.lineTo(75,332);
+      P.quadraticCurveTo(82,300,170,288);            // Heck / Motordeck
+      P.quadraticCurveTo(285,232,420,226);           // Dachlinie
+      P.quadraticCurveTo(540,224,620,252);           // Windschutzscheibe
+      P.quadraticCurveTo(780,272,960,292);           // lange flache Nase
+      P.quadraticCurveTo(1030,300,1038,332);
+      P.lineTo(1038,360); P.closePath();
+      const S=new Path2D(); S.moveTo(80,272); S.lineTo(195,258); S.lineTo(195,268); S.lineTo(80,282); S.closePath();   // Heckspoiler
+      g.lineJoin='round';
+      if(stroke){
+        g.lineWidth=7; g.strokeStyle='#fff'; g.stroke(P); g.stroke(S);
+        g.beginPath(); g.arc(285,362,50,0,7); g.stroke();
+        g.beginPath(); g.arc(845,362,50,0,7); g.stroke();
+      } else {
+        g.fillStyle='#fff'; g.fill(P); g.fill(S);
+        g.globalCompositeOperation='destination-out';                       // Radkästen + Fenster ausstanzen
+        g.beginPath(); g.arc(285,362,58,0,7); g.fill();
+        g.beginPath(); g.arc(845,362,58,0,7); g.fill();
+        const Wd=new Path2D(); Wd.moveTo(330,252); Wd.lineTo(560,246); Wd.lineTo(612,262); Wd.lineTo(330,267); Wd.closePath(); g.fill(Wd);
+        g.globalCompositeOperation='source-over';
+        for(const wx of [285,845]){                                          // Räder: Felgenring + Nabe
+          g.beginPath(); g.arc(wx,362,44,0,7); g.lineWidth=15; g.strokeStyle='#fff'; g.stroke();
+          g.beginPath(); g.arc(wx,362,9,0,7); g.fillStyle='#fff'; g.fill();
+        }
+      }
+      return packFrom(g, W, H, stroke, count||N, xform);
+    }
+    // Stationen: FH STUDIO -> SUPERCAR (statt "DESIGN") -> BUILD -> Namen -> CTA
+    const STATIONS = [ ['FH','STUDIO'], 'CAR', ['BUILD'], ['FYNN','HOZAN'], ["LET'S","TALK"] ];
     const targets=[], outlineTargets=[];
-    for(const w of WORDS){ targets.push(sampleText(w)); outlineTargets.push(sampleText(w, true, N_OUT, _xf)); }  // Kontur nutzt Füllungs-Transform
+    for(const s of STATIONS){
+      if (s==='CAR'){ targets.push(sampleCar(false));   outlineTargets.push(sampleCar(true,  N_OUT, _xf)); }
+      else          { targets.push(sampleText(s));      outlineTargets.push(sampleText(s, true, N_OUT, _xf)); }
+    }
 
     // ---- Geometrie: helle BLAUE Partikel (Hellblau -> Weiß-Blau -> kräftiges Blau) + Twinkle ----
     const geo=new THREE.BufferGeometry();
@@ -116,12 +167,17 @@
     geo.setAttribute('aSeed', new THREE.BufferAttribute(seed,1));
     const mat=new THREE.ShaderMaterial({
       transparent:true, depthWrite:false, blending:THREE.AdditiveBlending,
-      uniforms:{ uTime:{value:0}, uSize:{value:small?5.5:7.6}, uOpacity:{value:1}, uPR:{value:renderer.getPixelRatio()}, uTex:{value:glint()} },
-      vertexShader:`attribute vec3 aColor; uniform float uSize,uPR; varying vec3 vColor;
-        void main(){ vColor=aColor; vec4 mv=modelViewMatrix*vec4(position,1.0);
-          gl_PointSize=uSize*uPR*(38.0/max(-mv.z,1.0)); gl_Position=projectionMatrix*mv; }`,
-      fragmentShader:`uniform sampler2D uTex; uniform float uOpacity; varying vec3 vColor;
-        void main(){ float a=texture2D(uTex,gl_PointCoord).a; if(a<0.02) discard; gl_FragColor=vec4(vColor, a*uOpacity); }`
+      uniforms:{ uTime:{value:0}, uSize:{value:small?5.5:7.6}, uOpacity:{value:1}, uPR:{value:renderer.getPixelRatio()}, uTex:{value:glint()},
+                 uCur:{value:new THREE.Vector3(1e9,1e9,0)}, uCurAmp:{value:0}, uTint:{value:new THREE.Color(1,1,1)} },
+      vertexShader:`attribute vec3 aColor; uniform float uSize,uPR,uCurAmp; uniform vec3 uCur; varying vec3 vColor; varying float vB;
+        void main(){ vColor=aColor;
+          vB=uCurAmp*smoothstep(9.0,0.0,distance(position.xy,uCur.xy));   // Cursor-Naehe -> DEZENTES Aufgluehen
+          vec4 mv=modelViewMatrix*vec4(position,1.0);
+          gl_PointSize=uSize*(1.0+0.1*vB)*uPR*(38.0/max(-mv.z,1.0)); gl_Position=projectionMatrix*mv; }`,
+      fragmentShader:`uniform sampler2D uTex; uniform float uOpacity; uniform vec3 uTint; varying vec3 vColor; varying float vB;
+        void main(){ float a=texture2D(uTex,gl_PointCoord).a; if(a<0.02) discard;
+          vec3 c=vColor*mix(vec3(1.0),uTint,0.45)*(1.0+0.22*vB);
+          gl_FragColor=vec4(c, a*uOpacity*0.62*(1.0+0.08*vB)); }`   // 0.62: Summen ueberlappender Punkte clippen nie zu grellem Weiss (kein Aufblitzen)
     });
     const points=new THREE.Points(geo,mat); scene.add(points);
 
@@ -135,6 +191,12 @@
     oGeo.setAttribute('aSeed',    new THREE.BufferAttribute(oSeed,1));
     const omat=mat.clone(); omat.uniforms.uSize.value=small?3.1:4.3;   // feiner als die Füllung
     const outline=new THREE.Points(oGeo,omat); scene.add(outline);
+    // dezenter Farb-Akzent pro Station (multiplikativ aufs Blau; Kontur bleibt konstant rot)
+    const TINTS=[ new THREE.Color(1,1,1),            // FH STUDIO  – pures Blau-Weiss
+                  new THREE.Color(0.72,1.08,1.22),   // DESIGN     – cyan
+                  new THREE.Color(1.25,1.02,0.72),   // BUILD      – warm
+                  new THREE.Color(1.12,0.86,1.24),   // FYNN/HOZAN – violett
+                  new THREE.Color(0.78,1.18,1.0) ];  // LET'S TALK – mint
 
     // dunkler Scrim hinter dem Wort -> Foto dahinter abdunkeln, Schrift hebt sich ab
     function radialDark(){ const c=document.createElement('canvas'); c.width=c.height=256; const g=c.getContext('2d');
@@ -146,7 +208,7 @@
     // ---- Postprocessing: Bloom -> Output -> Chromatic Aberration + Vignette ----
     const composer=new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene,cam));
-    const bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight), 0.36, 0.4, 0.5);   // dezent & stabil -> keine hellen Einzel-Flecken
+    const bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight), 0.26, 0.85, 0.0);  // Schwelle 0 = KONTINUIERLICH -> kein An/Aus-Poppen an einer Schwelle moeglich
     composer.addPass(bloom);
     composer.addPass(new OutputPass());
     // NUR Vignette – KEINE chromatische Aberration mehr (die spaltete helle Punkte in rot/grün/blau Geister auf)
@@ -172,11 +234,14 @@
       else { for(let k=0;k<objC.length-1;k++){ if(p>=objC[k]&&p<=objC[k+1]){ a=k;b=k+1; fb=smooth((p-objC[k])/(objC[k+1]-objC[k])); break; } } }
       return [a,b,fb]; }
     function morph(TG, dst, attr, scat, cnt, eI, curX, curY, tt, a, b, fb){
-      const A=TG[a],B=TG[b], R2=14, rep=(reduce||!cursorActive)?0:4.2, flow=reduce?0:1;
+      const A=TG[a],B=TG[b], R2=14, rep=(reduce||!cursorActive)?0:3.4, flow=reduce?0:1;   // 3.4: weniger Verdichtung am Abstossungs-Rand (kein heller Saum)
+      // Spiral-Aufbau: Streu-Wolke dreht sich waehrend des Einfliegens ein (kinematisch)
+      const swA=(1-eI)*2.2, swC=Math.cos(swA), swS=Math.sin(swA);
       for(let i=0;i<cnt;i++){ const i3=i*3, ph=i*0.37;
         let x=A[i3]+(B[i3]-A[i3])*fb, y=A[i3+1]+(B[i3+1]-A[i3+1])*fb, z=A[i3+2]+(B[i3+2]-A[i3+2])*fb;
-        if(eI<1){ const s=1-eI; x=scat[i3]*s+x*eI; y=scat[i3+1]*s+y*eI; z=scat[i3+2]*s+z*eI; }
-        if(flow){ x+=Math.sin(tt*0.45+ph)*0.08; y+=Math.cos(tt*0.4+ph*1.3)*0.08; z+=Math.sin(tt*0.5+ph*0.7)*0.28; }
+        if(eI<1){ const s=1-eI, sx=scat[i3]*swC-scat[i3+1]*swS, sy=scat[i3]*swS+scat[i3+1]*swC;
+          x=sx*s+x*eI; y=sy*s+y*eI; z=scat[i3+2]*s+z*eI; }
+        if(flow){ x+=Math.sin(tt*0.45+ph)*0.08; y+=Math.cos(tt*0.4+ph*1.3)*0.08; }   // KEIN z-Wobble -> keine Groessen-Pulsation -> kein Flimmern
         if(rep){ const dx=x-curX,dy=y-curY,d2=dx*dx+dy*dy; if(d2<R2&&d2>0.04){ const f=1-d2/R2,kk=rep*f*f/Math.sqrt(d2); x+=dx*kk; y+=dy*kk; } }
         dst[i3]=x; dst[i3+1]=y; dst[i3+2]=z; }
       attr.needsUpdate=true;
@@ -203,6 +268,14 @@
       morph(targets,        arr,  geo.attributes.position,  scatter,  N,     introF, cwx, cwy, t, ab[0], ab[1], ab[2]);
       morph(outlineTargets, oArr, oGeo.attributes.position, oScatter, N_OUT, introF, cwx, cwy, t, ab[0], ab[1], ab[2]);
       mat.uniforms.uTime.value=t; omat.uniforms.uTime.value=t;
+      aurora.material.uniforms.uT.value=t;
+      // Cursor-Glow: Buchstaben gluehen lokal auf, wo die Maus ist (weich ein-/ausblenden)
+      mat.uniforms.uCur.value.set(cwx,cwy,0); omat.uniforms.uCur.value.set(cwx,cwy,0);
+      const ampT=(cursorActive&&!reduce)?1:0;
+      mat.uniforms.uCurAmp.value += (ampT-mat.uniforms.uCurAmp.value)*0.08;
+      omat.uniforms.uCurAmp.value = mat.uniforms.uCurAmp.value;
+      // Stations-Akzent weich ueberblenden (nur Fuellung; Kontur bleibt rot)
+      mat.uniforms.uTint.value.copy(TINTS[ab[0]]).lerp(TINTS[ab[1]], ab[2]);
       const ry=Math.sin(t*0.18)*0.10+mx*0.22, rx=Math.cos(t*0.15)*0.05-my*0.10;
       points.rotation.set(rx,ry,0); outline.rotation.set(rx,ry,0);
 

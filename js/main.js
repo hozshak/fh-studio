@@ -23,6 +23,7 @@ const quiet = p => p.catch(err => console.warn('[FH] Modul-Fehler:', err));
       quiet(import('./ui.js')),
       quiet(import('./hero-fx.js')),
       quiet(import('./journey.js')),
+      quiet(import('./demos.js')),
     ]);
 
     // 2) Schriften — verhindert Font-Flash, sobald die Seite erscheint
