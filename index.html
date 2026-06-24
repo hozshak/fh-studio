@@ -3,111 +3,73 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FH STUDIO — The Living Material · Hozan Shaker × Fynn Beckmann</title>
-<meta name="description" content="FH Studio — an independent web design studio by Hozan Shaker & Fynn Beckmann. Premium, motion-driven, award-winning websites. Scroll and watch the work take form.">
-<meta property="og:title" content="FH STUDIO — The Living Material">
-<meta property="og:description" content="Premium, motion-driven, award-winning websites by Hozan Shaker & Fynn Beckmann.">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
+<title>FH STUDIO — Hozan Shaker × Fynn Beckmann · Award-winning websites</title>
+<meta name="description" content="FH Studio — an independent web design studio by Hozan Shaker & Fynn Beckmann. Premium, motion-driven, award-winning websites.">
+<meta property="og:title" content="FH STUDIO"><meta property="og:description" content="Premium, motion-driven, award-winning websites by Hozan Shaker & Fynn Beckmann."><meta property="og:type" content="website"><meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono&display=swap" rel="stylesheet">
 <style>
-:root{ --bg:#06070A; --fg:#EDE8DF; --mut:#9AA0A8; --amber:#F0B068; --line:rgba(237,232,223,.14); }
+:root{ --bg:#070611; --fg:#F4F1FB; --mut:#A7A2C2; --accent:#9b8cff; --line:rgba(244,241,251,.14); }
 *{ margin:0; padding:0; box-sizing:border-box; }
-html{ scroll-behavior:auto; }
 body{ background:var(--bg); color:var(--fg); font-family:"Space Grotesk",sans-serif; -webkit-font-smoothing:antialiased; }
-.mono{ font-family:"Space Mono",monospace; }
-a{ color:inherit; text-decoration:none; }
-::selection{ background:var(--amber); color:#000; }
+.mono{ font-family:"Space Mono",monospace; } a{ color:inherit; text-decoration:none; }
+::selection{ background:var(--accent); color:#0a0820; }
 .sr-only{ position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0; }
-a:focus-visible,button:focus-visible,[tabindex]:focus-visible,input:focus-visible,textarea:focus-visible{ outline:2px solid var(--amber); outline-offset:3px; border-radius:4px; }
-
+a:focus-visible,button:focus-visible,[tabindex]:focus-visible,input:focus-visible,textarea:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:4px; }
 #gl{ position:fixed; inset:0; z-index:0; display:block; }
-#scroller{ position:relative; z-index:1; pointer-events:none; height:760vh; }   /* drives native scroll */
-.grain{ position:fixed; inset:0; z-index:2; pointer-events:none; opacity:.05; mix-blend-mode:overlay;
+#scroller{ position:relative; z-index:1; pointer-events:none; height:680vh; }
+.grain{ position:fixed; inset:0; z-index:2; pointer-events:none; opacity:.04; mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
-.vig{ position:fixed; inset:0; z-index:2; pointer-events:none; background:radial-gradient(130% 130% at 50% 45%,transparent 52%,rgba(0,0,0,.75)); }
+.vig{ position:fixed; inset:0; z-index:2; pointer-events:none; background:radial-gradient(130% 130% at 50% 40%,transparent 55%,rgba(0,0,0,.6)); }
 
-/* HUD */
 .hud{ position:fixed; z-index:14; letter-spacing:.04em; }
-#brand{ top:26px; left:30px; font-weight:700; font-size:18px; text-transform:uppercase; pointer-events:auto; }
-#brand b{ color:var(--amber); }
-#startbtn{ top:22px; right:30px; pointer-events:auto; cursor:pointer; font-family:"Space Mono",monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase;
-  border:1px solid var(--line); padding:11px 18px; background:rgba(8,9,12,.5); backdrop-filter:blur(6px); transition:.2s; }
-#startbtn:hover{ background:var(--amber); color:#000; border-color:var(--amber); }
-#formlabel{ bottom:26px; left:30px; font-family:"Space Mono",monospace; font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:var(--mut); }
-#formlabel b{ color:var(--fg); }
-#scrollcue{ bottom:26px; left:50%; transform:translateX(-50%); font-family:"Space Mono",monospace; font-size:11px; letter-spacing:.24em; color:var(--mut); text-transform:uppercase; transition:opacity .4s; }
-/* chapter rail */
-#rail{ position:fixed; left:18px; top:50%; transform:translateY(-50%); z-index:14; display:flex; flex-direction:column; gap:12px; }
-#rail button{ width:9px; height:9px; border:1px solid var(--line); background:transparent; border-radius:50%; cursor:pointer; padding:0; transition:.2s; }
-#rail button.on{ background:var(--amber); border-color:var(--amber); transform:scale(1.25); }
+#brand{ top:26px; left:32px; font-weight:700; font-size:19px; text-transform:uppercase; pointer-events:auto; } #brand b{ color:var(--accent); }
+#startbtn{ top:22px; right:32px; pointer-events:auto; cursor:pointer; font-family:"Space Mono"; font-size:12px; letter-spacing:.14em; text-transform:uppercase; border:1px solid var(--line); padding:11px 18px; background:rgba(12,10,28,.5); backdrop-filter:blur(6px); transition:.2s; }
+#startbtn:hover{ background:var(--accent); color:#0a0820; border-color:var(--accent); }
+#meta{ bottom:26px; left:32px; font-family:"Space Mono"; font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--mut); } #meta b{ color:var(--fg); }
+#cue{ bottom:26px; left:50%; transform:translateX(-50%); font-family:"Space Mono"; font-size:11px; letter-spacing:.24em; color:var(--mut); text-transform:uppercase; transition:opacity .4s; }
+#rail{ position:fixed; left:20px; top:50%; transform:translateY(-50%); z-index:14; display:flex; flex-direction:column; gap:12px; }
+#rail button{ width:9px;height:9px;border:1px solid var(--line);background:transparent;border-radius:50%;cursor:pointer;padding:0;transition:.2s; } #rail button.on{ background:var(--accent); border-color:var(--accent); transform:scale(1.3); }
 @media(max-width:700px){ #rail{ display:none; } }
 
-/* chapter content overlays (pinned, cross-fade by scroll) */
-.chap{ position:fixed; z-index:12; pointer-events:none; opacity:0; transition:opacity .5s ease; max-width:min(46ch,86vw); }
-.chap.on{ opacity:1; }
-.chap.center{ left:50%; top:50%; transform:translate(-50%,-50%); text-align:center; max-width:min(20ch,90vw); }
-.chap.bl{ left:30px; bottom:88px; }
-.chap.tr{ right:30px; top:120px; text-align:right; }
-.kick{ font-family:"Space Mono",monospace; font-size:12px; letter-spacing:.26em; text-transform:uppercase; color:var(--amber); }
-.chap h2{ font-weight:700; font-size:clamp(30px,6vw,84px); line-height:.95; letter-spacing:-.02em; text-transform:uppercase; margin:10px 0; text-shadow:0 2px 40px rgba(0,0,0,.6); }
+.chap{ position:fixed; z-index:12; pointer-events:none; opacity:0; transition:opacity .55s ease; max-width:min(44ch,86vw); }
+.chap.on{ opacity:1; } .chap.center{ left:50%; top:50%; transform:translate(-50%,-50%); text-align:center; max-width:min(22ch,90vw); }
+.chap.l{ left:32px; top:50%; transform:translateY(-50%); } .chap.r{ right:32px; top:50%; transform:translateY(-50%); text-align:right; }
+.kick{ font-family:"Space Mono"; font-size:12px; letter-spacing:.26em; text-transform:uppercase; color:var(--accent); }
+.chap h2{ font-weight:700; font-size:clamp(30px,5.5vw,76px); line-height:.96; letter-spacing:-.02em; text-transform:uppercase; margin:10px 0; text-shadow:0 2px 50px rgba(0,0,0,.7); }
 .chap p{ color:var(--mut); line-height:1.55; font-size:clamp(14px,1.6vw,17px); }
 .chap .big{ color:var(--fg); }
-.chap .who{ margin-top:14px; } .chap .who b{ color:var(--fg); } .chap .who span{ color:var(--mut); }
-.chap .caselink{ pointer-events:auto; display:inline-block; margin-top:16px; font-family:"Space Mono",monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--amber); border-bottom:1px solid var(--amber); cursor:pointer; }
-.chap .metric{ font-weight:700; color:var(--fg); font-size:clamp(16px,2vw,22px); margin-top:6px; }
-.chap.tr .caselink{ pointer-events:auto; }
-.tags{ display:flex; flex-wrap:wrap; gap:7px; margin-top:14px; justify-content:inherit; }
-.chap.tr .tags{ justify-content:flex-end; } .chap.center .tags{ justify-content:center; }
-.tags span{ font-family:"Space Mono",monospace; font-size:11px; letter-spacing:.08em; border:1px solid var(--line); padding:5px 9px; color:var(--mut); }
-
-/* contact chapter */
-#c-contact{ pointer-events:none; }
-#c-contact.on{ pointer-events:auto; }
-.cbox{ display:grid; gap:0; border:1px solid var(--line); max-width:420px; margin-top:18px; background:rgba(8,9,12,.45); backdrop-filter:blur(6px); pointer-events:auto; }
-.cbox .fl{ border-bottom:1px solid var(--line); }
-.cbox label{ display:block; font-family:"Space Mono",monospace; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--mut); padding:10px 14px 0; }
+.chap .who b{ color:var(--fg); } .chap .who span{ color:var(--mut); } .chap .who{ margin-top:12px; }
+.chap .metric{ color:var(--fg); font-weight:700; font-size:clamp(16px,2vw,22px); margin-top:6px; }
+.chap .caselink{ pointer-events:auto; display:inline-block; margin-top:16px; font-family:"Space Mono"; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); border-bottom:1px solid var(--accent); cursor:pointer; }
+.tags{ display:flex; flex-wrap:wrap; gap:7px; margin-top:14px; } .chap.r .tags{ justify-content:flex-end; } .chap.center .tags{ justify-content:center; }
+.tags span{ font-family:"Space Mono"; font-size:11px; letter-spacing:.08em; border:1px solid var(--line); padding:5px 9px; color:var(--mut); }
+.cbox{ display:grid; border:1px solid var(--line); max-width:400px; margin:18px auto 0; background:rgba(12,10,28,.5); backdrop-filter:blur(6px); pointer-events:auto; text-align:left; }
+.cbox .fl{ border-bottom:1px solid var(--line); } .cbox label{ display:block; font-family:"Space Mono"; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--mut); padding:10px 14px 0; }
 .cbox input,.cbox textarea{ width:100%; background:transparent; border:none; color:var(--fg); font-family:"Space Grotesk"; font-size:16px; padding:4px 14px 12px; outline:none; resize:vertical; }
-.cbox button{ font-weight:700; text-transform:uppercase; letter-spacing:.04em; background:var(--amber); color:#000; border:none; padding:15px; cursor:pointer; }
-.calt{ margin-top:14px; font-size:13px; color:var(--mut); } .calt a{ color:var(--amber); border-bottom:1px solid var(--amber); }
+.cbox button{ font-weight:700; text-transform:uppercase; letter-spacing:.04em; background:var(--accent); color:#0a0820; border:none; padding:15px; cursor:pointer; }
+.calt{ margin-top:14px; font-size:13px; color:var(--mut); } .calt a{ color:var(--accent); border-bottom:1px solid var(--accent); }
 
-/* modal */
-.modal{ position:fixed; inset:0; z-index:40; background:rgba(6,7,10,.85); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; padding:5vh 5vw; opacity:0; pointer-events:none; transition:opacity .3s; }
+.modal{ position:fixed; inset:0; z-index:40; background:rgba(7,6,17,.86); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; padding:5vh 5vw; opacity:0; pointer-events:none; transition:opacity .3s; }
 .modal.show{ opacity:1; pointer-events:auto; }
-.msheet{ width:min(820px,95vw); max-height:88vh; overflow:auto; background:var(--bg); border:1px solid var(--amber); padding:clamp(24px,4vw,48px); }
-.msheet .mclose{ float:right; font-family:"Space Mono"; font-size:12px; letter-spacing:.14em; cursor:pointer; border:1px solid var(--line); padding:7px 12px; }
-.msheet .mclose:hover{ background:var(--amber); color:#000; }
-.msheet .pid{ font-family:"Space Mono"; color:var(--mut); font-size:12px; letter-spacing:.2em; }
-.msheet h3{ font-weight:700; font-size:clamp(30px,5vw,56px); text-transform:uppercase; letter-spacing:-.02em; margin:8px 0; }
-.msheet .res{ display:inline-block; font-weight:700; background:var(--amber); color:#000; padding:7px 13px; margin:12px 0; }
+.msheet{ width:min(820px,95vw); max-height:88vh; overflow:auto; background:#0b0920; border:1px solid var(--accent); padding:clamp(24px,4vw,48px); }
+.msheet .mclose{ float:right; font-family:"Space Mono"; font-size:12px; letter-spacing:.14em; cursor:pointer; border:1px solid var(--line); padding:7px 12px; } .msheet .mclose:hover{ background:var(--accent); color:#0a0820; }
+.msheet .pid{ font-family:"Space Mono"; color:var(--mut); font-size:12px; letter-spacing:.2em; } .msheet h3{ font-weight:700; font-size:clamp(30px,5vw,56px); text-transform:uppercase; letter-spacing:-.02em; margin:8px 0; }
+.msheet .res{ display:inline-block; font-weight:700; background:var(--accent); color:#0a0820; padding:7px 13px; margin:12px 0; }
 .mcols{ display:grid; grid-template-columns:1fr 1fr; gap:22px; margin:20px 0; } @media(max-width:600px){ .mcols{ grid-template-columns:1fr; } }
-.mcols h4{ font-family:"Space Mono"; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--amber); margin-bottom:7px; }
-.mcols p{ line-height:1.6; color:#dcd8cf; }
+.mcols h4{ font-family:"Space Mono"; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin-bottom:7px; } .mcols p{ line-height:1.6; color:#ddd8ee; }
 .mtech{ display:flex; flex-wrap:wrap; gap:7px; } .mtech span{ font-family:"Space Mono"; font-size:11px; border:1px solid var(--line); padding:5px 9px; color:var(--mut); }
-.mquote{ font-weight:600; font-size:clamp(17px,2.4vw,23px); line-height:1.4; margin:22px 0 4px; }
-.mquote .by{ display:block; font-family:"Space Mono"; font-size:12px; color:var(--mut); margin-top:10px; }
+.mquote{ font-weight:600; font-size:clamp(17px,2.4vw,23px); line-height:1.4; margin:22px 0 4px; } .mquote .by{ display:block; font-family:"Space Mono"; font-size:12px; color:var(--mut); margin-top:10px; }
 
-/* loader */
-#load{ position:fixed; inset:0; z-index:100; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; transition:opacity .8s; }
-#load.gone{ opacity:0; pointer-events:none; }
-#load .lw{ font-weight:700; font-size:clamp(34px,8vw,76px); text-transform:uppercase; letter-spacing:.02em; } #load .lw b{ color:var(--amber); }
-#load .bar{ width:min(240px,56vw); height:1px; background:var(--line); position:relative; overflow:hidden; } #load .bar i{ position:absolute; inset:0 100% 0 0; background:var(--amber); }
+#load{ position:fixed; inset:0; z-index:100; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; transition:opacity .8s; } #load.gone{ opacity:0; pointer-events:none; }
+#load .lw{ font-weight:700; font-size:clamp(34px,8vw,76px); text-transform:uppercase; } #load .lw b{ color:var(--accent); }
+#load .bar{ width:min(240px,56vw); height:1px; background:var(--line); position:relative; overflow:hidden; } #load .bar i{ position:absolute; inset:0 100% 0 0; background:var(--accent); transition:right .3s; }
 #load .msg{ font-family:"Space Mono"; font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:var(--mut); }
-.toast{ position:fixed; bottom:88px; left:50%; transform:translateX(-50%); z-index:50; background:var(--amber); color:#000; font-weight:700; padding:12px 20px; opacity:0; transition:.3s; pointer-events:none; text-transform:uppercase; font-size:13px; }
-.toast.show{ opacity:1; }
+.toast{ position:fixed; bottom:88px; left:50%; transform:translateX(-50%); z-index:50; background:var(--accent); color:#0a0820; font-weight:700; padding:12px 20px; opacity:0; transition:.3s; pointer-events:none; text-transform:uppercase; font-size:13px; } .toast.show{ opacity:1; }
 
-/* DOM-only fallback page (no WebGL / reduced motion) */
-#fallback{ display:none; position:relative; z-index:30; }
-#fallback.show{ display:block; }
-.fb{ max-width:1000px; margin:0 auto; padding:8vh 6vw; }
-.fb h1{ font-weight:700; font-size:clamp(34px,7vw,76px); text-transform:uppercase; line-height:.95; letter-spacing:-.02em; }
-.fb h1 b{ color:var(--amber); }
-.fb .lead{ color:var(--mut); max-width:60ch; margin:18px 0 40px; line-height:1.6; }
-.fb .case{ border-top:1px solid var(--line); padding:30px 0; }
-.fb .case h3{ font-weight:700; font-size:26px; text-transform:uppercase; } .fb .case .res{ color:var(--amber); font-weight:700; }
-.fb .case p{ color:#cfcbc2; line-height:1.6; margin:8px 0; }
-@media (prefers-reduced-motion: reduce){ .grain{ display:none; } }
+#fallback{ display:none; position:relative; z-index:30; } #fallback.show{ display:block; }
+.fb{ max-width:1000px; margin:0 auto; padding:8vh 6vw; } .fb h1{ font-weight:700; font-size:clamp(34px,7vw,72px); text-transform:uppercase; line-height:.95; } .fb h1 b{ color:var(--accent); }
+.fb .lead{ color:var(--mut); max-width:60ch; margin:18px 0 40px; line-height:1.6; } .fb .case{ border-top:1px solid var(--line); padding:28px 0; } .fb .case h3{ font-weight:700; font-size:24px; text-transform:uppercase; } .fb .case .res{ color:var(--accent); font-weight:700; } .fb .case p{ color:#cfcadf; line-height:1.6; margin:8px 0; }
 </style>
 </head>
 <body>
@@ -116,41 +78,17 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible,input:focus-visibl
 <div id="scroller"></div>
 <h1 class="sr-only">FH Studio — award-winning, motion-driven websites by Hozan Shaker and Fynn Beckmann.</h1>
 
-<!-- HUD -->
 <div class="hud" id="brand"><a href="#" id="brandlink">FH<b>×</b>STUDIO</a></div>
 <button class="hud" id="startbtn">Start a project</button>
-<div class="hud" id="formlabel"><b id="fl-form">SPHERE</b> · <span id="fl-pct">00</span>%</div>
-<div class="hud" id="scrollcue">↓ Scroll — watch it take form</div>
+<div class="hud" id="meta"><b id="m-form">PRISM</b> · <span id="m-pct">00</span>%</div>
+<div class="hud" id="cue">↓ Scroll</div>
 <div id="rail"></div>
 
-<!-- chapter overlays -->
-<div class="chap center on" id="c-intro">
-  <div class="kick">Independent Web Design Studio</div>
-  <h2>FH<br>Studio</h2>
-  <p class="big">We build the websites that win the day — Awwwards-grade, scroll-driven, motion-first.</p>
-</div>
-<div class="chap bl" id="c-mark">
-  <div class="kick">The Studio</div>
-  <h2>Two people.<br>No middlemen.</h2>
-  <p>You talk to the makers. One obsession — websites that feel inevitable.</p>
-  <div class="who"><b>Hozan Shaker</b> <span>— Design &amp; Art Direction</span><br><b>Fynn Beckmann</b> <span>— Creative Development</span></div>
-</div>
-<div class="chap tr" id="c-work"></div>
-<div class="chap bl" id="c-craft">
-  <div class="kick">Capabilities</div>
-  <h2>The dissolve<br>is the point.</h2>
-  <p>Motion is the portfolio.</p>
-  <div class="tags"><span>WebGL &amp; Shaders</span><span>Scroll Choreography</span><span>Brand Systems</span><span>Headless Builds</span><span>60fps Obsession</span></div>
-</div>
-<div class="chap bl" id="c-ethos">
-  <div class="kick">Process</div>
-  <h2>We choreograph<br>attention.</h2>
-  <p>We don't decorate sites.</p>
-  <div class="tags"><span>01 Discovery</span><span>02 Art Direction</span><span>03 Build</span><span>04 Launch</span></div>
-</div>
-<div class="chap center" id="c-contact">
-  <div class="kick">Let's talk</div>
-  <h2>Tell it what<br>to become.</h2>
+<div class="chap center on" id="c-intro"><div class="kick">Independent Web Design Studio</div><h2>FH<br>Studio</h2><p class="big">We build the websites that win the day — Awwwards-grade, scroll-driven, motion-first.</p></div>
+<div class="chap l" id="c-mark"><div class="kick">The Studio</div><h2>Two people.<br>No middlemen.</h2><p>You talk to the makers. One obsession — websites that feel inevitable.</p><div class="who"><b>Hozan Shaker</b> <span>— Design &amp; Art Direction</span><br><b>Fynn Beckmann</b> <span>— Creative Development</span></div></div>
+<div class="chap r" id="c-work"></div>
+<div class="chap l" id="c-craft"><div class="kick">Capabilities</div><h2>Crafted to<br>the last pixel.</h2><p>Motion is the portfolio.</p><div class="tags"><span>WebGL &amp; Shaders</span><span>Scroll Choreography</span><span>Brand Systems</span><span>Headless Builds</span><span>60fps Obsession</span></div></div>
+<div class="chap center" id="c-contact"><div class="kick">Let's talk</div><h2>Let's build<br>yours.</h2>
   <form class="cbox" id="cform" novalidate>
     <div class="fl"><label for="f-name">Name</label><input id="f-name" name="name" required autocomplete="name" placeholder="Your name"></div>
     <div class="fl"><label for="f-email">Email</label><input id="f-email" name="email" type="email" required autocomplete="email" placeholder="you@brand.com"></div>
@@ -160,260 +98,159 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible,input:focus-visibl
   <div class="calt">Booking from Q3 · reply within 48h · <a href="mailto:edv@pflueger.de">edv@pflueger.de</a></div>
 </div>
 
-<!-- project modal -->
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Project case study">
-  <div class="msheet">
-    <button class="mclose" id="mclose" aria-label="Close">[ CLOSE · ESC ]</button>
-    <div class="pid" id="m-pid"></div><h3 id="m-name"></h3><div class="kick" id="m-sec"></div>
-    <div class="res" id="m-res"></div>
-    <div class="mcols"><div><h4>The challenge</h4><p id="m-prob"></p></div><div><h4>What we built</h4><p id="m-sol"></p></div></div>
-    <h4 style="font-family:'Space Mono';font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber)">Built with</h4>
-    <div class="mtech" id="m-tech" style="margin-top:6px"></div>
-    <div class="mquote" id="m-quote"></div>
-  </div>
-</div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Project case study"><div class="msheet">
+  <button class="mclose" id="mclose" aria-label="Close">[ CLOSE · ESC ]</button>
+  <div class="pid" id="md-pid"></div><h3 id="md-name"></h3><div class="kick" id="md-sec"></div><div class="res" id="md-res"></div>
+  <div class="mcols"><div><h4>The challenge</h4><p id="md-prob"></p></div><div><h4>What we built</h4><p id="md-sol"></p></div></div>
+  <h4 style="font-family:'Space Mono';font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)">Built with</h4>
+  <div class="mtech" id="md-tech" style="margin-top:6px"></div><div class="mquote" id="md-quote"></div>
+</div></div>
 <div class="toast" id="toast"></div>
 
-<!-- DOM fallback / SEO content -->
-<div id="fallback"><div class="fb">
-  <h1>We build websites people<br>walk away <b>remembering.</b></h1>
-  <p class="lead">FH Studio is Hozan Shaker &amp; Fynn Beckmann — an independent studio building premium, motion-driven, award-winning websites. A handful of flagship clients a year, designed and built end to end by the two of us.</p>
+<div id="fallback"><div class="fb"><h1>We build websites people<br>walk away <b>remembering.</b></h1>
+  <p class="lead">FH Studio is Hozan Shaker &amp; Fynn Beckmann — an independent studio building premium, motion-driven, award-winning websites.</p>
   <div id="fb-cases"></div>
-  <div class="case"><h3>Start a project</h3><p>Tell us what you're building: <a href="mailto:edv@pflueger.de" style="color:var(--amber)">edv@pflueger.de</a> · Engagements from €18,000 · limited to 8 flagships a year.</p></div>
+  <div class="case"><h3>Start a project</h3><p>Tell us what you're building: <a href="mailto:edv@pflueger.de" style="color:var(--accent)">edv@pflueger.de</a></p></div>
 </div></div>
 
-<div id="load"><div class="lw">FH<b>×</b>STUDIO</div><div class="bar"><i id="lbar"></i></div><div class="msg" id="lmsg">forming the material…</div></div>
+<div id="load"><div class="lw">FH<b>×</b>STUDIO</div><div class="bar"><i id="lbar"></i></div><div class="msg" id="lmsg">polishing the glass…</div></div>
 
 <script type="importmap">
-{ "imports": {
-  "three":"https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
-  "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
-}}
+{ "imports": { "three":"https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js", "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/" } }
 </script>
 <script type="module">
 import * as THREE from 'three';
-import { MeshSurfaceSampler } from 'three/addons/math/MeshSurfaceSampler.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { RGBShiftShader } from 'three/addons/shaders/RGBShiftShader.js';
-window.addEventListener('error',e=>{ window.__booterr=(e.message||'')+' @ '+(e.lineno||'?')+':'+(e.colno||'?'); });
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const EMAIL='edv@pflueger.de';
 
-/* ---------------- content ---------------- */
 const PROJECTS=[
- {id:'01',name:'Vaulta',sector:'Fintech',mock:'saas',col:'#7FB4FF',res:'+212% sign-ups · LCP 0.9s',
-  prob:'A 6.4s load and a buried core feature converted just 1.1% of paid traffic — a great product that looked like a template.',
-  sol:'A kinetic landing: live balance ticker, a scroll-scrubbed 3D card that assembles as you read, one-field sign-up. 90KB JS, 60fps on mid Android.',
-  tech:['Next.js','Three.js','GSAP','Edge SSR'],quote:'Our conversion more than tripled in the first month. Investors open meetings on the site.',by:'Lena Frost — Head of Growth, Vaulta'},
- {id:'02',name:'Northwind',sector:'B2B SaaS',mock:'dash',col:'#7FE9C8',res:'+147% trials · −19 days cycle',
-  prob:'Brilliant product, jargon walls. Engineers couldn’t grasp the value in 10 seconds; trials sat at 2.3%.',
-  sol:'An interactive product narrative: a live architecture diagram, a "see it work" terminal, an embedded sandbox to run a query before signing up.',
-  tech:['React','Three.js','WASM','Framer'],quote:'Prospects show up to demos already understanding the product.',by:'Devon Okafor — VP Marketing, Northwind'},
- {id:'03',name:'The Frame',sector:'Editorial',mock:'edit',col:'#F0A878',res:'+340% read time · +58% members',
-  prob:'Award-winning essays, but readers bounced before paragraph three — 47s average read on 4,000-word pieces.',
-  sol:'A reading-first system where typography is the interface: scroll covers, locking pull-quotes, inline data-viz, a value-first membership wall.',
-  tech:['SvelteKit','Canvas','Variable fonts'],quote:'Read time went from under a minute to over four.',by:'Marisol Vance — Editor-in-Chief, The Frame'},
- {id:'04',name:'Maison Otto',sector:'Luxury · E-com',mock:'lux',col:'#E6C98A',res:'+168% AOV · bounce 84%→31%',
-  prob:'$2,400 coats sold through a theme that felt like fast-fashion — the boutique’s equity thrown away online.',
-  sol:'An editorial store with cinematic inline product films, a WebGL garment viewer with cursor-reactive fabric, and a "fit ritual" configurator.',
-  tech:['Astro','Three.js','Hydrogen','Lenis'],quote:'People screenshot our site and send it to friends before they buy.',by:'Otto Reinhardt — Creative Director'},
- {id:'05',name:'Casa Lumen',sector:'Hospitality',mock:'hotel',col:'#F0C98A',res:'Direct bookings 8%→47%',
-  prob:'90% of bookings via Booking.com at 18% commission; their own site a brochure with a clunky widget.',
-  sol:'An immersive destination experience: a golden-hour 3D flythrough, 360° room tours, ambient audio, a beautiful direct-booking flow.',
-  tech:['Nuxt','Three.js','GSAP','Cloudbeds'],quote:'Guests tell us they chose us because of the website.',by:'Giulia Marchetti — GM, Casa Lumen'},
- {id:'06',name:'Subfrequency',sector:'Music · Culture',mock:'music',col:'#E69ACF',res:'+95% tickets · 3.1M impressions',
-  prob:'A roster scattered across Linktrees and an old Squarespace; no home that captured the label’s energy.',
-  sol:'A sound-reactive hub: a WebGL canvas that morphs to the playing track via Web Audio, an explorable roster, a generative festival poster.',
-  tech:['Vite','Three.js','Web Audio'],quote:'The site literally moves to the music — 3M impressions for free.',by:'Kojo Mensah — Founder, Subfrequency'},
+ {id:'01',name:'Vaulta',sector:'Fintech',col:'#7FB4FF',res:'+212% sign-ups · LCP 0.9s',prob:'A 6.4s load and a buried core feature converted just 1.1% of paid traffic — a great product that looked like a template.',sol:'A kinetic landing: a live balance ticker, a scroll-scrubbed 3D card that assembles as you read, one-field sign-up. 90KB JS, 60fps on mid Android.',tech:['Next.js','Three.js','GSAP','Edge SSR'],quote:'Our conversion more than tripled in the first month. Investors open meetings on the site.',by:'Lena Frost — Head of Growth, Vaulta'},
+ {id:'02',name:'Northwind',sector:'B2B SaaS',col:'#7FE9C8',res:'+147% trials · −19 days cycle',prob:'Brilliant product, jargon walls. Engineers couldn’t grasp the value in 10 seconds; trials sat at 2.3%.',sol:'An interactive product narrative: a live architecture diagram, a "see it work" terminal, an embedded sandbox to run a query before signing up.',tech:['React','Three.js','WASM','Framer'],quote:'Prospects show up to demos already understanding the product.',by:'Devon Okafor — VP Marketing, Northwind'},
+ {id:'03',name:'The Frame',sector:'Editorial',col:'#F0A878',res:'+340% read time · +58% members',prob:'Award-winning essays, but readers bounced before paragraph three — 47s average read on 4,000-word pieces.',sol:'A reading-first system where typography is the interface: scroll covers, locking pull-quotes, inline data-viz, a value-first membership wall.',tech:['SvelteKit','Canvas','Variable fonts'],quote:'Read time went from under a minute to over four.',by:'Marisol Vance — Editor-in-Chief, The Frame'},
+ {id:'04',name:'Maison Otto',sector:'Luxury · E-com',col:'#E6C98A',res:'+168% AOV · bounce 84%→31%',prob:'$2,400 coats sold through a theme that felt like fast-fashion — the boutique’s equity thrown away online.',sol:'An editorial store with cinematic inline product films, a WebGL garment viewer with cursor-reactive fabric, and a "fit ritual" configurator.',tech:['Astro','Three.js','Hydrogen','Lenis'],quote:'People screenshot our site and send it to friends before they buy.',by:'Otto Reinhardt — Creative Director'},
+ {id:'05',name:'Casa Lumen',sector:'Hospitality',col:'#F0C98A',res:'Direct bookings 8%→47%',prob:'90% of bookings via Booking.com at 18% commission; their own site a brochure with a clunky widget.',sol:'An immersive destination experience: a golden-hour 3D flythrough, 360° room tours, ambient audio, a beautiful direct-booking flow.',tech:['Nuxt','Three.js','GSAP','Cloudbeds'],quote:'Guests tell us they chose us because of the website.',by:'Giulia Marchetti — GM, Casa Lumen'},
+ {id:'06',name:'Subfrequency',sector:'Music · Culture',col:'#E69ACF',res:'+95% tickets · 3.1M impressions',prob:'A roster scattered across Linktrees and an old Squarespace; no home that captured the label’s energy.',sol:'A sound-reactive hub: a WebGL canvas that morphs to the playing track via Web Audio, an explorable roster, a generative festival poster.',tech:['Vite','Three.js','Web Audio'],quote:'The site literally moves to the music — 3M impressions for free.',by:'Kojo Mensah — Founder, Subfrequency'},
 ];
-
-/* fallback DOM content (SEO + no-webgl) */
 $('#fb-cases').innerHTML=PROJECTS.map(p=>`<article class="case"><h3>${p.name}</h3><div class="kick">${p.sector} · ${p.id}</div><p>${p.prob}</p><p>${p.sol}</p><p class="res">${p.res}</p><p>"${p.quote}" — <span style="color:var(--mut)">${p.by}</span></p></article>`).join('');
 
-/* ---------------- WebGL detect ---------------- */
 function hasWebGL(){ try{ const c=document.createElement('canvas'); return !!(window.WebGLRenderingContext&&(c.getContext('webgl2')||c.getContext('webgl'))); }catch(e){ return false; } }
 if(!hasWebGL()){ $('#fallback').classList.add('show'); $('#load').classList.add('gone'); $$('.hud,#rail').forEach(e=>e.style.display='none'); }
 else boot();
 
 function boot(){
-/* ---------------- perf tier ---------------- */
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const dpr=Math.min(devicePixelRatio,2);
-let N = innerWidth<760 ? 12000 : (dpr>1.5 && innerWidth>1280 ? 26000 : 18000);
-
-const renderer=new THREE.WebGLRenderer({canvas:$('#gl'),antialias:false,powerPreference:'high-performance'});
-renderer.setPixelRatio(dpr); renderer.setSize(innerWidth,innerHeight);
+const renderer=new THREE.WebGLRenderer({canvas:$('#gl'),antialias:true,preserveDrawingBuffer:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(dpr); renderer.setSize(innerWidth,innerHeight); renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.15;
 const scene=new THREE.Scene();
-const camera=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,0.1,100); camera.position.set(0,0,8);
+const camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,0.1,100); camera.position.set(0,0,7);
 
-/* ---------------- target generators (each returns Float32Array N*3, centered, ~radius 3) ---------------- */
-function fitToArr(pts){ // pts: array of [x,y,z]; resample to exactly N, center+scale
-  const arr=new Float32Array(N*3); let minx=1e9,miny=1e9,minz=1e9,maxx=-1e9,maxy=-1e9,maxz=-1e9;
-  for(const p of pts){ minx=Math.min(minx,p[0]);maxx=Math.max(maxx,p[0]);miny=Math.min(miny,p[1]);maxy=Math.max(maxy,p[1]);minz=Math.min(minz,p[2]);maxz=Math.max(maxz,p[2]); }
-  const cx=(minx+maxx)/2,cy=(miny+maxy)/2,cz=(minz+maxz)/2; const span=Math.max(maxx-minx,maxy-miny,maxz-minz)||1; const s=5.2/span;
-  for(let i=0;i<N;i++){ const p=pts[(Math.random()*pts.length)|0]; arr[i*3]=(p[0]-cx)*s; arr[i*3+1]=(p[1]-cy)*s; arr[i*3+2]=(p[2]-cz)*s; }
-  return arr; }
-function genSphere(){ const a=new Float32Array(N*3); for(let i=0;i<N;i++){ const y=1-(i/(N-1))*2, r=Math.sqrt(1-y*y), th=i*2.399963; a[i*3]=Math.cos(th)*r*2.7; a[i*3+1]=y*2.7; a[i*3+2]=Math.sin(th)*r*2.7; } return a; }
-function genKnot(){ const g=new THREE.TorusKnotGeometry(1.7,0.55,200,32,2,3); const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial()); const s=new MeshSurfaceSampler(m).build(); const a=new Float32Array(N*3),v=new THREE.Vector3(); for(let i=0;i<N;i++){ s.sample(v); a[i*3]=v.x;a[i*3+1]=v.y;a[i*3+2]=v.z; } return a; }
-function genLines(){ const a=new Float32Array(N*3); const lanes=24; for(let i=0;i<N;i++){ const ln=i%lanes; const y=(ln/(lanes-1)-0.5)*5; a[i*3]=(Math.random()*2-1)*5; a[i*3+1]=y + (Math.random()-0.5)*0.12; a[i*3+2]=(Math.random()*2-1)*2.2; } return a; }
-function genEye(){ const pts=[]; const n=2200;
-  for(let i=0;i<n;i++){ const t=i/n*Math.PI*2; const x=Math.cos(t)*2.6, y=Math.sin(t)*1.35*Math.pow(Math.abs(Math.sin(t/2)),0.4)*1.1; pts.push([x, Math.sin(t)*1.3, (Math.random()-0.5)*0.2]); } // almond ring
-  for(let r=0.5;r<=1.05;r+=0.18){ for(let i=0;i<n/3;i++){ const t=i/(n/3)*Math.PI*2; pts.push([Math.cos(t)*r*1.05, Math.sin(t)*r*1.05, (Math.random()-0.5)*0.15]); } } // iris rings
-  for(let i=0;i<n/2;i++){ const t=Math.random()*Math.PI*2, r=Math.random()*0.34; pts.push([Math.cos(t)*r, Math.sin(t)*r, 0.05]); } // pupil
-  return fitToArr(pts); }
-function sampleCanvas(draw){ const w=240,h=240, c=document.createElement('canvas'); c.width=w;c.height=h; const x=c.getContext('2d');
-  x.fillStyle='#000'; x.fillRect(0,0,w,h); draw(x,w,h); const d=x.getImageData(0,0,w,h).data; const pts=[];
-  for(let py=0;py<h;py+=2)for(let px=0;px<w;px+=2){ const i=(py*w+px)*4; if(d[i]+d[i+1]+d[i+2]>180){ pts.push([(px-w/2)/w, -(py-h/2)/h, (Math.random()-0.5)*0.05]); } }
-  return pts.length? fitToArr(pts.map(p=>[p[0]*5,p[1]*5,p[2]])) : genSphere(); }
-function genFH(){ return sampleCanvas((x,w,h)=>{ x.fillStyle='#fff'; x.font='bold 150px Space Grotesk, sans-serif'; x.textAlign='center'; x.textBaseline='middle'; x.fillText('FH',w/2,h/2+6); }); }
-function genUI(kind){ return sampleCanvas((x,w,h)=>{ x.fillStyle='#fff'; x.strokeStyle='#fff'; x.lineWidth=3;
-  const box=(a,b,c,d)=>x.strokeRect(a,b,c,d), fill=(a,b,c,d)=>x.fillRect(a,b,c,d);
-  fill(24,22,w-48,16); // top bar
-  if(kind==='saas'){ fill(30,70,120,18); fill(30,96,90,12); box(150,70,60,40); for(let i=0;i<3;i++) box(30+i*70,150,56,56); }
-  else if(kind==='dash'){ box(24,60,90,150); for(let i=0;i<3;i++) box(126,60+i*52,90,40); box(126,216,200,0); for(let i=0;i<6;i++) fill(230,70+i*22,30+Math.random()*60,10); }
-  else if(kind==='edit'){ fill(40,70,w-80,20); for(let i=0;i<8;i++) fill(40,110+i*16,(i%3===2?120:w-90),7); box(150,80,40,40); }
-  else if(kind==='lux'){ box(w-120,50,90,150); fill(30,90,90,30); fill(30,140,140,10); fill(30,160,110,10); }
-  else if(kind==='hotel'){ fill(24,50,w-48,110); box(70,180,100,28); }
-  else { for(let i=0;i<40;i++){ const a=i/40*Math.PI*2,r=40+Math.random()*40; x.fillRect(w/2+Math.cos(a)*r, h/2+Math.sin(a)*r,4,4);} for(let i=0;i<4;i++) fill(w-80,70+i*20,50,8); } }); }
+/* studio environment for real reflections/refraction */
+const pmrem=new THREE.PMREMGenerator(renderer); scene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture;
+/* gradient backdrop (so glass refracts something beautiful) */
+(()=>{ const c=document.createElement('canvas'); c.width=4;c.height=512; const x=c.getContext('2d'); const g=x.createLinearGradient(0,0,0,512);
+  g.addColorStop(0,'#0a0820'); g.addColorStop(0.5,'#120a2e'); g.addColorStop(0.78,'#2a1248'); g.addColorStop(1,'#0a0612'); x.fillStyle=g; x.fillRect(0,0,4,512);
+  const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; scene.background=t; })();
+/* lights for crisp highlights */
+scene.add(new THREE.AmbientLight(0xffffff,0.35));
+const l1=new THREE.DirectionalLight(0xff7ad1,2.2); l1.position.set(4,5,3); scene.add(l1);
+const l2=new THREE.DirectionalLight(0x7ad1ff,2.0); l2.position.set(-5,-2,2); scene.add(l2);
+const l3=new THREE.PointLight(0xffe3b0,1.4,40); l3.position.set(0,3,5); scene.add(l3);
 
-/* STATIONS in morph order */
-let STN=[]; const STATIONS_META=[
- {id:'sphere',col:'#EDE8DF'},{id:'fh',col:'#F0E2C8'},
- ...PROJECTS.map(p=>({id:p.id,col:p.col,proj:p})),
- {id:'knot',col:'#C9A9D4'},{id:'lines',col:'#F0B068'},{id:'eye',col:'#EDE8DF'}
-];
+/* ---- glass crystal with morph targets ---- */
+const base=new THREE.IcosahedronGeometry(2.1,6);  // smooth high-res sphere base
+const bp=base.attributes.position; const NV=bp.count;
+const STN=[ {nm:'PRISM',col:'#b9a8ff'}, {nm:'CORE',col:'#9b8cff'},
+  ...PROJECTS.map(p=>({nm:p.name.toUpperCase(),col:p.col,proj:p})),
+  {nm:'CRAFT',col:'#a0ffe0'}, {nm:'CONTACT',col:'#cdb8ff'} ];
+function makeTarget(i){ const a=new Float32Array(NV*3); const v=new THREE.Vector3();
+  const amp=0.10+((i*7)%5)*0.10, fr=0.7+((i*3)%4)*0.55, tw=(i-(STN.length/2))*0.10, lobes=2+(i%4);
+  for(let k=0;k<NV;k++){ v.fromBufferAttribute(bp,k); const dir=v.clone().normalize();
+    const n=Math.sin(dir.x*fr*3.0+i)*Math.cos(dir.y*fr*3.4)*Math.sin(dir.z*fr*3.0+i*1.7);
+    const ridge=Math.cos(Math.atan2(dir.z,dir.x)*lobes)*0.10;
+    const d=1+n*amp+ridge; const ang=v.y*tw; const cs=Math.cos(ang),sn=Math.sin(ang);
+    let x=v.x*cs - v.z*sn, z=v.x*sn + v.z*cs; a[k*3]=x*d; a[k*3+1]=v.y*d; a[k*3+2]=z*d; }
+  return a; }
+const morphs=STN.map((s,i)=>makeTarget(i));
+base.morphAttributes.position=morphs.map(arr=>new THREE.Float32BufferAttribute(arr,3));
+const mat=new THREE.MeshPhysicalMaterial({ color:0xffffff, metalness:0, roughness:0.06, transmission:1.0, thickness:1.8, ior:1.45,
+  iridescence:1.0, iridescenceIOR:1.32, iridescenceThicknessRange:[120,420], attenuationColor:new THREE.Color('#b9a8ff'), attenuationDistance:3.2,
+  clearcoat:1.0, clearcoatRoughness:0.18, envMapIntensity:1.5, flatShading:false, transparent:true });
+const crystal=new THREE.Mesh(base,mat); crystal.morphTargetInfluences=new Array(STN.length).fill(0); scene.add(crystal);
+/* a faint wire halo for extra depth */
+const halo=new THREE.Mesh(new THREE.IcosahedronGeometry(2.7,1), new THREE.MeshBasicMaterial({color:0x6a5acf,wireframe:true,transparent:true,opacity:0.07})); scene.add(halo);
 
-/* ---------------- point cloud ---------------- */
-const geo=new THREE.BufferGeometry();
-const seed=new Float32Array(N), rand=new Float32Array(N*3);
-for(let i=0;i<N;i++){ seed[i]=Math.random(); const t=Math.random()*Math.PI*2, ph=Math.acos(2*Math.random()-1); rand[i*3]=Math.sin(ph)*Math.cos(t); rand[i*3+1]=Math.cos(ph); rand[i*3+2]=Math.sin(ph)*Math.sin(t); }
-geo.setAttribute('position',new THREE.BufferAttribute(genSphere(),3));   // A
-geo.setAttribute('aNext',new THREE.BufferAttribute(genSphere().slice(),3)); // B
-geo.setAttribute('aSeed',new THREE.BufferAttribute(seed,1));
-geo.setAttribute('aRand',new THREE.BufferAttribute(rand,3));
-const uni={ uPhase:{value:0}, uBurst:{value:0}, uTime:{value:0}, uSize:{value:innerWidth<760?16:22}, uColA:{value:new THREE.Color('#EDE8DF')}, uColB:{value:new THREE.Color('#F0E2C8')}, uMouse:{value:new THREE.Vector2()} };
-const mat=new THREE.ShaderMaterial({ uniforms:uni, transparent:true, depthWrite:false, blending:THREE.AdditiveBlending,
-  vertexShader:`uniform float uPhase,uBurst,uTime,uSize; attribute vec3 aNext; attribute float aSeed; attribute vec3 aRand;
-   varying float vB; varying float vF;
-   void main(){ float f=clamp((uPhase - aSeed*0.4)/0.6,0.0,1.0); f=f*f*(3.0-2.0*f); vF=f;
-     vec3 p=mix(position,aNext,f);
-     float burst=sin(3.14159*uPhase)*uBurst;
-     p += aRand*burst*(2.2) + aRand*sin(uTime*1.5+aSeed*30.0)*burst*0.6;
-     vB=burst;
-     vec4 mv=modelViewMatrix*vec4(p,1.0);
-     gl_PointSize=uSize*(1.0+burst*1.6)*(1.0/-mv.z);
-     gl_Position=projectionMatrix*mv; }`,
-  fragmentShader:`precision mediump float; uniform vec3 uColA,uColB; varying float vB; varying float vF;
-   void main(){ float d=length(gl_PointCoord-0.5); if(d>0.5) discard; float a=smoothstep(0.5,0.0,d);
-     a*=(1.0 - vB*0.45); vec3 c=mix(uColA,uColB,vF); gl_FragColor=vec4(c, a*0.9); }`
-});
-const points=new THREE.Points(geo,mat); scene.add(points);
-
-/* ---------------- post ---------------- */
-const composer=new EffectComposer(renderer);
-composer.addPass(new RenderPass(scene,camera));
-const bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight), 0.85, 0.6, 0.15); composer.addPass(bloom);
-const rgb=new ShaderPass(RGBShiftShader); rgb.uniforms.amount.value=0.0; composer.addPass(rgb);
+/* post */
+const composer=new EffectComposer(renderer); composer.addPass(new RenderPass(scene,camera));
+const bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight),0.45,0.7,0.82); composer.addPass(bloom);
 composer.addPass(new OutputPass());
 
-/* ---------------- build remaining targets (progressive, non-blocking) ---------------- */
-const TARGETS={ sphere:geo.getAttribute('position').array };
-const buildQueue=[
- ['fh',genFH],['eye',genEye],['knot',genKnot],['lines',genLines],
- ...PROJECTS.map(p=>[p.id,()=>genUI(p.mock)])
-];
-setTimeout(()=>{ buildQueue.forEach(([id,fn])=>{ try{ TARGETS[id]=fn(); }catch(e){ console.warn('bake',id,e); TARGETS[id]=TARGETS.sphere; } });
-  STN=STATIONS_META.map(m=> TARGETS[m.id]||TARGETS.sphere); $('#lbar').style.right='0%'; ready(); }, 40);
-
-/* ---------------- scroll ---------------- */
-let target=0, prog=0, started=false;
-function readScroll(){ const max=document.documentElement.scrollHeight-innerHeight; target=max>0?Math.min(1,Math.max(0,scrollY/max)):0; }
+/* scroll + chapters */
+let target=0, prog=0; const NSEG=STN.length;
+function readScroll(){ const mx=document.documentElement.scrollHeight-innerHeight; target=mx>0?Math.min(1,Math.max(0,scrollY/mx)):0; }
 addEventListener('scroll',readScroll,{passive:true}); readScroll();
-const mouse=new THREE.Vector2();
-addEventListener('mousemove',e=>{ mouse.set(e.clientX/innerWidth-0.5, -(e.clientY/innerHeight-0.5)); });
-
-/* chapters: [domId, fromProg, toProg] */
-const NS=STATIONS_META.length; // 11
-const CH=[ ['c-intro',0,0.085],['c-mark',0.085,0.20],['c-work',0.20,0.66],['c-craft',0.66,0.78],['c-ethos',0.78,0.88],['c-contact',0.88,1.01] ];
-// rail
+const mouse=new THREE.Vector2(); addEventListener('mousemove',e=>mouse.set(e.clientX/innerWidth-0.5,-(e.clientY/innerHeight-0.5)));
+const CH=[ ['c-intro',0,0.10],['c-mark',0.10,0.22],['c-work',0.22,0.70],['c-craft',0.70,0.82],['c-contact',0.82,1.01] ];
 $('#rail').innerHTML=CH.map((c,i)=>`<button data-p="${(c[1]+c[2])/2}" aria-label="Chapter ${i+1}"></button>`).join('');
-$$('#rail button').forEach(b=>b.onclick=()=>{ const max=document.documentElement.scrollHeight-innerHeight; scrollTo({top:max*parseFloat(b.dataset.p),behavior:'smooth'}); });
-
-/* work chapter content updates with current project */
+$$('#rail button').forEach(b=>b.onclick=()=>{ const mx=document.documentElement.scrollHeight-innerHeight; scrollTo({top:mx*parseFloat(b.dataset.p),behavior:'smooth'}); });
 let curWork=-1;
-function workIdxFromProg(p){ const wc=CH[2]; const f=(p-wc[0])/(wc[1]-wc[0]); return Math.max(0,Math.min(5,Math.floor(f*6))); }
-function setWork(i){ i=Math.max(0,Math.min(PROJECTS.length-1, i|0)); if(i===curWork)return; curWork=i; const p=PROJECTS[i];
+function setWork(i){ i=Math.max(0,Math.min(5,i|0)); if(i===curWork)return; curWork=i; const p=PROJECTS[i];
   $('#c-work').innerHTML=`<div class="kick">Selected work · ${p.id}/06</div><h2>${p.name}</h2><div class="metric">${p.res}</div><p style="margin-top:8px">${p.sector}</p><div class="tags">${p.tech.map(t=>`<span>${t}</span>`).join('')}</div><span class="caselink" data-id="${p.id}">View case ↗</span>`;
   $('#c-work .caselink').onclick=()=>openProject(p.id); }
 setWork(0);
 
-/* ---------------- modal / form / cta ---------------- */
+/* modal / form / cta */
 let lastFocus=null;
 function openProject(id){ const p=PROJECTS.find(x=>x.id===id); if(!p)return; lastFocus=document.activeElement;
-  $('#m-pid').textContent='PROJECT_'+p.id; $('#m-name').textContent=p.name; $('#m-sec').textContent=p.sector;
-  $('#m-res').textContent=p.res; $('#m-prob').textContent=p.prob; $('#m-sol').textContent=p.sol;
-  $('#m-tech').innerHTML=p.tech.map(t=>`<span>${t}</span>`).join(''); $('#m-quote').innerHTML=`"${p.quote}"<span class="by">— ${p.by}</span>`;
+  $('#md-pid').textContent='PROJECT_'+p.id; $('#md-name').textContent=p.name; $('#md-sec').textContent=p.sector; $('#md-res').textContent=p.res;
+  $('#md-prob').textContent=p.prob; $('#md-sol').textContent=p.sol; $('#md-tech').innerHTML=p.tech.map(t=>`<span>${t}</span>`).join(''); $('#md-quote').innerHTML=`"${p.quote}"<span class="by">— ${p.by}</span>`;
   $('#modal').classList.add('show'); $('#mclose').focus(); }
 function closeModal(){ $('#modal').classList.remove('show'); lastFocus&&lastFocus.focus(); }
 $('#mclose').onclick=closeModal; $('#modal').addEventListener('click',e=>{ if(e.target===$('#modal'))closeModal(); });
 addEventListener('keydown',e=>{ if(e.key==='Escape')closeModal(); });
-function gotoContact(){ const max=document.documentElement.scrollHeight-innerHeight; scrollTo({top:max*0.97,behavior:'smooth'}); }
-$('#startbtn').onclick=gotoContact; $('#brandlink').onclick=e=>{e.preventDefault();scrollTo({top:0,behavior:'smooth'});};
+$('#startbtn').onclick=()=>{ const mx=document.documentElement.scrollHeight-innerHeight; scrollTo({top:mx*0.96,behavior:'smooth'}); };
+$('#brandlink').onclick=e=>{e.preventDefault();scrollTo({top:0,behavior:'smooth'});};
 $('#cform').addEventListener('submit',e=>{ e.preventDefault(); const f=e.target; if(!f.checkValidity()){f.reportValidity();return;}
   location.href=`mailto:${EMAIL}?subject=${encodeURIComponent('New brief — '+f.name.value)}&body=${encodeURIComponent(f.brief.value+'\n\n— '+f.name.value+' ('+f.email.value+')')}`;
   toast('Opening your email — or write us at '+EMAIL); });
 let tt; function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove('show'),4000); }
 
-/* ---------------- loader / ready ---------------- */
-function ready(){ $('#load').classList.add('gone'); started=true; }
-
-/* ---------------- loop ---------------- */
-let segCur=-1, frameAvg=16, guardDone=false;
-const cA=new THREE.Color(), cB=new THREE.Color();
-let lastT=performance.now();
-function frame(){ const now=performance.now(); const dt=Math.min((now-lastT)/1000,0.05); lastT=now;
-  frameAvg=frameAvg*0.9+(dt*1000)*0.1;
-  prog += (target-prog)*0.075;
-  const vel=Math.abs(target-prog);
-  uni.uTime.value+=dt;
-
-  if(STN.length){
-    const t=prog*(NS-1); let seg=Math.min(NS-2,Math.floor(t)); let f=t-seg;
-    if(seg!==segCur){ segCur=seg; geo.getAttribute('position').array.set(STN[seg]); geo.getAttribute('position').needsUpdate=true;
-      geo.getAttribute('aNext').array.set(STN[seg+1]); geo.getAttribute('aNext').needsUpdate=true; }
-    uni.uPhase.value=f;
-    cA.set(STATIONS_META[seg].col); cB.set(STATIONS_META[seg+1].col); uni.uColA.value.copy(cA); uni.uColB.value.copy(cB);
-    uni.uBurst.value = 0.6 + Math.min(vel*40,2.2);  // base + velocity energy
-    rgb.uniforms.amount.value = Math.min(vel*0.06,0.004);
-  }
-  points.rotation.y += dt*0.05 + vel*0.5;
-  points.rotation.x = mouse.y*0.25; points.position.x = mouse.x*0.6;
-  uni.uMouse.value.set(mouse.x,mouse.y);
-
+/* loop */
+$('#lbar').style.right='0%'; setTimeout(()=>$('#load').classList.add('gone'),350);
+const cA=new THREE.Color(), cB=new THREE.Color(), curCol=new THREE.Color('#b9a8ff');
+const clock=new THREE.Clock();
+function frame(){ const dt=Math.min(clock.getDelta(),0.05); const t=clock.elapsedTime;
+  prog += (target-prog)*0.07; const vel=Math.abs(target-prog);
+  const f=prog*(NSEG-1); let seg=Math.min(NSEG-2,Math.floor(f)); let lf=f-seg; const sf=lf*lf*(3-2*lf);
+  const inf=crystal.morphTargetInfluences; for(let i=0;i<inf.length;i++) inf[i]=0; inf[seg]=1-sf; inf[seg+1]=sf;
+  cA.set(STN[seg].col); cB.set(STN[seg+1].col); curCol.copy(cA).lerp(cB,sf); mat.attenuationColor.copy(curCol);
+  mat.iridescence=0.7+0.3*Math.sin(t*0.3);
+  crystal.rotation.y += dt*(reduce?0.06:0.16) + vel*1.2; crystal.rotation.x = Math.sin(t*0.25)*0.12 + mouse.y*0.25; crystal.rotation.z += dt*0.02;
+  crystal.position.x += ((mouse.x*0.5)-crystal.position.x)*0.05;
+  const breathe=1+Math.sin(t*0.8)*0.02; crystal.scale.setScalar(breathe);
+  halo.rotation.y-=dt*0.04; halo.rotation.x+=dt*0.02; halo.position.copy(crystal.position);
+  camera.position.z += ((7 - Math.sin(prog*Math.PI)*0.7) - camera.position.z)*0.04; camera.lookAt(0,0,0);
+  bloom.strength = 0.42 + vel*1.5;
   // chapters
-  let active='SPHERE';
-  CH.forEach(c=>{ const on=prog>=c[1]&&prog<c[2]; $('#'+c[0]).classList.toggle('on',on); });
-  if(prog>=CH[2][1]&&prog<CH[2][2]) setWork(workIdxFromProg(prog));
-  // form label
-  const segNow=Math.min(NS-1,Math.round(prog*(NS-1))); active=(STATIONS_META[segNow].proj?STATIONS_META[segNow].proj.name:STATIONS_META[segNow].id).toUpperCase();
-  $('#fl-form').textContent=active; $('#fl-pct').textContent=String(Math.round(prog*100)).padStart(2,'0');
-  $('#scrollcue').style.opacity = prog>0.04?0:1;
-  $$('#rail button').forEach((b,i)=>b.classList.toggle('on', prog>=CH[i][1]&&prog<CH[i][2]));
-
+  CH.forEach(c=>$('#'+c[0]).classList.toggle('on', prog>=c[1]&&prog<c[2]));
+  if(prog>=CH[2][1]&&prog<CH[2][2]){ const wf=(prog-CH[2][1])/(CH[2][1+1]-CH[2][1]); setWork(Math.floor(((prog-CH[2][1])/(CH[2][2]-CH[2][1]))*6)); }
+  const segNow=Math.min(NSEG-1,Math.round(prog*(NSEG-1)));
+  $('#m-form').textContent=STN[segNow].nm; $('#m-pct').textContent=String(Math.round(prog*100)).padStart(2,'0');
+  $('#cue').style.opacity=prog>0.04?0:1;
+  $$('#rail button').forEach((b,i)=>b.classList.toggle('on',prog>=CH[i][1]&&prog<CH[i][2]));
   composer.render();
-  // fps guard (one-way, with hysteresis-ish)
-  if(!guardDone && uni.uTime.value>3 && frameAvg>26){ guardDone=true; bloom.enabled=false; }
-  window.__dbg={ prog:+prog.toFixed(3), seg:segCur, form:active, N, stations:STN.length, fps:Math.round(1000/Math.max(1,frameAvg)) };
+  window.__dbg={prog:+prog.toFixed(3),seg,form:STN[segNow].nm,nseg:NSEG};
 }
-window.__tick=frame; window.__setProg=(p)=>{ target=Math.max(0,Math.min(1,p)); };
 function loop(){ requestAnimationFrame(loop); frame(); }
+window.__tick=frame; window.__setProg=p=>{target=Math.max(0,Math.min(1,p));};
+window.__sample=()=>{ frame(); const gl=renderer.getContext(); const w=renderer.domElement.width,h=renderer.domElement.height; const px=new Uint8Array(4*100); gl.readPixels((w/2)|0,(h/2)|0,10,10,gl.RGBA,gl.UNSIGNED_BYTE,px); let r=0,g=0,b=0,mn=255,mx=0; for(let i=0;i<100;i++){ r+=px[i*4];g+=px[i*4+1];b+=px[i*4+2]; const lum=px[i*4]+px[i*4+1]+px[i*4+2]; mn=Math.min(mn,lum);mx=Math.max(mx,lum);} return {r:(r/100)|0,g:(g/100)|0,b:(b/100)|0,contrast:mx-mn}; };
 loop();
 addEventListener('resize',()=>{ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight); composer.setSize(innerWidth,innerHeight); readScroll(); });
-$('#brand').setAttribute('role','banner');
 }
 </script>
 </body>
