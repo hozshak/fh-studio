@@ -107,7 +107,7 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible,input:focus-visibl
 .fb .case{ border-top:1px solid var(--line); padding:30px 0; }
 .fb .case h3{ font-weight:700; font-size:26px; text-transform:uppercase; } .fb .case .res{ color:var(--amber); font-weight:700; }
 .fb .case p{ color:#cfcbc2; line-height:1.6; margin:8px 0; }
-@media (prefers-reduced-motion: reduce){ #gl,#scroller,.chap,#rail{ display:none; } #fallback{ display:block; } #load{ display:none; } }
+@media (prefers-reduced-motion: reduce){ .grain{ display:none; } }
 </style>
 </head>
 <body>
@@ -237,9 +237,8 @@ $('#fb-cases').innerHTML=PROJECTS.map(p=>`<article class="case"><h3>${p.name}</h
 
 /* ---------------- WebGL detect ---------------- */
 function hasWebGL(){ try{ const c=document.createElement('canvas'); return !!(window.WebGLRenderingContext&&(c.getContext('webgl2')||c.getContext('webgl'))); }catch(e){ return false; } }
-if(reduce || !hasWebGL()){ $('#fallback').classList.add('show'); $('#load').classList.add('gone'); $$('.hud,#rail').forEach(e=>e.style.display='none'); }
+if(!hasWebGL()){ $('#fallback').classList.add('show'); $('#load').classList.add('gone'); $$('.hud,#rail').forEach(e=>e.style.display='none'); }
 else boot();
-window.__forceBoot=()=>{ document.getElementById('fallback').classList.remove('show'); document.getElementById('gl').style.display='block'; boot(); };
 
 function boot(){
 /* ---------------- perf tier ---------------- */
