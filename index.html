@@ -11,7 +11,7 @@
   :root{ --fg:#ffe9f6; --mut:#c98ab4; --accent:#ff5cc8; }
   html,body{height:100%;width:100%;background:#140510;overflow:hidden;
     font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--fg);}
-  #c{position:fixed;inset:0;display:block;width:100vw;height:100vh;}
+  #c{position:fixed;inset:0;display:block;width:100vw;height:100vh;cursor:pointer;}
   .brand{position:fixed;left:32px;top:28px;z-index:5;}
   .brand .logo{font-size:20px;font-weight:700;letter-spacing:.34em;text-shadow:0 0 24px rgba(255,92,200,.5);}
   .brand .claim{margin-top:8px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);}
@@ -27,7 +27,7 @@
 <body>
 <canvas id="c"></canvas>
 <div class="brand"><div class="logo">FH&nbsp;STUDIO</div><div class="claim">Pink Cave</div></div>
-<div class="corner bl">Ziehen = umsehen &nbsp;·&nbsp; Scrollen = zoom</div>
+<div class="corner bl">Klick die Figur an &nbsp;·&nbsp; Ziehen = umsehen &nbsp;·&nbsp; Scrollen = zoom</div>
 <div id="load"><div class="pct" id="pct">0%</div><div class="lbl">Höhle lädt</div></div>
 <div id="err"></div>
 
@@ -58,7 +58,7 @@
 
   var controls=new THREE.OrbitControls(camera,canvas);
   controls.enableDamping=true; controls.dampingFactor=0.07; controls.minDistance=2; controls.maxDistance=18; controls.maxPolarAngle=Math.PI*0.96;
-  controls.autoRotate=true; controls.autoRotateSpeed=0.5;
+  controls.autoRotate=true; controls.autoRotateSpeed=0.4;
 
   // pink env for model reflections
   var ecv=document.createElement('canvas'); ecv.width=128; ecv.height=512; var ex=ecv.getContext('2d');
@@ -68,98 +68,120 @@
   var etex=new THREE.CanvasTexture(ecv); etex.mapping=THREE.EquirectangularReflectionMapping;
   var pmrem=new THREE.PMREMGenerator(renderer); scene.environment=pmrem.fromEquirectangular(etex).texture; etex.dispose();
 
-  // ---- rockify helper: lumpy organic displacement ----
+  // ---- cave (unchanged atmosphere) ----
   function rockify(geo,amp,freq){ var pos=geo.attributes.position, v=new THREE.Vector3(), n=new THREE.Vector3();
     for(var i=0;i<pos.count;i++){ v.fromBufferAttribute(pos,i); n.copy(v).normalize();
       var d=Math.sin(n.x*freq)*Math.cos(n.y*freq*1.3)*Math.sin(n.z*freq*0.7)
-           +0.5*Math.sin(n.x*freq*2.1+1.0)*Math.sin(n.z*freq*1.7+0.5)
-           +0.25*Math.cos(n.y*freq*3.3);
+           +0.5*Math.sin(n.x*freq*2.1+1.0)*Math.sin(n.z*freq*1.7+0.5)+0.25*Math.cos(n.y*freq*3.3);
       v.addScaledVector(n,d*amp); pos.setXYZ(i,v.x,v.y,v.z); }
     pos.needsUpdate=true; geo.computeVertexNormals(); }
-
-  // ---- cave shell (inside of a rocky sphere) ----
   var caveGeo=new THREE.IcosahedronGeometry(16,24); rockify(caveGeo,2.6,3.2);
-  var caveMat=new THREE.MeshStandardMaterial({color:0x3a0d28,roughness:0.95,metalness:0.0,side:THREE.BackSide,
-    emissive:0x400826,emissiveIntensity:0.35});
-  var cave=new THREE.Mesh(caveGeo,caveMat); cave.position.y=6; scene.add(cave);
-
-  // ---- rocky floor ----
+  var cave=new THREE.Mesh(caveGeo,new THREE.MeshStandardMaterial({color:0x3a0d28,roughness:0.95,metalness:0.0,side:THREE.BackSide,emissive:0x400826,emissiveIntensity:0.35}));
+  cave.position.y=6; scene.add(cave);
   var floorGeo=new THREE.PlaneGeometry(40,40,80,80); floorGeo.rotateX(-Math.PI/2);
   (function(){ var pos=floorGeo.attributes.position, v=new THREE.Vector3();
     for(var i=0;i<pos.count;i++){ v.fromBufferAttribute(pos,i); var r=Math.sqrt(v.x*v.x+v.z*v.z);
-      var y=Math.sin(v.x*0.5)*Math.cos(v.z*0.5)*0.25+Math.sin(r*0.8)*0.15+ (Math.random()*0.06);
-      pos.setY(i,y); } pos.needsUpdate=true; floorGeo.computeVertexNormals(); })();
+      pos.setY(i, Math.sin(v.x*0.5)*Math.cos(v.z*0.5)*0.25+Math.sin(r*0.8)*0.15+Math.random()*0.06); }
+    pos.needsUpdate=true; floorGeo.computeVertexNormals(); })();
   var floor=new THREE.Mesh(floorGeo,new THREE.MeshStandardMaterial({color:0x2a0820,roughness:0.9,metalness:0.0,emissive:0x250617,emissiveIntensity:0.2}));
   floor.position.y=-0.02; floor.receiveShadow=true; scene.add(floor);
-
-  // ---- pink lighting ----
   scene.add(new THREE.AmbientLight(0xff7ad0,0.5));
   var key=new THREE.SpotLight(0xff5cc8,40,40,Math.PI*0.4,0.6,1.2); key.position.set(4,9,5); key.castShadow=true;
   key.shadow.mapSize.set(2048,2048); key.shadow.bias=-0.0005; scene.add(key);
   var p1=new THREE.PointLight(0xff2e9a,30,30,2); p1.position.set(-6,4,-3); scene.add(p1);
   var p2=new THREE.PointLight(0xff8ad8,22,28,2); p2.position.set(6,3,-5); scene.add(p2);
   var p3=new THREE.PointLight(0xbb44ff,18,26,2); p3.position.set(0,2,7); scene.add(p3);
-
-  // ---- glowing pink crystals ----
-  var crystals=[];
-  var cgeo=new THREE.OctahedronGeometry(0.4,0);
+  var crystals=[], cgeo=new THREE.OctahedronGeometry(0.4,0);
   for(var ci=0;ci<14;ci++){ var hue=0.86+Math.random()*0.1;
     var cm=new THREE.MeshStandardMaterial({color:new THREE.Color().setHSL(hue,1,0.6),emissive:new THREE.Color().setHSL(hue,1,0.55),emissiveIntensity:1.6,roughness:0.3,metalness:0.1});
     var cr=new THREE.Mesh(cgeo,cm); var ang=Math.random()*6.283, rad=5+Math.random()*8;
     cr.position.set(Math.cos(ang)*rad, Math.random()*5, Math.sin(ang)*rad); cr.scale.setScalar(0.5+Math.random()*1.4);
     cr.rotation.set(Math.random()*3,Math.random()*3,Math.random()*3); scene.add(cr); crystals.push(cr); }
-
-  // ---- floating dust particles ----
   var PN=600, pg=new THREE.BufferGeometry(), pp=new Float32Array(PN*3);
   for(var p=0;p<PN;p++){ pp[p*3]=(Math.random()-0.5)*30; pp[p*3+1]=Math.random()*12; pp[p*3+2]=(Math.random()-0.5)*30; }
   pg.setAttribute('position',new THREE.BufferAttribute(pp,3));
   var dust=new THREE.Points(pg,new THREE.PointsMaterial({color:0xff9ad8,size:0.05,transparent:true,opacity:0.6,blending:THREE.AdditiveBlending,depthWrite:false}));
   scene.add(dust);
 
-  // ---- load model ----
+  // ---- load character (NOT optimized — as provided) ----
   var loader=new THREE.GLTFLoader();
   if(typeof MeshoptDecoder!=='undefined') loader.setMeshoptDecoder(MeshoptDecoder);
-  var MODEL=null, baseY=0, mixer=null, waveAction=null;
-  loader.load('robot.glb', function(gltf){
+  var MODEL=null, baseY=0, baseScale=1, modelH=1;
+  loader.load('char.glb', function(gltf){
     MODEL=gltf.scene;
     var box=new THREE.Box3().setFromObject(MODEL); var size=box.getSize(new THREE.Vector3());
-    var maxDim=Math.max(size.x,size.y,size.z)||1; var s=3.4/maxDim; MODEL.scale.setScalar(s);
+    var maxDim=Math.max(size.x,size.y,size.z)||1; baseScale=3.4/maxDim; MODEL.scale.setScalar(baseScale);
     box.setFromObject(MODEL); size=box.getSize(new THREE.Vector3()); var center=box.getCenter(new THREE.Vector3());
-    MODEL.position.x+=-center.x; MODEL.position.z+=-center.z; MODEL.position.y+=-box.min.y; baseY=MODEL.position.y;
+    MODEL.position.x+=-center.x; MODEL.position.z+=-center.z; MODEL.position.y+=-box.min.y; baseY=MODEL.position.y; modelH=size.y;
     MODEL.traverse(function(o){ if(o.isMesh){ o.castShadow=true; o.receiveShadow=true; if(o.material) o.material.envMapIntensity=1.0; } });
     scene.add(MODEL);
-    // play the "Wave" animation — the hand actually waves
-    if(gltf.animations && gltf.animations.length){
-      mixer=new THREE.AnimationMixer(MODEL);
-      var clip=THREE.AnimationClip.findByName(gltf.animations,'Wave')||gltf.animations[0];
-      waveAction=mixer.clipAction(clip); waveAction.play();
-      window.__mixer=mixer; window.__model=MODEL; window.__clip=clip.name;
-    }
-    var h=size.y; controls.target.set(0,h*0.55,0);
-    camera.position.set(h*0.9,h*0.6,h*1.7); controls.update();
+    controls.target.set(0,modelH*0.55,0);
+    camera.position.set(modelH*0.8,modelH*0.6,modelH*1.7); controls.update();
     var l=document.getElementById('load'); if(l){ l.classList.add('hide'); setTimeout(function(){ if(l.parentNode)l.parentNode.removeChild(l); },900); }
   }, function(xhr){ if(xhr&&xhr.total){ var el=document.getElementById('pct'); if(el) el.textContent=Math.round(xhr.loaded/xhr.total*100)+'%'; } },
      function(err){ fail('Modell konnte nicht geladen werden.<br><small>'+(err&&err.message?err.message:err)+'</small>'); });
+
+  // ---- click-to-react (no rig needed): raycast → brief reaction + emote ----
+  var raycaster=new THREE.Raycaster(), pointer=new THREE.Vector2();
+  var react={active:false,t0:0,dur:0.85,jump:1,squash:1,tiltZ:0,tiltX:0};
+  function emoteTex(ch,color){ var c=document.createElement('canvas'); c.width=c.height=128; var g=c.getContext('2d');
+    g.font='90px serif'; g.textAlign='center'; g.textBaseline='middle'; g.shadowColor=color; g.shadowBlur=20; g.fillText(ch,64,68);
+    return new THREE.CanvasTexture(c); }
+  var emotes=[]; // active floating emote sprites
+  function spawnEmote(ch,color,worldPos){ var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:emoteTex(ch,color),transparent:true,depthTest:false}));
+    sp.position.copy(worldPos); sp.scale.setScalar(0.9); sp.userData={t0:clock.elapsedTime,life:1.1}; scene.add(sp); emotes.push(sp); }
+  function startReaction(frac, worldPoint){
+    react.active=true; react.t0=clock.elapsedTime;
+    var ch,col;
+    if(frac>0.66){ ch='❤'; col='#ff4fae'; react.jump=0.5; react.squash=1.2; react.tiltZ=0.10; }     // head → happy
+    else if(frac>0.33){ ch='✨'; col='#ffd1ef'; react.jump=0.9; react.squash=1.6; react.tiltZ=0.16; } // torso → giggle
+    else { ch='!'; col='#ff7ad0'; react.jump=1.3; react.squash=0.8; react.tiltZ=-0.12; }              // legs → surprised
+    react.tiltX=(Math.random()-0.5)*0.12;
+    spawnEmote(ch,col,new THREE.Vector3(0, baseY+modelH*0.5*baseScale+0.6, 0).add(MODEL.position).setX(MODEL.position.x));
+  }
+  canvas.addEventListener('pointerdown',function(e){ if(!MODEL) return; var rect=canvas.getBoundingClientRect();
+    pointer.x=((e.clientX-rect.left)/rect.width)*2-1; pointer.y=-((e.clientY-rect.top)/rect.height)*2+1;
+    raycaster.setFromCamera(pointer,camera); var hits=raycaster.intersectObject(MODEL,true);
+    if(hits.length){ var localY=hits[0].point.y - baseY; var frac=Math.max(0,Math.min(1, localY/(modelH*baseScale||1))); startReaction(frac,hits[0].point); } });
+
+  // expose for headless test
+  window.__reactTest=function(frac){ if(MODEL) startReaction(frac==null?0.8:frac,new THREE.Vector3(0,1,0)); return react.active; };
 
   fitSize(); window.addEventListener('resize',fitSize);
   if(window.ResizeObserver) new ResizeObserver(fitSize).observe(canvas);
 
   var clock=new THREE.Clock();
+  function easeOutBack(x){ var c1=1.70158,c3=c1+1; return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2); }
   function render(){ if(canvas.width===0||canvas.height===0) fitSize();
-    var dt=clock.getDelta(), t=clock.elapsedTime;
-    if(mixer) mixer.update(dt);                 // drives the Wave animation (hand waves)
-    // pulsing crystals + lights
-    for(var i=0;i<crystals.length;i++){ var c=crystals[i]; c.rotation.y+=0.005; c.material.emissiveIntensity=1.2+Math.sin(t*2+i)*0.6; }
+    var t=clock.getElapsedTime();
+    if(MODEL){
+      // gentle idle breathing
+      var br=Math.sin(t*1.6)*0.012;
+      var sc=baseScale*(1+br);
+      var ry=0, py=baseY, rz=0, rx=0;
+      if(react.active){ var e=(t-react.t0)/react.dur;
+        if(e>=1){ react.active=false; }
+        else { var s=Math.sin(e*Math.PI); // up then down
+          py=baseY + s*0.35*react.jump;
+          sc=baseScale*(1+ s*0.10 + (react.squash-1)*Math.sin(e*Math.PI*2)*0.04);
+          rz=react.tiltZ*Math.sin(e*Math.PI*1.5); rx=react.tiltX*s; }
+      }
+      MODEL.position.y=py; MODEL.scale.setScalar(sc); MODEL.rotation.z=rz; MODEL.rotation.x=rx;
+    }
+    // emotes float up + fade
+    for(var i=emotes.length-1;i>=0;i--){ var sp=emotes[i]; var a=(t-sp.userData.t0)/sp.userData.life;
+      if(a>=1){ scene.remove(sp); sp.material.map.dispose(); sp.material.dispose(); emotes.splice(i,1); continue; }
+      sp.position.y+=0.012; sp.material.opacity=1-a; sp.scale.setScalar(0.9+a*0.5); }
+    for(var k=0;k<crystals.length;k++){ crystals[k].rotation.y+=0.005; crystals[k].material.emissiveIntensity=1.2+Math.sin(t*2+k)*0.6; }
     p1.intensity=24+Math.sin(t*1.3)*8; p2.intensity=18+Math.sin(t*1.7+1)*6;
-    dust.rotation.y=t*0.02; dust.position.y=Math.sin(t*0.3)*0.5;
+    dust.rotation.y=t*0.02;
     controls.update(); renderer.render(scene,camera);
   }
   function loop(){ requestAnimationFrame(loop); render(); } loop();
 
   window.__tick=function(){ render(); };
-  window.__diag=function(){ var sz=new THREE.Vector2(); renderer.getSize(sz); var m=0;
-    if(MODEL) MODEL.traverse(function(o){ if(o.isMesh)m++; });
-    return {size:[sz.x,sz.y],loaded:!!MODEL,modelMeshes:m,triangles:renderer.info.render.triangles,calls:renderer.info.render.calls}; };
+  window.__diag=function(){ var sz=new THREE.Vector2(); renderer.getSize(sz); var m=0; if(MODEL)MODEL.traverse(function(o){if(o.isMesh)m++;});
+    return {size:[sz.x,sz.y],loaded:!!MODEL,modelMeshes:m,triangles:renderer.info.render.triangles,reacting:react.active,emotes:emotes.length}; };
 })();
 </script>
 </body>
