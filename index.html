@@ -22,6 +22,8 @@ canvas{ display:block; }
 .glowp{ color:var(--pink); }
 .glowc{ color:var(--cyan); }
 a{ color:inherit; text-decoration:none; }
+.sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+a:focus-visible,button:focus-visible,[tabindex]:focus-visible,input:focus-visible,textarea:focus-visible{ outline:2px solid var(--pink); outline-offset:3px; border-radius:6px; }
 
 /* dezente Tiefen-Vignette (hell, kein Schwarz; Grain entfernt -> ruhiger & schneller) */
 .fx{ position:fixed; inset:0; z-index:3; pointer-events:none; }
@@ -138,7 +140,8 @@ a{ color:inherit; text-decoration:none; }
 </script>
 </head>
 <body>
-<canvas id="gl"></canvas>
+<canvas id="gl" aria-hidden="true"></canvas>
+<h1 class="sr-only">STUDIO H✕F — award-winning, motion-driven websites by Hozan Shaker &amp; Fynn Beckmann. Explore THE GRID, an interactive gallery of our work.</h1>
 <div class="grain fx"></div><div class="vig fx"></div>
 
 <!-- HUD -->
@@ -159,8 +162,8 @@ a{ color:inherit; text-decoration:none; }
 <div class="toast" id="toast"></div>
 
 <!-- project panel -->
-<div class="panel" id="pjpanel"><div class="sheet">
-  <div class="close" id="pjclose">[ ESC ]</div>
+<div class="panel" id="pjpanel" role="dialog" aria-modal="true" aria-label="Project case study"><div class="sheet">
+  <div class="close" id="pjclose" role="button" tabindex="0" aria-label="Close project">[ ESC ]</div>
   <div class="pj-top"><span class="pj-id" id="pjid"></span><span class="pj-sec" id="pjsec"></span></div>
   <div class="pj-name disp" id="pjname"></div><div class="pj-client" id="pjclient"></div>
   <div class="pj-preview"><canvas id="pjcanvas" width="1280" height="720"></canvas></div>
@@ -175,16 +178,16 @@ a{ color:inherit; text-decoration:none; }
 </div></div>
 
 <!-- contact panel -->
-<div class="panel" id="ctpanel"><div class="sheet">
-  <div class="close" id="ctclose">[ ESC ]</div>
+<div class="panel" id="ctpanel" role="dialog" aria-modal="true" aria-label="Start a project"><div class="sheet">
+  <div class="close" id="ctclose" role="button" tabindex="0" aria-label="Close contact">[ ESC ]</div>
   <div class="c-cols">
     <div>
       <div class="c-head disp">You've seen what we build.<br>Now imagine <span class="glowp">yours.</span></div>
       <div class="c-sub" id="csub"></div>
       <form class="c-form" id="cform">
-        <input name="name" placeholder="Your name" required>
-        <input name="email" type="email" placeholder="Email" required>
-        <textarea name="brief" rows="3" placeholder="What do you want to build?" required></textarea>
+        <input name="name" placeholder="Your name" required aria-label="Your name" autocomplete="name">
+        <input name="email" type="email" placeholder="Email" required aria-label="Your email" autocomplete="email">
+        <textarea name="brief" rows="3" placeholder="What do you want to build?" required aria-label="What do you want to build?"></textarea>
         <button class="c-send disp" type="submit">Send the brief →</button>
       </form>
       <div class="c-alt" id="calt"></div>
@@ -201,7 +204,7 @@ a{ color:inherit; text-decoration:none; }
 
 <!-- all-work / no-webgl fallback (also SEO content) -->
 <div id="allwork"><div class="aw-wrap">
-  <div class="close" id="awclose" style="right:6vw;top:5vh;z-index:46">[ CLOSE ]</div>
+  <div class="close" id="awclose" role="button" tabindex="0" aria-label="Close" style="right:6vw;top:5vh;z-index:46">[ CLOSE ]</div>
   <h1 class="aw-hero disp">We build websites people<br>walk away <span class="grad">remembering.</span></h1>
   <p class="aw-sub" id="awsub"></p>
   <div id="awlist"></div>
@@ -669,6 +672,10 @@ function loop(){ requestAnimationFrame(loop); frame(Math.min(clock.getDelta(),0.
 loop();
 window.__tick=(d)=>frame(typeof d==='number'?d:0.05);
 addEventListener('resize',()=>{ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight); composer.setSize(innerWidth,innerHeight); });
+/* a11y (ui-ux-pro-max): keyboard-activate close buttons + label brand/CTA */
+document.querySelectorAll('.close').forEach(el=>el.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); el.click(); } }));
+(function(){ const b=document.querySelector('#tl .brand'); if(b){ b.setAttribute('role','button'); b.setAttribute('tabindex','0'); b.setAttribute('aria-label','Studio H✕F'); }
+  const c=$('cta'); if(c) c.setAttribute('aria-label','Start a project — open the contact form'); })();
 </script>
 </body>
 </html>
