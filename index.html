@@ -58,6 +58,7 @@
 
   var controls=new THREE.OrbitControls(camera,canvas);
   controls.enableDamping=true; controls.dampingFactor=0.07; controls.minDistance=2; controls.maxDistance=18; controls.maxPolarAngle=Math.PI*0.96;
+  controls.autoRotate=true; controls.autoRotateSpeed=0.5;
 
   // pink env for model reflections
   var ecv=document.createElement('canvas'); ecv.width=128; ecv.height=512; var ex=ecv.getContext('2d');
@@ -118,8 +119,8 @@
   // ---- load model ----
   var loader=new THREE.GLTFLoader();
   if(typeof MeshoptDecoder!=='undefined') loader.setMeshoptDecoder(MeshoptDecoder);
-  var MODEL=null, baseY=0;
-  loader.load('model.glb', function(gltf){
+  var MODEL=null, baseY=0, mixer=null, waveAction=null;
+  loader.load('robot.glb', function(gltf){
     MODEL=gltf.scene;
     var box=new THREE.Box3().setFromObject(MODEL); var size=box.getSize(new THREE.Vector3());
     var maxDim=Math.max(size.x,size.y,size.z)||1; var s=3.4/maxDim; MODEL.scale.setScalar(s);
@@ -127,7 +128,14 @@
     MODEL.position.x+=-center.x; MODEL.position.z+=-center.z; MODEL.position.y+=-box.min.y; baseY=MODEL.position.y;
     MODEL.traverse(function(o){ if(o.isMesh){ o.castShadow=true; o.receiveShadow=true; if(o.material) o.material.envMapIntensity=1.0; } });
     scene.add(MODEL);
-    var h=size.y; controls.target.set(0,h*0.5,0);
+    // play the "Wave" animation — the hand actually waves
+    if(gltf.animations && gltf.animations.length){
+      mixer=new THREE.AnimationMixer(MODEL);
+      var clip=THREE.AnimationClip.findByName(gltf.animations,'Wave')||gltf.animations[0];
+      waveAction=mixer.clipAction(clip); waveAction.play();
+      window.__mixer=mixer; window.__model=MODEL; window.__clip=clip.name;
+    }
+    var h=size.y; controls.target.set(0,h*0.55,0);
     camera.position.set(h*0.9,h*0.6,h*1.7); controls.update();
     var l=document.getElementById('load'); if(l){ l.classList.add('hide'); setTimeout(function(){ if(l.parentNode)l.parentNode.removeChild(l); },900); }
   }, function(xhr){ if(xhr&&xhr.total){ var el=document.getElementById('pct'); if(el) el.textContent=Math.round(xhr.loaded/xhr.total*100)+'%'; } },
@@ -138,9 +146,8 @@
 
   var clock=new THREE.Clock();
   function render(){ if(canvas.width===0||canvas.height===0) fitSize();
-    var t=clock.getElapsedTime();
-    // model idle motion (whole body — single mesh, no rig): gentle turn, bob, sway
-    if(MODEL){ MODEL.rotation.y=Math.sin(t*0.3)*0.5; MODEL.position.y=baseY+Math.sin(t*1.4)*0.05; MODEL.rotation.z=Math.sin(t*0.9)*0.04; }
+    var dt=clock.getDelta(), t=clock.elapsedTime;
+    if(mixer) mixer.update(dt);                 // drives the Wave animation (hand waves)
     // pulsing crystals + lights
     for(var i=0;i<crystals.length;i++){ var c=crystals[i]; c.rotation.y+=0.005; c.material.emissiveIntensity=1.2+Math.sin(t*2+i)*0.6; }
     p1.intensity=24+Math.sin(t*1.3)*8; p2.intensity=18+Math.sin(t*1.7+1)*6;
