@@ -106,7 +106,7 @@
       _clip.tracks=_clip.tracks.filter(function(t){ return !/\.position$/.test(t.name); }); // strip root motion → walk in place
       walk=mixer.clipAction(_clip); walk.play(); walk.time=0; walk.paused=true; mixer.update(0); }
     var _sph=new THREE.Sphere(); box.setFromObject(MODEL); box.getBoundingSphere(_sph); var _R=_sph.radius||1;
-    var _fov=camera.fov*Math.PI/180; var _dist=(_R/Math.sin(_fov/2))*2.6;   // generous margin → model small & fully in frame
+    var _fov=camera.fov*Math.PI/180; var _dist=(_R/Math.sin(_fov/2))*5.0;   // large margin → model very small in frame
     fitY=_sph.center.y;                                                       // consistent look-at height for the follow cam
     controls.minDistance=_dist*0.4; controls.maxDistance=_dist*3;            // don't let maxDistance clamp the fit
     controls.target.set(_sph.center.x,fitY,_sph.center.z); camera.position.set(_sph.center.x,fitY+_R*0.12,_sph.center.z+_dist); controls.update(); prevPos.copy(MODEL.position);
