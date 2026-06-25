@@ -4,180 +4,140 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FH STUDIO — Hozan Shaker × Fynn Beckmann</title>
-<meta name="description" content="FH Studio — an independent web design studio by Hozan Shaker & Fynn Beckmann.">
-<meta property="og:title" content="FH STUDIO"><meta property="og:description" content="Independent web design studio · Hozan Shaker × Fynn Beckmann"><meta property="og:type" content="website">
+<meta name="description" content="FH Studio — an independent web design studio by Hozan Shaker & Fynn Beckmann. We build the future of the web.">
+<meta property="og:title" content="FH STUDIO"><meta property="og:description" content="We build the future of the web · Hozan Shaker × Fynn Beckmann"><meta property="og:type" content="website">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
-  html{height:100%;}
-  body{min-height:260vh;background:#000;font-family:Tahoma,"Segoe UI",Verdana,sans-serif;color:#fff;overflow-x:hidden;}
-  #scroller{height:260vh;}
+  :root{ --bg:#0a0a0c; --fg:#f3f1ec; --mut:#86837b; --accent:#c8a978; --line:rgba(243,241,236,.12); }
+  html,body{height:100%;background:var(--bg);color:var(--fg);
+    font-family:"Space Grotesk",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  body.lock{overflow:hidden;height:100%;}
+  ::selection{background:var(--accent);color:#10100c;}
 
-  /* ---- the screen we crush ---- */
-  #screen{position:fixed;top:50%;left:50%;width:100vw;height:100vh;transform:translate(-50%,-50%);
-    transform-origin:50% 50%;z-index:5;overflow:hidden;will-change:transform,border-radius,filter;
-    box-shadow:0 0 0 rgba(0,0,0,0);background:#000;}
-  /* XP "Bliss" wallpaper */
-  .wall{position:absolute;inset:0;background:
-    radial-gradient(120% 90% at 50% 120%, #5aa02c 0%, #74bb3a 26%, #9ad24f 38%, transparent 55%),
-    linear-gradient(180deg,#1f5fd0 0%, #3f86e0 42%, #8cc0f0 66%, #cfe9ff 84%, #eaf6ff 100%);}
-  .clouds{position:absolute;inset:0;background:
-    radial-gradient(40% 18% at 22% 28%, rgba(255,255,255,.8),transparent 70%),
-    radial-gradient(30% 14% at 70% 20%, rgba(255,255,255,.7),transparent 70%),
-    radial-gradient(26% 12% at 48% 40%, rgba(255,255,255,.5),transparent 70%);}
+  /* ===== preloader ===== */
+  #pre{position:fixed;inset:0;z-index:60;background:var(--bg);display:flex;flex-direction:column;justify-content:flex-end;padding:54px;transition:transform 1s cubic-bezier(.76,0,.24,1);}
+  #pre.done{transform:translateY(-101%);}
+  #pre .top{position:absolute;top:54px;left:54px;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--mut);}
+  #pre .num{font-size:clamp(80px,20vw,260px);font-weight:700;line-height:.82;letter-spacing:-.03em;}
+  #pre .lbl{margin-top:18px;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--mut);display:flex;justify-content:space-between;align-items:center;}
+  #pre .track{height:1px;background:var(--line);margin-top:20px;position:relative;}
+  #pre .fill{position:absolute;left:0;top:0;height:100%;width:0;background:var(--accent);}
 
-  /* desktop icons */
-  .icons{position:absolute;top:18px;left:14px;display:flex;flex-direction:column;gap:22px;}
-  .ic{width:74px;text-align:center;color:#fff;font-size:12px;text-shadow:0 1px 2px rgba(0,0,0,.7);}
-  .ic .img{width:42px;height:42px;margin:0 auto 4px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:22px;
-    background:linear-gradient(160deg,#eef4ff,#9fc0ee);box-shadow:0 2px 6px rgba(0,0,0,.35);}
+  /* ===== top nav ===== */
+  nav{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;align-items:center;padding:26px 40px;
+    opacity:0;transform:translateY(-14px);transition:.9s 1.1s cubic-bezier(.2,.7,.2,1);}
+  body.ready nav{opacity:1;transform:none;}
+  nav .logo{font-size:16px;font-weight:700;letter-spacing:.28em;}
+  nav .links{display:flex;gap:34px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);}
+  nav .links a{color:var(--mut);text-decoration:none;position:relative;transition:color .3s;}
+  nav .links a:hover{color:var(--fg);}
+  nav .links a:after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:1px;background:var(--accent);transition:width .35s;}
+  nav .links a:hover:after{width:100%;}
+  nav .menu{font-size:12px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;}
+  @media(max-width:820px){ nav .links{display:none;} }
 
-  /* XP window */
-  .win{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);width:min(560px,80vw);
-    background:#ece9d8;border:1px solid #0831d9;border-radius:8px 8px 3px 3px;box-shadow:0 12px 40px rgba(0,0,0,.5);overflow:hidden;}
-  .tb{display:flex;align-items:center;gap:8px;height:30px;padding:0 6px 0 8px;
-    background:linear-gradient(180deg,#0058ee 0%,#3d8af0 8%,#0a52e8 40%,#0a45d6 88%,#0840c8 100%);
-    color:#fff;font-weight:700;font-size:13px;text-shadow:0 1px 1px rgba(0,0,0,.4);}
-  .tb .t{flex:1;}
-  .tb .b{width:21px;height:20px;border-radius:3px;border:1px solid rgba(255,255,255,.7);font-size:11px;display:flex;align-items:center;justify-content:center;color:#fff;background:linear-gradient(180deg,#5b9bf0,#1a5fe0);}
-  .tb .x{background:linear-gradient(180deg,#f08a6c,#d8401a);}
-  .wb{padding:22px 22px 20px;color:#222;}
-  .wb .row{display:flex;gap:16px;align-items:flex-start;}
-  .wb .logo{width:48px;height:48px;flex:none;border-radius:10px;background:linear-gradient(160deg,#6d5bff,#22d3ee);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:18px;}
-  .wb h2{font-size:17px;color:#0a246a;margin-bottom:6px;}
-  .wb p{font-size:13px;line-height:1.5;color:#333;}
-  .wb .hr{height:1px;background:#c9c3a8;margin:16px 0;}
-  .wb .foot{display:flex;justify-content:flex-end;gap:8px;}
-  .wb .btn{font-size:12px;padding:5px 16px;border:1px solid #003c74;border-radius:3px;background:linear-gradient(180deg,#fdfdfd,#d6d2c2);color:#111;cursor:pointer;}
-  .tip{position:absolute;left:0;right:0;bottom:52px;text-align:center;font-size:13px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7);}
+  /* ===== hero ===== */
+  .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:0 40px;overflow:hidden;}
+  .bgwrap{position:absolute;inset:0;z-index:0;}
+  .glow{position:absolute;width:80vw;height:80vw;border-radius:50%;filter:blur(90px);opacity:.5;
+    background:radial-gradient(circle,#3a2f6e,transparent 62%);left:-10vw;top:-20vw;animation:drift 22s ease-in-out infinite;}
+  .glow.b{background:radial-gradient(circle,#6b4a2e,transparent 62%);left:auto;right:-20vw;top:auto;bottom:-30vw;animation-duration:28s;animation-direction:reverse;}
+  @keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(8vw,6vw)}}
+  .grain:after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.05;background-image:radial-gradient(rgba(255,255,255,.7) 1px,transparent 1px);background-size:3px 3px;}
 
-  /* taskbar */
-  .task{position:absolute;left:0;right:0;bottom:0;height:34px;display:flex;align-items:center;justify-content:space-between;
-    background:linear-gradient(180deg,#2f8bf2 0%,#2461da 9%,#205ad6 85%,#1e51c8 100%);border-top:1px solid #5b9bf0;}
-  .start{display:flex;align-items:center;gap:8px;height:100%;padding:0 22px 0 12px;font-style:italic;font-weight:800;font-size:15px;color:#fff;
-    background:linear-gradient(180deg,#4aa72e 0%,#3f9a26 8%,#2f8a1c 60%,#2a7d18 100%);border-radius:0 12px 12px 0;text-shadow:0 1px 1px rgba(0,0,0,.4);box-shadow:inset 0 0 8px rgba(255,255,255,.3);}
-  .start .o{width:18px;height:18px;border-radius:4px;background:radial-gradient(circle at 30% 30%,#ff5,#e33 60%,#0a5 61%);}
-  .clock{padding:0 14px;font-size:12px;color:#fff;}
+  .hero .inner{position:relative;z-index:2;max-width:1500px;margin:0 auto;width:100%;}
+  .eyebrow{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);
+    display:inline-flex;align-items:center;gap:14px;overflow:hidden;}
+  .eyebrow span{display:inline-block;transform:translateY(120%);transition:transform .9s 1.2s cubic-bezier(.16,1,.3,1);}
+  body.ready .eyebrow span{transform:none;}
+  h1{font-size:clamp(44px,9.2vw,150px);font-weight:700;line-height:.94;letter-spacing:-.025em;margin:22px 0 0;}
+  h1 .ln{display:block;overflow:hidden;}
+  h1 .ln>span{display:block;transform:translateY(115%);transition:transform 1.05s cubic-bezier(.16,1,.3,1);}
+  body.ready h1 .ln>span{transform:none;}
+  h1 em{font-style:normal;color:var(--accent);}
+  .lead{margin-top:30px;max-width:46ch;font-size:clamp(15px,1.5vw,19px);line-height:1.55;color:#c8c5bc;
+    opacity:0;transform:translateY(16px);transition:.9s 1.7s cubic-bezier(.2,.7,.2,1);}
+  body.ready .lead{opacity:1;transform:none;}
 
-  /* crumple paper overlay (generated) */
-  #crumple{position:absolute;inset:0;mix-blend-mode:multiply;opacity:0;background-size:cover;pointer-events:none;}
+  /* stats + scroll */
+  .foot{position:absolute;left:0;right:0;bottom:0;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;padding:0 40px 30px;
+    opacity:0;transition:.9s 1.9s cubic-bezier(.2,.7,.2,1);}
+  body.ready .foot{opacity:1;}
+  .stats{display:flex;gap:48px;}
+  .stat .n{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;}
+  .stat .l{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin-top:4px;}
+  .scroll{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--mut);}
+  .scroll .ar{width:1px;height:34px;background:linear-gradient(var(--accent),transparent);animation:fall 1.8s infinite;}
+  @keyframes fall{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}50.1%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+  @media(max-width:680px){ .stats{gap:24px;} .stat .n{font-size:20px;} .scroll{display:none;} }
 
-  /* boom */
-  #flash{position:fixed;inset:0;z-index:30;background:radial-gradient(circle at 50% 50%,#fff,rgba(255,255,255,0) 60%);opacity:0;pointer-events:none;}
-  #shards{position:fixed;inset:0;z-index:20;pointer-events:none;}
-  .shard{position:fixed;will-change:transform,opacity;border-radius:2px;}
-
-  /* the screen revealed behind after the boom */
-  #next{position:fixed;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    background:radial-gradient(120% 100% at 50% 0%,#16122e,#06060c 70%);text-align:center;}
-  #next .k{font-size:12px;letter-spacing:.4em;text-transform:uppercase;color:#8a7bff;}
-  #next h1{font-size:clamp(40px,10vw,120px);font-weight:800;letter-spacing:-.02em;margin-top:10px;}
-  #next .s{margin-top:14px;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#82869c;}
-  #next .up{margin-top:26px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#82869c;animation:bob 2s infinite;}
-  @keyframes bob{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(-6px);opacity:1}}
+  section.next{min-height:80vh;display:flex;align-items:center;justify-content:center;border-top:1px solid var(--line);color:var(--mut);font-size:13px;letter-spacing:.2em;text-transform:uppercase;}
+  @media (prefers-reduced-motion: reduce){ .glow{animation:none;} #pre,nav,.eyebrow span,h1 .ln>span,.lead,.foot{transition:none!important;} }
 </style>
 </head>
-<body>
-<div id="scroller"></div>
+<body class="lock">
 
-<!-- revealed after boom -->
-<div id="next"><div class="k">FH Studio</div><h1>FH&nbsp;STUDIO</h1><div class="s">Independent Web Design Studio · Hozan × Fynn</div><div class="up">▲ scroll up to rebuild</div></div>
-
-<!-- the XP screen that gets crushed -->
-<div id="screen">
-  <div class="wall"></div><div class="clouds"></div>
-  <div class="icons">
-    <div class="ic"><div class="img">🖥️</div>My Computer</div>
-    <div class="ic"><div class="img">🗑️</div>Recycle Bin</div>
-    <div class="ic"><div class="img">🌐</div>fh-studio</div>
-  </div>
-  <div class="win">
-    <div class="tb"><span class="t">FH&nbsp;STUDIO.exe</span><span class="b">_</span><span class="b">▢</span><span class="b x">✕</span></div>
-    <div class="wb">
-      <div class="row"><div class="logo">FH</div>
-        <div><h2>Welcome to FH Studio</h2><p>Independent web design studio by <b>Hozan Shaker</b> &amp; <b>Fynn Beckmann</b>. We build premium, immersive, interactive websites.</p></div></div>
-      <div class="hr"></div>
-      <div class="foot"><button class="btn" id="okbtn">OK</button></div>
-    </div>
-  </div>
-  <div class="tip">↓ Scroll down — and watch what happens ↓</div>
-  <div class="task"><div class="start"><span class="o"></span>start</div><div class="clock" id="clock">12:00 PM</div></div>
-  <div id="crumple"></div>
+<div id="pre">
+  <div class="top">FH&nbsp;Studio — Independent Web Design Studio</div>
+  <div class="num"><span id="pct">0</span></div>
+  <div class="lbl"><span id="plabel">Loading</span><span>© 2026</span></div>
+  <div class="track"><div class="fill" id="fill"></div></div>
 </div>
 
-<div id="shards"></div>
-<div id="flash"></div>
+<nav>
+  <div class="logo">FH&nbsp;STUDIO</div>
+  <div class="links"><a href="#">About</a><a href="#">Work</a><a href="#">Studio</a><a href="#">Contact</a></div>
+  <div class="menu">Menu</div>
+</nav>
+
+<header class="hero grain">
+  <div class="bgwrap"><div class="glow"></div><div class="glow b"></div></div>
+  <div class="inner">
+    <div class="eyebrow"><span>● &nbsp; Available for projects — 2026</span></div>
+    <h1>
+      <span class="ln"><span>We build the</span></span>
+      <span class="ln"><span><em>future</em> of the web.</span></span>
+    </h1>
+    <p class="lead">An independent web design studio by Hozan Shaker &amp; Fynn Beckmann. We craft premium, immersive, interactive websites — built to move people.</p>
+  </div>
+  <div class="foot">
+    <div class="stats">
+      <div class="stat"><div class="n" data-to="06">00</div><div class="l">Selected Projects</div></div>
+      <div class="stat"><div class="n" data-to="04">00</div><div class="l">Awards</div></div>
+      <div class="stat"><div class="n" data-to="02">00</div><div class="l">Founders</div></div>
+      <div class="stat"><div class="n" data-to="100">00</div><div class="l">% Custom-built</div></div>
+    </div>
+    <div class="scroll"><span>Scroll</span><span class="ar"></span></div>
+  </div>
+</header>
+
+<section class="next">Step 2 — the studio &amp; work, coming next</section>
 
 <script>
 (function(){
-  // fake clock
-  function tick(){ var d=new Date(); var h=d.getHours(),m=d.getMinutes(); var ap=h>=12?'PM':'AM'; h=h%12||12;
-    document.getElementById('clock').textContent=h+':'+String(m).padStart(2,'0')+' '+ap; }
-  try{ tick(); setInterval(tick,10000); }catch(e){}
-  document.getElementById('okbtn').onclick=function(){ window.scrollTo({top:innerHeight*1.7,behavior:'smooth'}); };
-
-  // ---- generate a crumpled-paper texture ----
-  (function(){ var c=document.createElement('canvas'); c.width=c.height=512; var x=c.getContext('2d');
-    x.fillStyle='#b9b9b9'; x.fillRect(0,0,512,512);
-    for(var i=0;i<420;i++){ // facets
-      var px=Math.random()*512, py=Math.random()*512, s=20+Math.random()*70;
-      var g=180+Math.random()*70|0; x.fillStyle='rgba('+g+','+g+','+g+',.5)';
-      x.beginPath(); x.moveTo(px,py); x.lineTo(px+s*(Math.random()-0.3),py+s*(Math.random()-0.6)); x.lineTo(px+s*(Math.random()-0.6),py+s*(Math.random()+0.1)); x.closePath(); x.fill(); }
-    x.strokeStyle='rgba(90,90,90,.4)'; x.lineWidth=1;
-    for(var j=0;j<160;j++){ x.beginPath(); x.moveTo(Math.random()*512,Math.random()*512); x.lineTo(Math.random()*512,Math.random()*512); x.stroke(); }
-    x.strokeStyle='rgba(255,255,255,.5)';
-    for(var k=0;k<120;k++){ x.beginPath(); x.moveTo(Math.random()*512,Math.random()*512); x.lineTo(Math.random()*512,Math.random()*512); x.stroke(); }
-    document.getElementById('crumple').style.backgroundImage='url('+c.toDataURL()+')';
-  })();
-
-  var screen=document.getElementById('screen'), crumple=document.getElementById('crumple'),
-      flash=document.getElementById('flash'), shardsBox=document.getElementById('shards');
-  var BOOM=0.86, boomed=false, p=0;
-  var COLORS=['#74bb3a','#9ad24f','#3f86e0','#8cc0f0','#ece9d8','#ffffff','#2461da'];
-
-  function spawnBoom(){ boomed=true; screen.style.opacity='0';
-    flash.style.transition='none'; flash.style.opacity='1';
-    requestAnimationFrame(function(){ flash.style.transition='opacity .6s ease-out'; flash.style.opacity='0'; });
-    var cx=innerWidth/2, cy=innerHeight/2, N=46;
-    for(var i=0;i<N;i++){ var sh=document.createElement('div'); sh.className='shard';
-      var sz=8+Math.random()*26; sh.style.width=sz+'px'; sh.style.height=(sz*(0.5+Math.random()))+'px';
-      sh.style.left=cx+'px'; sh.style.top=cy+'px'; sh.style.background=COLORS[(Math.random()*COLORS.length)|0];
-      sh.style.boxShadow='0 4px 12px rgba(0,0,0,.4)'; shardsBox.appendChild(sh);
-      var ang=Math.random()*6.283, spd=300+Math.random()*640;
-      var vx=Math.cos(ang)*spd, vy=Math.sin(ang)*spd-200, rot=(Math.random()-0.5)*1080;
-      sh._x=0;sh._y=0;sh._vx=vx;sh._vy=vy;sh._rot=rot;sh._t=0;
-    }
-    animateShards();
+  var pct=document.getElementById('pct'), fill=document.getElementById('fill'), pre=document.getElementById('pre'), plabel=document.getElementById('plabel');
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var v=0, end=100, t0=null, DUR=reduce?300:2100;
+  function ease(x){ return 1-Math.pow(1-x,3); }
+  function tickN(els){ els.forEach(function(el){ var to=+el.getAttribute('data-to'), s=null;
+    if(reduce){ el.textContent=String(to).padStart(2,'0'); return; }
+    function go(ts){ s=s||ts; var k=Math.min(1,(ts-s)/900); el.textContent=String(Math.round(ease(k)*to)).padStart(2,'0'); if(k<1)requestAnimationFrame(go); } requestAnimationFrame(go);
+    setTimeout(function(){ el.textContent=String(to).padStart(2,'0'); },1200); }); }   // guarantee final value
+  function step(ts){ t0=t0||ts; var k=Math.min(1,(ts-t0)/DUR); v=Math.round(ease(k)*end);
+    pct.textContent=v; fill.style.width=v+'%';
+    if(k<1) requestAnimationFrame(step);
+    else { plabel.textContent='Ready to explore';
+      setTimeout(function(){ pre.classList.add('done'); document.body.classList.remove('lock'); document.body.classList.add('ready');
+        tickN([].slice.call(document.querySelectorAll('.stat .n'))); }, reduce?80:420); }
   }
-  var shardRAF=null, lastT=0;
-  function animateShards(){ lastT=performance.now?performance.now():0; cancelAnimationFrame(shardRAF); step(lastT); }
-  function step(now){ var list=shardsBox.children; if(!list.length) return;
-    var dt=Math.min(0.05,(now-lastT)/1000)||0.016; lastT=now; var alive=0;
-    for(var i=0;i<list.length;i++){ var s=list[i]; s._t+=dt; if(s._t>1.4){ s.style.opacity='0'; continue; } alive++;
-      s._vy+=900*dt; s._x+=s._vx*dt; s._y+=s._vy*dt; s._vx*=0.99;
-      s.style.transform='translate('+s._x+'px,'+s._y+'px) rotate('+(s._rot*s._t)+'deg)';
-      s.style.opacity=String(Math.max(0,1-s._t/1.4)); }
-    if(alive>0) shardRAF=requestAnimationFrame(step); else shardsBox.innerHTML='';
-  }
-  function resetBoom(){ boomed=false; screen.style.opacity='1'; shardsBox.innerHTML=''; flash.style.opacity='0'; cancelAnimationFrame(shardRAF); }
+  requestAnimationFrame(step);
 
-  function apply(){
-    if(p<BOOM){ if(boomed) resetBoom();
-      var k=p/BOOM;                              // 0 → 1 crush amount
-      var sc=1-0.93*k, rot=k*38, ty=-k*6;
-      screen.style.transform='translate(-50%,-50%) translateY('+ty+'vh) scale('+sc+') rotate('+rot+'deg)';
-      screen.style.borderRadius=(k*48)+'%';
-      screen.style.filter='contrast('+(1+k*0.6)+') brightness('+(1-k*0.25)+')';
-      screen.style.boxShadow='0 '+(k*30)+'px '+(k*60)+'px rgba(0,0,0,'+(k*0.6)+')';
-      crumple.style.opacity=String(Math.min(1,k*1.25));
-      screen.style.opacity='1';
-    } else { if(!boomed) spawnBoom(); }
-  }
-  function onScroll(){ p=Math.min(1, (window.scrollY||window.pageYOffset||0)/(innerHeight*1.55)); apply(); }
-  addEventListener('scroll',onScroll,{passive:true}); addEventListener('resize',onScroll); onScroll();
+  // custom-ish: menu toggle placeholder
+  document.querySelector('.menu').addEventListener('click',function(){ /* step 2: open full menu */ });
 
   // verification
-  window.__setP=function(v){ window.scrollTo(0, v*innerHeight*1.55); onScroll(); return {p:p,boomed:boomed,shards:shardsBox.children.length}; };
-  window.__diag=function(){ return {p:+p.toFixed(2),boomed:boomed,shards:shardsBox.children.length,screenOpacity:screen.style.opacity,crumple:+(crumple.style.opacity||0)}; };
+  window.__diag=function(){ return {pct:pct.textContent, done:pre.classList.contains('done'), ready:document.body.classList.contains('ready'), stats:[].slice.call(document.querySelectorAll('.stat .n')).map(function(n){return n.textContent;}), headline:document.querySelector('h1').textContent.replace(/\s+/g,' ').trim()}; };
+  window.__finish=function(){ t0=-999999; var z=performance.now?performance.now():0; step(z+DUR+1); return window.__diag(); };
 })();
 </script>
 </body>
