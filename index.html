@@ -14,10 +14,10 @@
   ::selection{background:var(--accent);color:#0c0c14;}
 
   /* ===== intro: void cube ===== */
-  #intro{position:fixed;inset:0;z-index:60;background:radial-gradient(120% 120% at 50% 50%,#0d0d1c,#050509 70%);transition:opacity .9s ease;}
+  #intro{position:fixed;inset:0;z-index:60;background:linear-gradient(180deg,#244a86 0%,#5b82b6 34%,#a9b6b0 58%,#d9c79c 74%,#e9d7ad 100%);transition:opacity .9s ease;}
   #intro.gone{opacity:0;pointer-events:none;}
   #c{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:pointer;}
-  #hint{position:absolute;left:0;right:0;bottom:13%;text-align:center;font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:var(--mut);
+  #hint{position:absolute;left:0;right:0;bottom:13%;text-align:center;font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:#3a2f1a;text-shadow:0 1px 6px rgba(255,255,255,.4);
     animation:bob 2.4s infinite;transition:opacity .4s;pointer-events:none;}
   @keyframes bob{0%,100%{opacity:.4}50%{opacity:1}}
   #fh{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:clamp(120px,32vw,440px);font-weight:700;letter-spacing:-.04em;
@@ -119,7 +119,7 @@
   function revealSite(){ intro.classList.add('gone'); document.body.classList.remove('lock'); document.body.classList.add('ready'); tickN();
     setTimeout(function(){ if(intro.parentNode) intro.style.display='none'; },1000); }
 
-  // ---- void cube (WebGL) ----
+  // ---- realistic Egyptian pyramid (WebGL) ----
   var opened=false;
   if(typeof THREE==='undefined'){ hint.textContent='Click to enter'; document.getElementById('c').onclick=revealSite; intro.onclick=revealSite; }
   else {
@@ -128,81 +128,72 @@
     catch(e){ document.getElementById('c').onclick=revealSite; }
     if(renderer){
       renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-      renderer.toneMapping=THREE.ACESFilmicToneMapping;
+      renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.05;
       if(renderer.outputColorSpace!==undefined) renderer.outputColorSpace=THREE.SRGBColorSpace; else renderer.outputEncoding=THREE.sRGBEncoding;
-      var scene=new THREE.Scene();
-      var camera=new THREE.PerspectiveCamera(45,1,0.1,100); camera.position.set(0,0,6.2);
+      renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+      var scene=new THREE.Scene(); scene.fog=new THREE.Fog(0xe9d7ad, 16, 46);
+      var camera=new THREE.PerspectiveCamera(42,1,0.1,120); camera.position.set(0,2.0,9);
       function fit(){ var w=canvas.clientWidth||innerWidth,h=canvas.clientHeight||innerHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); }
 
-      // environment + lights so the metallic pyramids catch light
-      var ecv=document.createElement('canvas'); ecv.width=128; ecv.height=512; var exg=ecv.getContext('2d');
-      var egr=exg.createLinearGradient(0,0,0,512); egr.addColorStop(0,'#07070f'); egr.addColorStop(0.4,'#3a2f8a'); egr.addColorStop(0.6,'#8a7bff'); egr.addColorStop(0.8,'#ff7bd5'); egr.addColorStop(1,'#07070f');
-      exg.fillStyle=egr; exg.fillRect(0,0,128,512);
-      var etx=new THREE.CanvasTexture(ecv); etx.mapping=THREE.EquirectangularReflectionMapping;
-      var pmrem=new THREE.PMREMGenerator(renderer); scene.environment=pmrem.fromEquirectangular(etx).texture; etx.dispose();
-      scene.add(new THREE.AmbientLight(0xffffff,0.3));
-      var dl1=new THREE.DirectionalLight(0xbcd0ff,2.4); dl1.position.set(5,6,4); scene.add(dl1);
-      var dl2=new THREE.DirectionalLight(0xff8ad8,1.8); dl2.position.set(-5,-3,2); scene.add(dl2);
+      // lighting: warm sun + sky/ground hemisphere
+      scene.add(new THREE.HemisphereLight(0xbfd6ff, 0xd9c188, 0.9));
+      var sun=new THREE.DirectionalLight(0xfff0d0, 3.0); sun.position.set(-7,9,6); sun.castShadow=true;
+      sun.shadow.mapSize.set(2048,2048); sun.shadow.bias=-0.0004; sun.shadow.camera.near=1; sun.shadow.camera.far=40;
+      var sc=12; sun.shadow.camera.left=-sc;sun.shadow.camera.right=sc;sun.shadow.camera.top=sc;sun.shadow.camera.bottom=-sc; scene.add(sun);
 
-      var cube=new THREE.Group(); scene.add(cube);
-      var S=1.25;                                   // half-size
-      var faces=[];
-      // pyramid-stud surface (shared geo/mat) + dark base per face
-      var pyGeo=new THREE.ConeGeometry(0.21,0.26,4); pyGeo.rotateX(Math.PI/2);   // 4-sided pyramid, apex → +Z
-      var pyMat=new THREE.MeshStandardMaterial({color:0x171433,metalness:0.92,roughness:0.24,envMapIntensity:1.7,transparent:true,opacity:1});
-      var baseMat=new THREE.MeshStandardMaterial({color:0x0a0917,metalness:0.7,roughness:0.5,transparent:true,opacity:1});
-      var GRID=5, cell=(S*2)/GRID, m4=new THREE.Matrix4();
-      var defs=[ [[S,0,0],[0,Math.PI/2,0]], [[-S,0,0],[0,-Math.PI/2,0]], [[0,S,0],[-Math.PI/2,0,0]], [[0,-S,0],[Math.PI/2,0,0]], [[0,0,S],[0,0,0]], [[0,0,-S],[0,Math.PI,0]] ];
-      defs.forEach(function(d){ var grp=new THREE.Group();
-        var base=new THREE.Mesh(new THREE.PlaneGeometry(S*2,S*2),baseMat); base.position.z=0.02; grp.add(base);
-        var im=new THREE.InstancedMesh(pyGeo,pyMat,GRID*GRID); var idx=0;
-        for(var gx=0;gx<GRID;gx++)for(var gy=0;gy<GRID;gy++){ m4.makeTranslation(-S+cell/2+gx*cell,-S+cell/2+gy*cell,0.12); im.setMatrixAt(idx++,m4); }
-        grp.add(im);
-        grp.position.set(d[0][0],d[0][1],d[0][2]); grp.rotation.set(d[1][0],d[1][1],d[1][2]);
-        grp.userData.dir=new THREE.Vector3(d[0][0],d[0][1],d[0][2]).normalize(); grp.userData.base=grp.position.clone();
-        cube.add(grp); faces.push(grp); });
-      // glowing LIGHT edges (bright core + soft halo)
-      var edgeGeo=new THREE.EdgesGeometry(new THREE.BoxGeometry(S*2,S*2,S*2));
-      var edges=new THREE.LineSegments(edgeGeo,new THREE.LineBasicMaterial({color:0xc4b9ff,transparent:true,opacity:1,blending:THREE.AdditiveBlending}));
-      var edgeHalo=new THREE.LineSegments(edgeGeo,new THREE.LineBasicMaterial({color:0x8a7bff,transparent:true,opacity:0.5,blending:THREE.AdditiveBlending}));
-      edgeHalo.scale.setScalar(1.05); cube.add(edges); cube.add(edgeHalo);
-      // inner void glow
-      var coreG=new THREE.Mesh(new THREE.IcosahedronGeometry(0.5,2), new THREE.MeshBasicMaterial({color:0x8a7bff,transparent:true,opacity:0.0,blending:THREE.AdditiveBlending}));
-      cube.add(coreG);
-      // burst particles (hidden until click)
-      var BN=160, bg=new THREE.BufferGeometry(), bp=new Float32Array(BN*3), bv=[];
-      for(var i=0;i<BN;i++){ bp[i*3]=bp[i*3+1]=bp[i*3+2]=0; var a=Math.random()*6.283,b=Math.acos(Math.random()*2-1),sp=2+Math.random()*4; bv.push(new THREE.Vector3(Math.sin(b)*Math.cos(a)*sp,Math.sin(b)*Math.sin(a)*sp,Math.cos(b)*sp)); }
+      // textures (CC0 sandstone, Poly Haven)
+      var TL=new THREE.TextureLoader();
+      function tex(u,srgb,rep){ var t=TL.load(u); t.wrapS=t.wrapT=THREE.RepeatWrapping; if(rep)t.repeat.set(rep,rep); if(srgb){ if(t.colorSpace!==undefined)t.colorSpace=THREE.SRGBColorSpace; else t.encoding=THREE.sRGBEncoding; } return t; }
+      var diff=tex('sand_diff.jpg',true,3), nor=tex('sand_nor.jpg',false,3), rgh=tex('sand_rough.jpg',false,3);
+
+      // desert ground
+      var gDiff=tex('sand_diff.jpg',true,26);
+      var ground=new THREE.Mesh(new THREE.CircleGeometry(60,72),
+        new THREE.MeshStandardMaterial({map:gDiff,color:0xeadcb0,roughness:1,metalness:0}));
+      ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; scene.add(ground);
+
+      // the pyramid (Giza-like slope), sandstone PBR
+      var H=3.4, R=2.9;                                  // height, base radius (to corner)
+      var pyGeo=new THREE.ConeGeometry(R,H,4); pyGeo.rotateY(Math.PI/4);   // flat face to camera
+      var pyMat=new THREE.MeshStandardMaterial({map:diff,normalMap:nor,roughnessMap:rgh,color:0xe7d3a6,metalness:0,roughness:1});
+      var pyramid=new THREE.Mesh(pyGeo,pyMat); pyramid.position.y=H/2; pyramid.castShadow=true; pyramid.receiveShadow=true; scene.add(pyramid);
+      var apexY=H;
+
+      // glowing GOLD light lines along the 4 ridges (apex → base corners)
+      var rp=[]; for(var e2=0;e2<4;e2++){ var ang=Math.PI/4+e2*Math.PI/2; rp.push(0,apexY,0, Math.cos(ang)*R, 0, Math.sin(ang)*R); }
+      var ridgeG=new THREE.BufferGeometry(); ridgeG.setAttribute('position',new THREE.BufferAttribute(new Float32Array(rp),3));
+      var ridges=new THREE.LineSegments(ridgeG,new THREE.LineBasicMaterial({color:0xffd27a,transparent:true,opacity:0.85,blending:THREE.AdditiveBlending}));
+      scene.add(ridges);
+      // apex glow + beam (for the click burst)
+      var apexGlow=new THREE.Mesh(new THREE.SphereGeometry(0.18,16,16), new THREE.MeshBasicMaterial({color:0xffe7b0,transparent:true,opacity:0.9,blending:THREE.AdditiveBlending}));
+      apexGlow.position.set(0,apexY,0); scene.add(apexGlow);
+
+      // floating dust motes
+      var BN=180, bg=new THREE.BufferGeometry(), bp=new Float32Array(BN*3), bv=[];
+      for(var i=0;i<BN;i++){ bp[i*3]=(Math.random()-0.5)*16; bp[i*3+1]=Math.random()*7; bp[i*3+2]=(Math.random()-0.5)*16; bv.push(new THREE.Vector3(0,0,0)); }
       bg.setAttribute('position',new THREE.BufferAttribute(bp,3));
-      var burst=new THREE.Points(bg,new THREE.PointsMaterial({color:0xbcb0ff,size:0.06,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false})); scene.add(burst);
+      var burst=new THREE.Points(bg,new THREE.PointsMaterial({color:0xfff0cf,size:0.05,transparent:true,opacity:0.4,blending:THREE.AdditiveBlending,depthWrite:false})); scene.add(burst);
 
       var mx=0,my=0; addEventListener('mousemove',function(e){ mx=e.clientX/innerWidth-0.5; my=e.clientY/innerHeight-0.5; });
       fit(); addEventListener('resize',fit); if(window.ResizeObserver) new ResizeObserver(fit).observe(canvas);
 
       function doOpen(){ if(opened) return; opened=true; hint.style.opacity='0';
-        flash.style.transition='none'; flash.style.opacity='0';
-        var t0=null, DUR=reduce?200:950;
-        function anim(ts){ t0=t0||ts; var k=Math.min(1,(ts-t0)/DUR), e=ease(k);
-          for(var i=0;i<faces.length;i++){ var f=faces[i]; f.position.copy(f.userData.base).addScaledVector(f.userData.dir, e*3.4); f.scale.setScalar(1-e*0.6); }
-          pyMat.opacity=1-e; baseMat.opacity=1-e;
-          edges.scale.setScalar(1+e*1.6); edges.material.opacity=1-e; edgeHalo.scale.setScalar((1+e*1.6)*1.05); edgeHalo.material.opacity=0.5*(1-e);
-          coreG.material.opacity=Math.sin(Math.min(1,k*1.2)*Math.PI)*0.9; coreG.scale.setScalar(1+e*2);
-          var bpa=bg.attributes.position.array; for(var j=0;j<BN;j++){ bpa[j*3]=bv[j].x*e*1.4; bpa[j*3+1]=bv[j].y*e*1.4; bpa[j*3+2]=bv[j].z*e*1.4; } bg.attributes.position.needsUpdate=true;
-          burst.material.opacity=Math.sin(Math.min(1,k*1.3)*Math.PI)*0.9;
-          if(k<1) requestAnimationFrame(anim);
-        }
-        requestAnimationFrame(anim);
-        // flash + FH reveal
-        setTimeout(function(){ flash.style.transition='opacity .5s'; flash.style.opacity='1'; requestAnimationFrame(function(){ flash.style.opacity='0'; }); fhEl.classList.add('show'); }, reduce?60:260);
-        // then reveal the site
-        setTimeout(revealSite, reduce?700:1700);
+        // turn dust into an upward light burst from the apex
+        for(var i=0;i<BN;i++){ var a=Math.random()*6.283, sp=1.5+Math.random()*4; bv[i].set(Math.cos(a)*sp*0.5, 2+Math.random()*4, Math.sin(a)*sp*0.5); bp[i*3]=0; bp[i*3+1]=apexY; bp[i*3+2]=0; }
+        burst.material.opacity=1; burst.material.size=0.09;
+        setTimeout(function(){ flash.style.transition='none'; flash.style.opacity='0'; flash.style.transition='opacity .6s'; flash.style.opacity='1'; requestAnimationFrame(function(){ flash.style.opacity='0'; }); fhEl.classList.add('show'); }, reduce?60:300);
+        setTimeout(revealSite, reduce?700:1750);
       }
       canvas.addEventListener('pointerdown',doOpen);
 
-      var clock=new THREE.Clock();
+      var clock=new THREE.Clock(), ang=0;
       function render(){ var dt=Math.min(clock.getDelta(),0.05), t=clock.elapsedTime;
-        if(!opened){ cube.rotation.y += dt*0.35; cube.rotation.x = Math.sin(t*0.4)*0.18 + (-my*0.5); cube.rotation.y += (mx*0.5)*0.02;
-          var pulse=0.7+Math.sin(t*2.2)*0.3; edges.material.opacity=pulse; edgeHalo.material.opacity=pulse*0.5; coreG.material.opacity=0.12+Math.sin(t*1.6)*0.08; }
-        else { cube.rotation.y += dt*0.6; }
+        ang += dt*(opened?0.5:0.07);
+        camera.position.x=Math.sin(ang)*9 + mx*0.8; camera.position.z=Math.cos(ang)*9; camera.position.y=2.0 - my*0.6; camera.lookAt(0,1.5,0);
+        ridges.material.opacity=0.55+Math.sin(t*2.2)*0.3;
+        apexGlow.material.opacity=0.7+Math.sin(t*3)*0.3; apexGlow.scale.setScalar(opened?(1+ (t%2)) :1);
+        if(!opened){ var bp0=bg.attributes.position.array; for(var i=0;i<BN;i++){ bp0[i*3+1]+=dt*0.2; if(bp0[i*3+1]>7)bp0[i*3+1]=0; } bg.attributes.position.needsUpdate=true; }
+        else { var bpa=bg.attributes.position.array; for(var j=0;j<BN;j++){ bpa[j*3]+=bv[j].x*dt; bpa[j*3+1]+=bv[j].y*dt; bpa[j*3+2]+=bv[j].z*dt; bv[j].y-=dt*2; } bg.attributes.position.needsUpdate=true; }
         renderer.render(scene,camera);
       }
       function loop(){ requestAnimationFrame(loop); render(); } loop();
