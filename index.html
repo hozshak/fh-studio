@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FH STUDIO — Hozan Shaker × Fynn Beckmann</title>
-<meta name="description" content="FH Studio — an independent web design studio by Hozan Shaker & Fynn Beckmann. Walk around in an interactive 3D scene.">
+<meta name="description" content="FH Studio — an independent web design studio by Hozan Shaker & Fynn Beckmann. Interactive 3D scene.">
 <meta property="og:title" content="FH STUDIO"><meta property="og:description" content="Independent web design studio · Hozan Shaker × Fynn Beckmann"><meta property="og:type" content="website">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
@@ -16,6 +16,10 @@
   .brand .claim{margin-top:8px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);}
   .corner{position:fixed;z-index:5;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);}
   .bl{left:32px;bottom:26px;} .bl b{color:var(--accent);}
+  .ui{position:fixed;right:24px;top:24px;display:flex;flex-direction:column;gap:10px;z-index:6;}
+  .btn{appearance:none;cursor:pointer;background:rgba(40,10,28,.7);border:1px solid rgba(255,92,200,.4);color:#ffe9f6;padding:11px 16px;font:600 12px/1 ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;border-radius:10px;backdrop-filter:blur(8px);transition:.18s;min-width:160px;text-align:left;}
+  .btn:hover{border-color:#ff5cc8;background:rgba(60,16,42,.85);}
+  .btn:active{transform:scale(.97);}
   #load{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#140510;transition:opacity .8s;}
   #load .pct{font-size:42px;font-weight:700;color:#ff8ad8;text-shadow:0 0 30px rgba(255,92,200,.6);}
   #load .lbl{margin-top:12px;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--mut);}
@@ -26,7 +30,8 @@
 <body>
 <canvas id="c"></canvas>
 <div class="brand"><div class="logo">FH&nbsp;STUDIO</div><div class="claim">Pink Cave</div></div>
-<div class="corner bl"><b>WASD</b> = laufen &nbsp;·&nbsp; <b>Shift</b> = rennen &nbsp;·&nbsp; Klick = reagieren &nbsp;·&nbsp; Maus = umsehen</div>
+<div class="ui"><button class="btn" id="enter">🚗 Einsteigen</button></div>
+<div class="corner bl"><b>WASD</b> = laufen &nbsp;·&nbsp; <b>Shift</b> = rennen &nbsp;·&nbsp; Klick Auto / Button = einsteigen &nbsp;·&nbsp; Maus = umsehen</div>
 <div id="load"><div class="pct" id="pct">0%</div><div class="lbl">Höhle lädt</div></div>
 <div id="err"></div>
 
@@ -52,7 +57,7 @@
   var camera=new THREE.PerspectiveCamera(50,1,0.05,200); camera.position.set(0,3,6);
   function fitSize(){ var w=canvas.clientWidth||window.innerWidth||1280, h=canvas.clientHeight||window.innerHeight||720; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); }
   var controls=new THREE.OrbitControls(camera,canvas);
-  controls.enableDamping=true; controls.dampingFactor=0.08; controls.enablePan=false; controls.minDistance=2.5; controls.maxDistance=14; controls.maxPolarAngle=Math.PI*0.9;
+  controls.enableDamping=true; controls.dampingFactor=0.08; controls.enablePan=false; controls.minDistance=0.5; controls.maxDistance=14; controls.maxPolarAngle=Math.PI*0.92;
 
   var ecv=document.createElement('canvas'); ecv.width=128; ecv.height=512; var ex=ecv.getContext('2d');
   var eg=ex.createLinearGradient(0,0,0,512);
@@ -84,38 +89,62 @@
   var crystals=[], cgeo=new THREE.OctahedronGeometry(0.4,0);
   for(var ci=0;ci<14;ci++){ var hue=0.86+Math.random()*0.1; var cm=new THREE.MeshStandardMaterial({color:new THREE.Color().setHSL(hue,1,0.6),emissive:new THREE.Color().setHSL(hue,1,0.55),emissiveIntensity:1.6,roughness:0.3});
     var cr=new THREE.Mesh(cgeo,cm); var ang=Math.random()*6.283, rad=6+Math.random()*8; cr.position.set(Math.cos(ang)*rad,Math.random()*5,Math.sin(ang)*rad); cr.scale.setScalar(0.5+Math.random()*1.4); cr.rotation.set(Math.random()*3,Math.random()*3,Math.random()*3); scene.add(cr); crystals.push(cr); }
-  var PN=600, pg=new THREE.BufferGeometry(), pp=new Float32Array(PN*3);
-  for(var p=0;p<PN;p++){ pp[p*3]=(Math.random()-0.5)*30; pp[p*3+1]=Math.random()*12; pp[p*3+2]=(Math.random()-0.5)*30; }
-  pg.setAttribute('position',new THREE.BufferAttribute(pp,3));
-  var dust=new THREE.Points(pg,new THREE.PointsMaterial({color:0xff9ad8,size:0.05,transparent:true,opacity:0.6,blending:THREE.AdditiveBlending,depthWrite:false})); scene.add(dust);
+  var dustPN=600, dpg=new THREE.BufferGeometry(), dpp=new Float32Array(dustPN*3);
+  for(var dp=0;dp<dustPN;dp++){ dpp[dp*3]=(Math.random()-0.5)*30; dpp[dp*3+1]=Math.random()*12; dpp[dp*3+2]=(Math.random()-0.5)*30; }
+  dpg.setAttribute('position',new THREE.BufferAttribute(dpp,3));
+  scene.add(new THREE.Points(dpg,new THREE.PointsMaterial({color:0xff9ad8,size:0.05,transparent:true,opacity:0.5,blending:THREE.AdditiveBlending,depthWrite:false})));
 
-  // ---- rigged astronaut + walk animation ----
+  // ===== speed streaks around the character (fast effect) =====
+  var SPN=500, spg=new THREE.BufferGeometry(), spp=new Float32Array(SPN*3), spv=new Float32Array(SPN);
+  var FIELD=0.5; // box half-size around the action (set after we know char size)
+  function seedStreaks(f){ FIELD=f; for(var i=0;i<SPN;i++){ spp[i*3]=(Math.random()*2-1)*f; spp[i*3+1]=Math.random()*f*1.2; spp[i*3+2]=(Math.random()*2-1)*f; spv[i]=(0.5+Math.random())*f; } spg.attributes.position.needsUpdate=true; }
+  spg.setAttribute('position',new THREE.BufferAttribute(spp,3));
+  var spMat=new THREE.PointsMaterial({color:0x9fffe6,size:0.012,transparent:true,opacity:0.0,blending:THREE.AdditiveBlending,depthWrite:false});
+  var streaks=new THREE.Points(spg,spMat); scene.add(streaks);
+  var speedLevel=0; // 0..1 intensity
+
+  // ===== load character + car =====
   var loader=new THREE.GLTFLoader(); if(typeof MeshoptDecoder!=='undefined') loader.setMeshoptDecoder(MeshoptDecoder);
-  var MODEL=null, mixer=null, walk=null, charH=2, baseY=0, baseScale=1, fitY=1, walkSpeed=2.6, runSpeed=5.2;
-  var react={active:false,t0:0,dur:0.8,jump:1}, emotes=[];
+  var MODEL=null, mixer=null, walk=null, charH=2, baseY=0, baseScale=1, fitY=1, walkSpeed=0.5, runSpeed=1.0;
+  var CAR=null, carDoor=new THREE.Vector3(), carScale=1;
+  var ready={char:false,car:false};
+  function maybeReady(){ if(ready.char&&ready.car){ var l=document.getElementById('load'); if(l){ l.classList.add('hide'); setTimeout(function(){ if(l.parentNode)l.parentNode.removeChild(l); },900); } } }
+
   loader.load('astrorig.glb?v=2', function(gltf){
     MODEL=gltf.scene;
     var box=new THREE.Box3().setFromObject(MODEL); var size=box.getSize(new THREE.Vector3());
     var maxDim=Math.max(size.x,size.y,size.z)||1; baseScale=1.7/maxDim; MODEL.scale.setScalar(baseScale);
-    box.setFromObject(MODEL); size=box.getSize(new THREE.Vector3()); var center=box.getCenter(new THREE.Vector3()); charH=size.y;
-    MODEL.position.set(0,-box.min.y,0); baseY=MODEL.position.y;
+    box.setFromObject(MODEL); size=box.getSize(new THREE.Vector3()); MODEL.position.set(0,-box.min.y,0);
     MODEL.traverse(function(o){ if(o.isMesh){ o.castShadow=true; o.receiveShadow=true; o.frustumCulled=false; } });
     scene.add(MODEL);
     mixer=new THREE.AnimationMixer(MODEL);
     if(gltf.animations && gltf.animations.length){ var _clip=gltf.animations[0];
-      _clip.tracks=_clip.tracks.filter(function(t){ return !/\.position$/.test(t.name); }); // strip root motion → walk in place
+      _clip.tracks=_clip.tracks.filter(function(t){ return !/\.position$/.test(t.name); });
       walk=mixer.clipAction(_clip); walk.play(); walk.time=0; walk.paused=true; mixer.update(0); }
     var _sph=new THREE.Sphere(); box.setFromObject(MODEL); box.getBoundingSphere(_sph); var _R=_sph.radius||1;
-    var _fov=camera.fov*Math.PI/180; var _dist=(_R/Math.sin(_fov/2))*5.0;   // camera distance computed for the normal-size model
-    var SH=0.035;                                                            // shrink factor → very tiny on screen
-    MODEL.scale.multiplyScalar(SH); MODEL.position.y*=SH; baseY=MODEL.position.y; // feet scale toward origin → stay on the floor (reliable, no skinned-bbox)
-    charH=size.y*SH; fitY=baseY+charH*0.5;                                   // look at the tiny model's centre
-    walkSpeed=0.7; runSpeed=1.4;                                             // slower to match the tiny size
-    controls.minDistance=0.5; controls.maxDistance=_dist*1.2;                // stay inside the cave
-    controls.target.set(0,fitY,0); camera.position.set(0,fitY,_dist); controls.update(); prevPos.copy(MODEL.position);   // camera level with the figure → dead centre
-    var l=document.getElementById('load'); if(l){ l.classList.add('hide'); setTimeout(function(){ if(l.parentNode)l.parentNode.removeChild(l); },900); }
-  }, function(xhr){ if(xhr&&xhr.total){ var el=document.getElementById('pct'); if(el) el.textContent=Math.round(xhr.loaded/xhr.total*100)+'%'; } },
-     function(err){ fail('Modell konnte nicht geladen werden.<br><small>'+(err&&err.message?err.message:err)+'</small>'); });
+    var _fov=camera.fov*Math.PI/180; var _dist=(_R/Math.sin(_fov/2))*5.0;
+    var SH=0.025;                                                            // even smaller
+    MODEL.scale.multiplyScalar(SH); MODEL.position.y*=SH; baseY=MODEL.position.y;
+    charH=size.y*SH; fitY=baseY+charH*0.5;
+    seedStreaks(charH*6);                                                     // speed field sized to the character
+    controls.minDistance=0.3; controls.maxDistance=_dist*1.2;
+    controls.target.set(0,fitY,0); camera.position.set(0,fitY,_dist); controls.update(); prevPos.copy(MODEL.position);
+    ready.char=true; placeCar(); maybeReady();
+  }, function(xhr){ if(xhr&&xhr.total){ var el=document.getElementById('pct'); if(el) el.textContent=Math.round(xhr.loaded/xhr.total*60)+'%'; } },
+     function(err){ fail('Figur konnte nicht geladen werden.<br><small>'+(err&&err.message?err.message:err)+'</small>'); });
+
+  function placeCar(){ if(!CAR||!ready.char) return;             // place only once the tiny character size is known
+    CAR.scale.setScalar(1); var cb=new THREE.Box3().setFromObject(CAR); var cs=cb.getSize(new THREE.Vector3());
+    carScale=(charH*1.5)/(cs.y||1); CAR.scale.setScalar(carScale);
+    cb.setFromObject(CAR); cs=cb.getSize(new THREE.Vector3());
+    CAR.position.set(charH*4, -cb.min.y, charH*1.2); CAR.rotation.y=-Math.PI/2;   // parked beside the character
+    carDoor.set(CAR.position.x-cs.x*0.5, 0, CAR.position.z); }
+  loader.load('car.glb', function(gltf){
+    CAR=gltf.scene;
+    CAR.traverse(function(o){ if(o.isMesh){ o.castShadow=true; o.receiveShadow=true; o.frustumCulled=false; } });
+    scene.add(CAR); ready.car=true; placeCar(); maybeReady();
+  }, function(xhr){ if(xhr&&xhr.total){ var el=document.getElementById('pct'); if(el) el.textContent=(60+Math.round(xhr.loaded/xhr.total*40))+'%'; } },
+     function(err){ fail('Auto konnte nicht geladen werden.<br><small>'+(err&&err.message?err.message:err)+'</small>'); });
 
   // input
   var keys={};
@@ -123,60 +152,86 @@
   addEventListener('keyup',function(e){ keys[e.code]=false; });
   window.__press=function(c,v){ keys[c]=v; };
 
-  // click → whole-body reaction + emote (no extra clips on this rig)
+  // enter-car state machine: free → toCar → entering → driving → reset
+  var mode='free', stamp=0, charScaleVec=new THREE.Vector3();
+  function startEnter(){ if(mode!=='free'||!MODEL||!CAR) return; mode='toCar'; charScaleVec.copy(MODEL.scale); }
+  document.getElementById('enter').onclick=startEnter;
+  window.__enter=function(){ startEnter(); return mode; };
+
   var raycaster=new THREE.Raycaster(), pointer=new THREE.Vector2();
-  function emoteTex(ch,color){ var c=document.createElement('canvas'); c.width=c.height=128; var g=c.getContext('2d'); g.font='90px serif'; g.textAlign='center'; g.textBaseline='middle'; g.shadowColor=color; g.shadowBlur=20; g.fillText(ch,64,68); return new THREE.CanvasTexture(c); }
-  function startReaction(){ react.active=true; react.t0=clock.elapsedTime; react.jump=0.7+Math.random()*0.6;
-    var set=[['❤','#ff4fae'],['✨','#ffd1ef'],['!','#ff7ad0'],['👍','#ffd1ef']][(Math.random()*4)|0];
-    var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:emoteTex(set[0],set[1]),transparent:true,depthTest:false}));
-    sp.position.set(MODEL.position.x, baseY+charH+0.4, MODEL.position.z); sp.scale.setScalar(0.9); sp.userData={t0:clock.elapsedTime,life:1.1}; scene.add(sp); emotes.push(sp); }
-  canvas.addEventListener('pointerdown',function(e){ if(!MODEL||react.active) return; var rect=canvas.getBoundingClientRect();
+  canvas.addEventListener('pointerdown',function(e){ if(!CAR||mode!=='free') return; var rect=canvas.getBoundingClientRect();
     pointer.x=((e.clientX-rect.left)/rect.width)*2-1; pointer.y=-((e.clientY-rect.top)/rect.height)*2+1;
-    raycaster.setFromCamera(pointer,camera); if(raycaster.intersectObject(MODEL,true).length) startReaction(); });
-  window.__clickReact=function(){ if(MODEL) startReaction(); return react.active; };
+    raycaster.setFromCamera(pointer,camera); if(raycaster.intersectObject(CAR,true).length) startEnter(); });
 
   function lerpAngle(a,b,t){ var d=((b-a+Math.PI)%(2*Math.PI)); if(d<0)d+=2*Math.PI; d-=Math.PI; return a+d*t; }
   fitSize(); window.addEventListener('resize',fitSize); if(window.ResizeObserver) new ResizeObserver(fitSize).observe(canvas);
 
-  var clock=new THREE.Clock(), prevPos=new THREE.Vector3(), tmpDir=new THREE.Vector3(), tmpRight=new THREE.Vector3(), move=new THREE.Vector3(), camDelta=new THREE.Vector3();
+  var clock=new THREE.Clock(), prevPos=new THREE.Vector3(), tmpDir=new THREE.Vector3(), tmpRight=new THREE.Vector3(), move=new THREE.Vector3(), camDelta=new THREE.Vector3(), followPrev=new THREE.Vector3();
   function render(){ if(canvas.width===0||canvas.height===0) fitSize();
     var dt=Math.min(clock.getDelta(),0.05), t=clock.elapsedTime;
+    var followObj=MODEL;
     if(MODEL && mixer){
-      var fwd=0,strafe=0;
-      if(keys['KeyW']||keys['ArrowUp'])fwd+=1; if(keys['KeyS']||keys['ArrowDown'])fwd-=1;
-      if(keys['KeyD']||keys['ArrowRight'])strafe+=1; if(keys['KeyA']||keys['ArrowLeft'])strafe-=1;
-      var running=keys['ShiftLeft']||keys['ShiftRight'], isMoving=(fwd!==0||strafe!==0) && !react.active;
-      if(isMoving){
-        camera.getWorldDirection(tmpDir); tmpDir.y=0; tmpDir.normalize(); tmpRight.crossVectors(tmpDir,UP).normalize();
-        move.set(0,0,0).addScaledVector(tmpDir,fwd).addScaledVector(tmpRight,strafe);
-        if(move.lengthSq()>0){ move.normalize(); var spd=running?runSpeed:walkSpeed;
-          MODEL.position.addScaledVector(move,spd*dt);
-          var d=Math.hypot(MODEL.position.x,MODEL.position.z); if(d>12){ MODEL.position.x*=12/d; MODEL.position.z*=12/d; }
-          MODEL.rotation.y=lerpAngle(MODEL.rotation.y, Math.atan2(move.x,move.z), Math.min(1,dt*10)); }
-        if(walk){ walk.paused=false; walk.timeScale=running?1.7:1.15; }
-      } else { if(walk) walk.paused=true; }
-      // click reaction (whole-body) overrides position with a hop
-      if(react.active){ var e=(t-react.t0)/react.dur; if(e>=1){ react.active=false; MODEL.position.y=baseY; MODEL.scale.setScalar(baseScale); }
-        else { var s=Math.sin(e*Math.PI); MODEL.position.y=baseY+s*0.3*react.jump; MODEL.scale.setScalar(baseScale*(1+s*0.05)); MODEL.rotation.z=Math.sin(e*Math.PI*2)*0.08; } }
-      else MODEL.rotation.z=0;
-      // idle breathing when not walking/reacting
-      if(!isMoving && !react.active){ MODEL.position.y=baseY+Math.sin(t*1.6)*0.01; }
-      camDelta.copy(MODEL.position).sub(prevPos); camDelta.y=0; camera.position.add(camDelta);
-      controls.target.set(MODEL.position.x, fitY, MODEL.position.z); prevPos.copy(MODEL.position);
+      if(mode==='free'){
+        var fwd=0,strafe=0;
+        if(keys['KeyW']||keys['ArrowUp'])fwd+=1; if(keys['KeyS']||keys['ArrowDown'])fwd-=1;
+        if(keys['KeyD']||keys['ArrowRight'])strafe+=1; if(keys['KeyA']||keys['ArrowLeft'])strafe-=1;
+        var running=keys['ShiftLeft']||keys['ShiftRight'], isMoving=(fwd!==0||strafe!==0);
+        if(isMoving){ camera.getWorldDirection(tmpDir); tmpDir.y=0; tmpDir.normalize(); tmpRight.crossVectors(tmpDir,UP).normalize();
+          move.set(0,0,0).addScaledVector(tmpDir,fwd).addScaledVector(tmpRight,strafe);
+          if(move.lengthSq()>0){ move.normalize(); var spd=running?runSpeed:walkSpeed;
+            MODEL.position.addScaledVector(move,spd*dt);
+            var d=Math.hypot(MODEL.position.x,MODEL.position.z); if(d>12){ MODEL.position.x*=12/d; MODEL.position.z*=12/d; }
+            MODEL.rotation.y=lerpAngle(MODEL.rotation.y, Math.atan2(move.x,move.z), Math.min(1,dt*10)); }
+          if(walk){ walk.paused=false; walk.timeScale=running?1.7:1.15; } }
+        else { if(walk) walk.paused=true; MODEL.position.y=baseY+Math.sin(t*1.6)*charH*0.04; }
+      }
+      else if(mode==='toCar'){
+        var dx=carDoor.x-MODEL.position.x, dz=carDoor.z-MODEL.position.z, dd=Math.hypot(dx,dz);
+        if(walk){ walk.paused=false; walk.timeScale=1.5; }
+        if(dd<charH*0.6){ mode='entering'; stamp=t; }
+        else { var inv=1/dd; MODEL.position.x+=dx*inv*runSpeed*dt; MODEL.position.z+=dz*inv*runSpeed*dt;
+          MODEL.rotation.y=lerpAngle(MODEL.rotation.y, Math.atan2(dx,dz), Math.min(1,dt*12)); }
+        speedLevel=Math.min(1,speedLevel+dt*1.5);
+      }
+      else if(mode==='entering'){
+        var e=(t-stamp)/0.5; if(walk) walk.paused=true;
+        if(e>=1){ MODEL.visible=false; mode='driving'; stamp=t; }
+        else { var s=1-e; MODEL.scale.copy(charScaleVec).multiplyScalar(s); MODEL.position.y=baseY+e*charH*0.5; }
+        followObj=CAR; speedLevel=1;
+      }
+      else if(mode==='driving'){
+        followObj=CAR; speedLevel=1;
+        CAR.position.x += (charH*6)*dt;                 // zoom forward
+        var e2=(t-stamp); if(e2>2.2){ // reset
+          CAR.position.x -= (charH*6)*e2; // back to park (approx)
+          MODEL.visible=true; MODEL.scale.copy(charScaleVec); MODEL.position.set(0,baseY,0); MODEL.rotation.set(0,0,0);
+          mode='free'; }
+      }
+      if(mode==='free'||mode==='toCar') speedLevel=Math.max(0, speedLevel - dt*0.8 + (mode==='toCar'?dt*2:0));
+    }
+    // streaks follow the action & flow
+    var ax=followObj?followObj.position.x:0, az=followObj?followObj.position.z:0;
+    streaks.position.set(ax,0,az);
+    var flow=(0.6+speedLevel*5), sp=spg.attributes.position.array;
+    for(var i=0;i<SPN;i++){ sp[i*3]-=spv[i]*flow*dt; if(sp[i*3]<-FIELD){ sp[i*3]=FIELD; sp[i*3+1]=Math.random()*FIELD*1.2; sp[i*3+2]=(Math.random()*2-1)*FIELD; } }
+    spg.attributes.position.needsUpdate=true; spMat.opacity=0.12+speedLevel*0.7; spMat.size=0.012+speedLevel*0.02;
+
+    if(MODEL && mixer){ // follow camera
+      camDelta.copy(followObj.position).sub(followPrev); camDelta.y=0; camera.position.add(camDelta);
+      controls.target.set(followObj.position.x, fitY, followObj.position.z); followPrev.copy(followObj.position);
       mixer.update(dt);
     }
-    for(var i=emotes.length-1;i>=0;i--){ var sp=emotes[i]; var a=(t-sp.userData.t0)/sp.userData.life; if(a>=1){ scene.remove(sp); sp.material.map.dispose(); sp.material.dispose(); emotes.splice(i,1); continue; } sp.position.y+=0.012; sp.material.opacity=1-a; sp.scale.setScalar(0.9+a*0.5); }
     for(var k=0;k<crystals.length;k++){ crystals[k].rotation.y+=0.005; crystals[k].material.emissiveIntensity=1.2+Math.sin(t*2+k)*0.6; }
-    p1.intensity=24+Math.sin(t*1.3)*8; dust.rotation.y=t*0.02;
+    p1.intensity=24+Math.sin(t*1.3)*8;
     controls.update(); renderer.render(scene,camera);
   }
   function loop(){ requestAnimationFrame(loop); render(); } loop();
   window.__tick=function(){ render(); };
   window.__diag=function(){ var sz=new THREE.Vector2(); renderer.getSize(sz); var frac=null;
-    if(MODEL){ var b=new THREE.Box3().setFromObject(MODEL); var xs=[],ys=[]; var mn=b.min,mx=b.max;
+    if(MODEL && MODEL.visible){ var b=new THREE.Box3().setFromObject(MODEL); var xs=[],ys=[]; var mn=b.min,mx=b.max;
       for(var ix=0;ix<2;ix++)for(var iy=0;iy<2;iy++)for(var iz=0;iz<2;iz++){ var v=new THREE.Vector3(ix?mx.x:mn.x,iy?mx.y:mn.y,iz?mx.z:mn.z); v.project(camera); xs.push(v.x); ys.push(v.y); }
       frac={hPct:Math.round((Math.max.apply(null,ys)-Math.min.apply(null,ys))/2*100), wPct:Math.round((Math.max.apply(null,xs)-Math.min.apply(null,xs))/2*100)}; }
-    return {size:[sz.x,sz.y],loaded:!!MODEL,hasAnim:!!walk,walking:walk?!walk.paused:false,reacting:react.active,screenFrac:frac,pos:MODEL?MODEL.position.toArray().map(function(n){return +n.toFixed(2);}):null}; };
+    return {size:[sz.x,sz.y],char:!!MODEL,car:!!CAR,mode:mode,speedLevel:+speedLevel.toFixed(2),charVisible:MODEL?MODEL.visible:false,screenFrac:frac,pos:MODEL?MODEL.position.toArray().map(function(n){return +n.toFixed(3);}):null}; };
 })();
 </script>
 </body>
