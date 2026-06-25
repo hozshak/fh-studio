@@ -110,7 +110,7 @@
   var ready={char:false,car:false};
   function maybeReady(){ if(ready.char&&ready.car){ var l=document.getElementById('load'); if(l){ l.classList.add('hide'); setTimeout(function(){ if(l.parentNode)l.parentNode.removeChild(l); },900); } } }
 
-  loader.load('astrorig.glb?v=2', function(gltf){
+  loader.load('tripc.glb', function(gltf){
     MODEL=gltf.scene;
     var box=new THREE.Box3().setFromObject(MODEL); var size=box.getSize(new THREE.Vector3());
     var maxDim=Math.max(size.x,size.y,size.z)||1; baseScale=1.7/maxDim; MODEL.scale.setScalar(baseScale);
@@ -120,7 +120,7 @@
     mixer=new THREE.AnimationMixer(MODEL);
     if(gltf.animations && gltf.animations.length){ var _clip=gltf.animations[0];
       _clip.tracks=_clip.tracks.filter(function(t){ return !/\.position$/.test(t.name); });
-      walk=mixer.clipAction(_clip); walk.play(); walk.time=0; walk.paused=true; mixer.update(0); }
+      walk=mixer.clipAction(_clip); walk.setLoop(THREE.LoopRepeat,Infinity); walk.play(); mixer.update(0); }   // animation loops continuously
     var _sph=new THREE.Sphere(); box.setFromObject(MODEL); box.getBoundingSphere(_sph); var _R=_sph.radius||1;
     var _fov=camera.fov*Math.PI/180; var _dist=(_R/Math.sin(_fov/2))*5.0;
     var SH=0.025;                                                            // even smaller
@@ -183,7 +183,7 @@
             var d=Math.hypot(MODEL.position.x,MODEL.position.z); if(d>12){ MODEL.position.x*=12/d; MODEL.position.z*=12/d; }
             MODEL.rotation.y=lerpAngle(MODEL.rotation.y, Math.atan2(move.x,move.z), Math.min(1,dt*10)); }
           if(walk){ walk.paused=false; walk.timeScale=running?1.7:1.15; } }
-        else { if(walk) walk.paused=true; MODEL.position.y=baseY+Math.sin(t*1.6)*charH*0.04; }
+        else { if(walk){ walk.paused=false; walk.timeScale=1.0; } MODEL.position.y=baseY+Math.sin(t*1.6)*charH*0.04; }   // keep animation playing when idle
       }
       else if(mode==='toCar'){
         var dx=carDoor.x-MODEL.position.x, dz=carDoor.z-MODEL.position.z, dd=Math.hypot(dx,dz);
