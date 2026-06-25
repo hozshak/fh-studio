@@ -102,8 +102,13 @@
     MODEL.traverse(function(o){ if(o.isMesh){ o.castShadow=true; o.receiveShadow=true; o.frustumCulled=false; } });
     scene.add(MODEL);
     mixer=new THREE.AnimationMixer(MODEL);
-    if(gltf.animations && gltf.animations.length){ walk=mixer.clipAction(gltf.animations[0]); walk.play(); walk.time=0.4; walk.paused=true; mixer.update(0); }
-    controls.target.set(0,charH*0.5,0); camera.position.set(0,charH*1.3,charH*4.2); controls.update(); prevPos.copy(MODEL.position);
+    if(gltf.animations && gltf.animations.length){ var _clip=gltf.animations[0];
+      _clip.tracks=_clip.tracks.filter(function(t){ return !/\.position$/.test(t.name); }); // strip root motion → walk in place
+      walk=mixer.clipAction(_clip); walk.play(); walk.time=0; walk.paused=true; mixer.update(0); }
+    var _sph=new THREE.Sphere(); box.setFromObject(MODEL); box.getBoundingSphere(_sph); var _R=_sph.radius||1;
+    var _fov=camera.fov*Math.PI/180; var _dist=(_R/Math.sin(_fov/2))*2.2;   // 2.2 = generous margin → model small & fully in frame
+    controls.minDistance=_dist*0.35; controls.maxDistance=_dist*3;           // don't let maxDistance clamp the fit
+    controls.target.set(_sph.center.x,_sph.center.y,_sph.center.z); camera.position.set(_sph.center.x,_sph.center.y+_R*0.25,_sph.center.z+_dist); controls.update(); prevPos.copy(MODEL.position);
     var l=document.getElementById('load'); if(l){ l.classList.add('hide'); setTimeout(function(){ if(l.parentNode)l.parentNode.removeChild(l); },900); }
   }, function(xhr){ if(xhr&&xhr.total){ var el=document.getElementById('pct'); if(el) el.textContent=Math.round(xhr.loaded/xhr.total*100)+'%'; } },
      function(err){ fail('Modell konnte nicht geladen werden.<br><small>'+(err&&err.message?err.message:err)+'</small>'); });
@@ -163,7 +168,11 @@
   }
   function loop(){ requestAnimationFrame(loop); render(); } loop();
   window.__tick=function(){ render(); };
-  window.__diag=function(){ var sz=new THREE.Vector2(); renderer.getSize(sz); return {size:[sz.x,sz.y],loaded:!!MODEL,hasAnim:!!walk,walking:walk?!walk.paused:false,reacting:react.active,pos:MODEL?MODEL.position.toArray().map(function(n){return +n.toFixed(2);}):null}; };
+  window.__diag=function(){ var sz=new THREE.Vector2(); renderer.getSize(sz); var frac=null;
+    if(MODEL){ var b=new THREE.Box3().setFromObject(MODEL); var xs=[],ys=[]; var mn=b.min,mx=b.max;
+      for(var ix=0;ix<2;ix++)for(var iy=0;iy<2;iy++)for(var iz=0;iz<2;iz++){ var v=new THREE.Vector3(ix?mx.x:mn.x,iy?mx.y:mn.y,iz?mx.z:mn.z); v.project(camera); xs.push(v.x); ys.push(v.y); }
+      frac={hPct:Math.round((Math.max.apply(null,ys)-Math.min.apply(null,ys))/2*100), wPct:Math.round((Math.max.apply(null,xs)-Math.min.apply(null,xs))/2*100)}; }
+    return {size:[sz.x,sz.y],loaded:!!MODEL,hasAnim:!!walk,walking:walk?!walk.paused:false,reacting:react.active,screenFrac:frac,pos:MODEL?MODEL.position.toArray().map(function(n){return +n.toFixed(2);}):null}; };
 })();
 </script>
 </body>
