@@ -1,120 +1,145 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FH STUDIO — Hozan Shaker × Fynn Beckmann</title>
-<meta name="description" content="FH Studio — an independent web design studio by Hozan Shaker & Fynn Beckmann.">
+<meta name="description" content="FH Studio — an independent web design studio by Hozan Shaker & Fynn Beckmann. Premium, immersive, interactive websites.">
 <meta property="og:title" content="FH STUDIO"><meta property="og:description" content="Independent web design studio · Hozan Shaker × Fynn Beckmann"><meta property="og:type" content="website">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
-  :root{ --fg:#eaf0ff; --mut:#7d86a8; }
-  html,body{height:100%;width:100%;background:#03040a;overflow:hidden;font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--fg);}
-  #c{position:fixed;inset:0;display:block;width:100vw;height:100vh;cursor:grab;}
-  #c:active{cursor:grabbing;}
-  .brand{position:fixed;left:32px;top:28px;z-index:5;}
-  .brand .logo{font-size:20px;font-weight:700;letter-spacing:.34em;text-shadow:0 0 24px rgba(120,150,255,.5);}
-  .brand .claim{margin-top:8px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);}
-  .corner{position:fixed;left:32px;bottom:26px;z-index:5;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);}
-  #load{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#03040a;transition:opacity .8s;}
-  #load .pct{font-size:42px;font-weight:700;color:#9fb4ff;text-shadow:0 0 30px rgba(120,150,255,.6);}
-  #load .lbl{margin-top:12px;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--mut);}
-  #load.hide{opacity:0;pointer-events:none;}
-  #err{position:fixed;inset:0;z-index:30;display:none;align-items:center;justify-content:center;padding:30px;text-align:center;color:#ff8a8a;font-size:14px;line-height:1.6;}
+  :root{ --bg:#06070d; --fg:#f4f5fb; --mut:#8b90b0; --accent:#8a7bff; }
+  html,body{height:100%;width:100%;background:var(--bg);color:var(--fg);overflow:hidden;
+    font-family:"Space Grotesk",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;cursor:none;}
+  #c{position:fixed;inset:0;display:block;width:100vw;height:100vh;z-index:1;}
+
+  /* hero overlay */
+  .hero{position:fixed;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:center;align-items:center;pointer-events:none;text-align:center;}
+  .eyebrow{font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:var(--mut);
+    opacity:0;transform:translateY(14px);animation:rise .9s .2s cubic-bezier(.2,.7,.2,1) forwards;}
+  h1{font-size:clamp(48px,13vw,180px);font-weight:700;line-height:.92;letter-spacing:-.02em;margin:14px 0 18px;display:flex;gap:.06em;}
+  h1 .ch{display:inline-block;transform:translateY(115%);animation:chrise 1s cubic-bezier(.16,1,.3,1) forwards;}
+  .sub{font-size:clamp(12px,1.5vw,16px);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);
+    opacity:0;transform:translateY(14px);animation:rise .9s 1.05s cubic-bezier(.2,.7,.2,1) forwards;}
+  @keyframes chrise{to{transform:translateY(0)}}
+  @keyframes rise{to{opacity:1;transform:none}}
+
+  /* top + bottom bars */
+  .bar{position:fixed;left:0;right:0;z-index:3;display:flex;justify-content:space-between;padding:26px 34px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);pointer-events:none;}
+  .bar.top{top:0;} .bar.bot{bottom:0;}
+  .bar .lo{color:var(--fg);font-weight:600;letter-spacing:.28em;}
+  .scrollhint{display:flex;align-items:center;gap:10px;}
+  .scrollhint .ln{width:46px;height:1px;background:linear-gradient(90deg,var(--mut),transparent);animation:slide 2s infinite;}
+  @keyframes slide{0%{opacity:.2}50%{opacity:1}100%{opacity:.2}}
+
+  /* custom cursor */
+  .dot,.ring{position:fixed;top:0;left:0;z-index:50;border-radius:50%;pointer-events:none;mix-blend-mode:difference;}
+  .dot{width:6px;height:6px;background:#fff;margin:-3px 0 0 -3px;}
+  .ring{width:38px;height:38px;border:1px solid rgba(255,255,255,.55);margin:-19px 0 0 -19px;transition:width .25s,height .25s,margin .25s,border-color .25s;}
+
+  #err{position:fixed;inset:0;z-index:40;display:none;align-items:center;justify-content:center;padding:30px;text-align:center;color:#ff8a8a;font-size:14px;line-height:1.6;cursor:auto;}
+  @media (prefers-reduced-motion: reduce){ .ch,.eyebrow,.sub{animation-duration:.01ms!important;opacity:1;transform:none;} .scrollhint .ln{animation:none;} }
 </style>
 </head>
 <body>
 <canvas id="c"></canvas>
-<div class="brand"><div class="logo">FH&nbsp;STUDIO</div><div class="claim">Galaxy</div></div>
-<div class="corner">Ziehen = drehen &nbsp;·&nbsp; Scrollen = zoom</div>
-<div id="load"><div class="pct" id="pct">0%</div><div class="lbl">Galaxy lädt</div></div>
+
+<div class="bar top"><span class="lo">FH&nbsp;STUDIO</span><span>Est. 2026</span></div>
+
+<div class="hero">
+  <div class="eyebrow">Independent Web Design Studio</div>
+  <h1 id="title" aria-label="FH STUDIO"></h1>
+  <div class="sub">Hozan Shaker &nbsp;×&nbsp; Fynn Beckmann</div>
+</div>
+
+<div class="bar bot">
+  <span>Premium · Immersive · Interactive</span>
+  <span class="scrollhint">Scroll <span class="ln"></span></span>
+</div>
+
+<div class="dot" id="dot"></div><div class="ring" id="ring"></div>
 <div id="err"></div>
 
 <script src="three.min.js"></script>
-<script src="OrbitControls.js"></script>
-<script src="meshopt_decoder.js"></script>
-<script src="GLTFLoader.js"></script>
 <script>
 (function(){
-  function fail(m){ var e=document.getElementById('err'); e.style.display='flex'; e.innerHTML=m; var l=document.getElementById('load'); if(l)l.classList.add('hide'); }
+  // ---- kinetic title (split into letters) ----
+  var word="FH STUDIO", el=document.getElementById('title');
+  for(var i=0;i<word.length;i++){ var s=document.createElement('span'); s.className='ch';
+    s.textContent = word[i]===' ' ? ' ' : word[i]; s.style.animationDelay=(0.35+i*0.055)+'s'; el.appendChild(s); }
+
+  // ---- custom cursor ----
+  var dot=document.getElementById('dot'), ring=document.getElementById('ring'), rx=innerWidth/2, ry=innerHeight/2, tx=rx, ty=ry, mx=0, my=0;
+  addEventListener('mousemove',function(e){ tx=e.clientX; ty=e.clientY; dot.style.transform='translate('+tx+'px,'+ty+'px)';
+    mx=(e.clientX/innerWidth-0.5); my=(e.clientY/innerHeight-0.5); });
+  (function cur(){ rx+=(tx-rx)*0.18; ry+=(ty-ry)*0.18; ring.style.transform='translate('+rx+'px,'+ry+'px)'; requestAnimationFrame(cur); })();
+
+  function fail(m){ var e=document.getElementById('err'); e.style.display='flex'; e.innerHTML=m; }
   if(typeof THREE==='undefined'){ fail('Three.js nicht geladen.'); return; }
-  if(typeof THREE.GLTFLoader==='undefined'){ fail('GLTFLoader fehlt.'); return; }
+
   var canvas=document.getElementById('c'), renderer;
-  try{ renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,preserveDrawingBuffer:true}); }
+  try{ renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true,preserveDrawingBuffer:true}); }
   catch(e){ fail('Kein WebGL — bitte Chrome/Edge.'); return; }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-  renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.2;
+  renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.15;
   if(renderer.outputColorSpace!==undefined) renderer.outputColorSpace=THREE.SRGBColorSpace; else renderer.outputEncoding=THREE.sRGBEncoding;
 
-  var scene=new THREE.Scene(); scene.background=new THREE.Color('#03040a');
-  var camera=new THREE.PerspectiveCamera(50,1,0.01,200); camera.position.set(4,3,6);
-  function fitSize(){ var w=canvas.clientWidth||window.innerWidth||1280, h=canvas.clientHeight||window.innerHeight||720; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); }
-  var controls=new THREE.OrbitControls(camera,canvas);
-  controls.enableDamping=true; controls.dampingFactor=0.07; controls.minDistance=1.5; controls.maxDistance=40;
+  var scene=new THREE.Scene();
+  var camera=new THREE.PerspectiveCamera(42, 1, 0.1, 100); camera.position.set(0,0,6);
+  function fitSize(){ var w=canvas.clientWidth||innerWidth||1280, h=canvas.clientHeight||innerHeight||720; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); }
 
-  // env for the model (subtle cool studio)
+  // iridescent gradient environment
   var ecv=document.createElement('canvas'); ecv.width=128; ecv.height=512; var ex=ecv.getContext('2d');
-  var eg=ex.createLinearGradient(0,0,0,512); eg.addColorStop(0,'#05060f'); eg.addColorStop(0.5,'#27407a'); eg.addColorStop(0.8,'#8a6cff'); eg.addColorStop(1,'#05060f');
+  var eg=ex.createLinearGradient(0,0,0,512);
+  eg.addColorStop(0,'#06070d'); eg.addColorStop(0.35,'#2a2f7a'); eg.addColorStop(0.55,'#8a7bff'); eg.addColorStop(0.72,'#ff7bd5'); eg.addColorStop(0.9,'#3df0d0'); eg.addColorStop(1,'#06070d');
   ex.fillStyle=eg; ex.fillRect(0,0,128,512);
   var etex=new THREE.CanvasTexture(ecv); etex.mapping=THREE.EquirectangularReflectionMapping;
   var pmrem=new THREE.PMREMGenerator(renderer); scene.environment=pmrem.fromEquirectangular(etex).texture; etex.dispose();
-  scene.add(new THREE.AmbientLight(0xffffff,0.4));
-  var l1=new THREE.DirectionalLight(0x9fb4ff,2.2); l1.position.set(5,6,4); scene.add(l1);
-  var l2=new THREE.DirectionalLight(0xff8ad8,1.4); l2.position.set(-5,-2,-3); scene.add(l2);
 
-  // ===== GALAXY =====
-  var G={count:24000, radius:7, branches:4, spin:1.1, randomness:0.55, power:3.0, inside:new THREE.Color('#ffae5a'), outside:new THREE.Color('#5b6bff')};
-  var gg=new THREE.BufferGeometry(), gpos=new Float32Array(G.count*3), gcol=new Float32Array(G.count*3);
-  for(var i=0;i<G.count;i++){ var r=Math.pow(Math.random(),1.4)*G.radius;
-    var branch=(i%G.branches)/G.branches*Math.PI*2; var spin=r*G.spin;
-    var rx=Math.pow(Math.random(),G.power)*(Math.random()<0.5?1:-1)*G.randomness*r;
-    var ry=Math.pow(Math.random(),G.power)*(Math.random()<0.5?1:-1)*G.randomness*r*0.35;
-    var rz=Math.pow(Math.random(),G.power)*(Math.random()<0.5?1:-1)*G.randomness*r;
-    gpos[i*3]=Math.cos(branch+spin)*r+rx; gpos[i*3+1]=ry; gpos[i*3+2]=Math.sin(branch+spin)*r+rz;
-    var col=G.inside.clone().lerp(G.outside, r/G.radius);
-    gcol[i*3]=col.r; gcol[i*3+1]=col.g; gcol[i*3+2]=col.b; }
-  gg.setAttribute('position',new THREE.BufferAttribute(gpos,3)); gg.setAttribute('color',new THREE.BufferAttribute(gcol,3));
-  var galaxy=new THREE.Points(gg,new THREE.PointsMaterial({size:0.045,sizeAttenuation:true,depthWrite:false,blending:THREE.AdditiveBlending,vertexColors:true,transparent:true,opacity:0.95}));
-  scene.add(galaxy);
-  // bright core
-  var core=new THREE.Mesh(new THREE.SphereGeometry(0.35,24,24), new THREE.MeshBasicMaterial({color:0xfff0d0}));
-  scene.add(core);
-  var coreGlow=new THREE.PointLight(0xffd9a0,3,20,2); scene.add(coreGlow);
+  scene.add(new THREE.AmbientLight(0xffffff,0.25));
+  var l1=new THREE.DirectionalLight(0xbcd0ff,2.6); l1.position.set(5,6,4); scene.add(l1);
+  var l2=new THREE.DirectionalLight(0xff8ad8,2.0); l2.position.set(-6,-2,2); scene.add(l2);
 
-  // distant starfield
-  var SN=1800, sg=new THREE.BufferGeometry(), sp=new Float32Array(SN*3);
-  for(var s=0;s<SN;s++){ var rr=20+Math.random()*60, th=Math.random()*Math.PI*2, ph=Math.acos(Math.random()*2-1);
-    sp[s*3]=rr*Math.sin(ph)*Math.cos(th); sp[s*3+1]=rr*Math.cos(ph); sp[s*3+2]=rr*Math.sin(ph)*Math.sin(th); }
-  sg.setAttribute('position',new THREE.BufferAttribute(sp,3));
-  scene.add(new THREE.Points(sg,new THREE.PointsMaterial({color:0xbfd0ff,size:0.08,sizeAttenuation:true,transparent:true,opacity:0.7,depthWrite:false})));
+  // the centrepiece — iridescent metallic form with flowing noise displacement
+  var geo=new THREE.IcosahedronGeometry(1.5, 64);
+  var mat=new THREE.MeshPhysicalMaterial({ color:0xeef0ff, metalness:0.6, roughness:0.14, clearcoat:1, clearcoatRoughness:0.18, envMapIntensity:2.6 });
+  if('iridescence' in mat){ mat.iridescence=1; mat.iridescenceIOR=1.5; mat.iridescenceThicknessRange=[120,520]; }
+  var U={uT:{value:0},uAmp:{value:0.28}};
+  mat.onBeforeCompile=function(sh){ sh.uniforms.uT=U.uT; sh.uniforms.uAmp=U.uAmp;
+    sh.vertexShader='uniform float uT;uniform float uAmp;\n'+
+      'vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);}vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;}\n'+
+      'float snoise(vec3 v){const vec2 C=vec2(1.0/6.0,1.0/3.0);const vec4 D=vec4(0.0,0.5,1.0,2.0);vec3 i=floor(v+dot(v,C.yyy));vec3 x0=v-i+dot(i,C.xxx);vec3 g=step(x0.yzx,x0.xyz);vec3 l=1.0-g;vec3 i1=min(g.xyz,l.zxy);vec3 i2=max(g.xyz,l.zxy);vec3 x1=x0-i1+C.xxx;vec3 x2=x0-i2+C.yyy;vec3 x3=x0-D.yyy;i=mod289(i);vec4 p=permute(permute(permute(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0));float n_=0.142857142857;vec3 ns=n_*D.wyz-D.xzx;vec4 j=p-49.0*floor(p*ns.z*ns.z);vec4 x_=floor(j*ns.z);vec4 y_=floor(j-7.0*x_);vec4 x=x_*ns.x+ns.yyyy;vec4 y=y_*ns.x+ns.yyyy;vec4 h=1.0-abs(x)-abs(y);vec4 b0=vec4(x.xy,y.xy);vec4 b1=vec4(x.zw,y.zw);vec4 s0=floor(b0)*2.0+1.0;vec4 s1=floor(b1)*2.0+1.0;vec4 sh2=-step(h,vec4(0.0));vec4 a0=b0.xzyw+s0.xzyw*sh2.xxyy;vec4 a1=b1.xzyw+s1.xzyw*sh2.zzww;vec3 p0=vec3(a0.xy,h.x);vec3 p1=vec3(a0.zw,h.y);vec3 p2=vec3(a1.xy,h.z);vec3 p3=vec3(a1.zw,h.w);vec4 nrm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));p0*=nrm.x;p1*=nrm.y;p2*=nrm.z;p3*=nrm.w;vec4 m=max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0);m=m*m;return 42.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));}\n'+sh.vertexShader;
+    sh.vertexShader=sh.vertexShader.replace('#include <begin_vertex>',
+      '#include <begin_vertex>\n float nz=snoise(normalize(position)*1.2+vec3(uT*0.2));\n float nz2=snoise(normalize(position)*2.6-vec3(uT*0.15));\n transformed += normal*(nz*uAmp + nz2*uAmp*0.45);'); };
+  var blob=new THREE.Mesh(geo,mat); scene.add(blob);
 
-  // ===== Z26 model, centred in the galaxy =====
-  var loader=new THREE.GLTFLoader(); if(typeof MeshoptDecoder!=='undefined') loader.setMeshoptDecoder(MeshoptDecoder);
-  var MODEL=null;
-  loader.load('z26.glb', function(gltf){
-    MODEL=gltf.scene;
-    var box=new THREE.Box3().setFromObject(MODEL); var size=box.getSize(new THREE.Vector3());
-    var maxDim=Math.max(size.x,size.y,size.z)||1; var sc=2.6/maxDim; MODEL.scale.setScalar(sc);
-    box.setFromObject(MODEL); var ctr=box.getCenter(new THREE.Vector3());
-    MODEL.position.sub(ctr);                       // centre the model exactly at the galaxy centre (origin)
-    MODEL.traverse(function(o){ if(o.isMesh){ o.castShadow=false; if(o.material) o.material.envMapIntensity=1.2; } });
-    scene.add(MODEL);
-    var l=document.getElementById('load'); if(l){ l.classList.add('hide'); setTimeout(function(){ if(l.parentNode)l.parentNode.removeChild(l); },900); }
-  }, function(xhr){ if(xhr&&xhr.total){ var el=document.getElementById('pct'); if(el) el.textContent=Math.round(xhr.loaded/xhr.total*100)+'%'; } },
-     function(err){ fail('Modell konnte nicht geladen werden.<br><small>'+(err&&err.message?err.message:err)+'</small>'); });
+  // faint sparkle particles around it
+  var PN=350, pg=new THREE.BufferGeometry(), pp=new Float32Array(PN*3);
+  for(var p=0;p<PN;p++){ var r=2.2+Math.random()*3, a=Math.random()*6.283, b=Math.acos(Math.random()*2-1);
+    pp[p*3]=r*Math.sin(b)*Math.cos(a); pp[p*3+1]=r*Math.cos(b); pp[p*3+2]=r*Math.sin(b)*Math.sin(a); }
+  pg.setAttribute('position',new THREE.BufferAttribute(pp,3));
+  var spark=new THREE.Points(pg,new THREE.PointsMaterial({color:0x9fb4ff,size:0.03,transparent:true,opacity:0.6,blending:THREE.AdditiveBlending,depthWrite:false}));
+  scene.add(spark);
 
-  fitSize(); window.addEventListener('resize',fitSize); if(window.ResizeObserver) new ResizeObserver(fitSize).observe(canvas);
-  var clock=new THREE.Clock();
+  fitSize(); addEventListener('resize',fitSize); if(window.ResizeObserver) new ResizeObserver(fitSize).observe(canvas);
+  var clock=new THREE.Clock(), curX=0, curY=0;
   function render(){ if(canvas.width===0||canvas.height===0) fitSize();
-    var dt=Math.min(clock.getDelta(),0.05), t=clock.elapsedTime;
-    galaxy.rotation.y += dt*0.06;                  // slow galaxy spin
-    coreGlow.intensity = 2.6+Math.sin(t*2)*0.6;
-    if(MODEL) MODEL.rotation.y += dt*0.3;          // model turns
-    controls.update(); renderer.render(scene,camera);
+    var dt=Math.min(clock.getDelta(),0.05), t=clock.elapsedTime; U.uT.value=t;
+    curX+=(mx-curX)*0.05; curY+=(my-curY)*0.05;
+    blob.rotation.y += dt*0.18; blob.rotation.x = curY*0.6; blob.rotation.z = curX*0.3;
+    blob.position.x = curX*0.7; blob.position.y = -curY*0.5;
+    var s=1+Math.sin(t*0.7)*0.03; blob.scale.setScalar(s);
+    spark.rotation.y = t*0.03;
+    camera.position.x += (curX*0.8 - camera.position.x)*0.05; camera.position.y += (-curY*0.6 - camera.position.y)*0.05; camera.lookAt(0,0,0);
+    renderer.render(scene,camera);
   }
   function loop(){ requestAnimationFrame(loop); render(); } loop();
+
+  // hover state on interactive zones (whole hero text)
+  document.querySelectorAll('h1,.sub').forEach(function(z){ });
+
   window.__tick=function(){ render(); };
-  window.__diag=function(){ var sz=new THREE.Vector2(); renderer.getSize(sz); return {size:[sz.x,sz.y],model:!!MODEL,galaxyPoints:G.count,tris:renderer.info.render.triangles}; };
+  window.__sample=function(){ var gl=renderer.getContext(); var w=canvas.width,h=canvas.height; var px=new Uint8Array(400); gl.readPixels((w*0.5)|0,(h*0.5)|0,10,10,gl.RGBA,gl.UNSIGNED_BYTE,px); var r=0,g=0,b=0,mn=999,mx2=0; for(var i=0;i<100;i++){var L=px[i*4]+px[i*4+1]+px[i*4+2];mn=Math.min(mn,L);mx2=Math.max(mx2,L);r+=px[i*4];g+=px[i*4+1];b+=px[i*4+2];} return {r:(r/100)|0,g:(g/100)|0,b:(b/100)|0,contrast:mx2-mn}; };
 })();
 </script>
 </body>
