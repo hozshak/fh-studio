@@ -91,9 +91,9 @@
 
   // ---- rigged astronaut + walk animation ----
   var loader=new THREE.GLTFLoader(); if(typeof MeshoptDecoder!=='undefined') loader.setMeshoptDecoder(MeshoptDecoder);
-  var MODEL=null, mixer=null, walk=null, charH=2, baseY=0, baseScale=1, walkSpeed=2.6, runSpeed=5.2;
+  var MODEL=null, mixer=null, walk=null, charH=2, baseY=0, baseScale=1, fitY=1, walkSpeed=2.6, runSpeed=5.2;
   var react={active:false,t0:0,dur:0.8,jump:1}, emotes=[];
-  loader.load('astrorig.glb', function(gltf){
+  loader.load('astrorig.glb?v=2', function(gltf){
     MODEL=gltf.scene;
     var box=new THREE.Box3().setFromObject(MODEL); var size=box.getSize(new THREE.Vector3());
     var maxDim=Math.max(size.x,size.y,size.z)||1; baseScale=1.7/maxDim; MODEL.scale.setScalar(baseScale);
@@ -106,9 +106,10 @@
       _clip.tracks=_clip.tracks.filter(function(t){ return !/\.position$/.test(t.name); }); // strip root motion → walk in place
       walk=mixer.clipAction(_clip); walk.play(); walk.time=0; walk.paused=true; mixer.update(0); }
     var _sph=new THREE.Sphere(); box.setFromObject(MODEL); box.getBoundingSphere(_sph); var _R=_sph.radius||1;
-    var _fov=camera.fov*Math.PI/180; var _dist=(_R/Math.sin(_fov/2))*2.2;   // 2.2 = generous margin → model small & fully in frame
-    controls.minDistance=_dist*0.35; controls.maxDistance=_dist*3;           // don't let maxDistance clamp the fit
-    controls.target.set(_sph.center.x,_sph.center.y,_sph.center.z); camera.position.set(_sph.center.x,_sph.center.y+_R*0.25,_sph.center.z+_dist); controls.update(); prevPos.copy(MODEL.position);
+    var _fov=camera.fov*Math.PI/180; var _dist=(_R/Math.sin(_fov/2))*2.6;   // generous margin → model small & fully in frame
+    fitY=_sph.center.y;                                                       // consistent look-at height for the follow cam
+    controls.minDistance=_dist*0.4; controls.maxDistance=_dist*3;            // don't let maxDistance clamp the fit
+    controls.target.set(_sph.center.x,fitY,_sph.center.z); camera.position.set(_sph.center.x,fitY+_R*0.12,_sph.center.z+_dist); controls.update(); prevPos.copy(MODEL.position);
     var l=document.getElementById('load'); if(l){ l.classList.add('hide'); setTimeout(function(){ if(l.parentNode)l.parentNode.removeChild(l); },900); }
   }, function(xhr){ if(xhr&&xhr.total){ var el=document.getElementById('pct'); if(el) el.textContent=Math.round(xhr.loaded/xhr.total*100)+'%'; } },
      function(err){ fail('Modell konnte nicht geladen werden.<br><small>'+(err&&err.message?err.message:err)+'</small>'); });
@@ -158,7 +159,7 @@
       // idle breathing when not walking/reacting
       if(!isMoving && !react.active){ MODEL.position.y=baseY+Math.sin(t*1.6)*0.01; }
       camDelta.copy(MODEL.position).sub(prevPos); camDelta.y=0; camera.position.add(camDelta);
-      controls.target.set(MODEL.position.x, MODEL.position.y+charH*0.55, MODEL.position.z); prevPos.copy(MODEL.position);
+      controls.target.set(MODEL.position.x, fitY, MODEL.position.z); prevPos.copy(MODEL.position);
       mixer.update(dt);
     }
     for(var i=emotes.length-1;i>=0;i--){ var sp=emotes[i]; var a=(t-sp.userData.t0)/sp.userData.life; if(a>=1){ scene.remove(sp); sp.material.map.dispose(); sp.material.dispose(); emotes.splice(i,1); continue; } sp.position.y+=0.012; sp.material.opacity=1-a; sp.scale.setScalar(0.9+a*0.5); }
