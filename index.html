@@ -107,12 +107,12 @@
       walk=mixer.clipAction(_clip); walk.play(); walk.time=0; walk.paused=true; mixer.update(0); }
     var _sph=new THREE.Sphere(); box.setFromObject(MODEL); box.getBoundingSphere(_sph); var _R=_sph.radius||1;
     var _fov=camera.fov*Math.PI/180; var _dist=(_R/Math.sin(_fov/2))*5.0;   // camera distance computed for the normal-size model
-    var SH=0.055;                                                            // shrink factor → ~10x smaller on screen
+    var SH=0.035;                                                            // shrink factor → very tiny on screen
     MODEL.scale.multiplyScalar(SH); MODEL.position.y*=SH; baseY=MODEL.position.y; // feet scale toward origin → stay on the floor (reliable, no skinned-bbox)
     charH=size.y*SH; fitY=baseY+charH*0.5;                                   // look at the tiny model's centre
     walkSpeed=0.7; runSpeed=1.4;                                             // slower to match the tiny size
     controls.minDistance=0.5; controls.maxDistance=_dist*1.2;                // stay inside the cave
-    controls.target.set(0,fitY,0); camera.position.set(0,fitY+0.15,_dist); controls.update(); prevPos.copy(MODEL.position);
+    controls.target.set(0,fitY,0); camera.position.set(0,fitY,_dist); controls.update(); prevPos.copy(MODEL.position);   // camera level with the figure → dead centre
     var l=document.getElementById('load'); if(l){ l.classList.add('hide'); setTimeout(function(){ if(l.parentNode)l.parentNode.removeChild(l); },900); }
   }, function(xhr){ if(xhr&&xhr.total){ var el=document.getElementById('pct'); if(el) el.textContent=Math.round(xhr.loaded/xhr.total*100)+'%'; } },
      function(err){ fail('Modell konnte nicht geladen werden.<br><small>'+(err&&err.message?err.message:err)+'</small>'); });
