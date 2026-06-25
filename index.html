@@ -96,14 +96,14 @@
   loader.load('astrorig.glb', function(gltf){
     MODEL=gltf.scene;
     var box=new THREE.Box3().setFromObject(MODEL); var size=box.getSize(new THREE.Vector3());
-    var maxDim=Math.max(size.x,size.y,size.z)||1; baseScale=2.2/maxDim; MODEL.scale.setScalar(baseScale);
+    var maxDim=Math.max(size.x,size.y,size.z)||1; baseScale=1.7/maxDim; MODEL.scale.setScalar(baseScale);
     box.setFromObject(MODEL); size=box.getSize(new THREE.Vector3()); var center=box.getCenter(new THREE.Vector3()); charH=size.y;
     MODEL.position.set(0,-box.min.y,0); baseY=MODEL.position.y;
     MODEL.traverse(function(o){ if(o.isMesh){ o.castShadow=true; o.receiveShadow=true; o.frustumCulled=false; } });
     scene.add(MODEL);
     mixer=new THREE.AnimationMixer(MODEL);
     if(gltf.animations && gltf.animations.length){ walk=mixer.clipAction(gltf.animations[0]); walk.play(); walk.time=0.4; walk.paused=true; mixer.update(0); }
-    controls.target.set(0,charH*0.55,0); camera.position.set(0,charH*1.0,charH*2.4); controls.update(); prevPos.copy(MODEL.position);
+    controls.target.set(0,charH*0.5,0); camera.position.set(0,charH*1.3,charH*4.2); controls.update(); prevPos.copy(MODEL.position);
     var l=document.getElementById('load'); if(l){ l.classList.add('hide'); setTimeout(function(){ if(l.parentNode)l.parentNode.removeChild(l); },900); }
   }, function(xhr){ if(xhr&&xhr.total){ var el=document.getElementById('pct'); if(el) el.textContent=Math.round(xhr.loaded/xhr.total*100)+'%'; } },
      function(err){ fail('Modell konnte nicht geladen werden.<br><small>'+(err&&err.message?err.message:err)+'</small>'); });
