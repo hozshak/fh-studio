@@ -17,3 +17,10 @@ CLAUDE.md
 # Referenz-Bundles von igloo.inc (nur lokale Design-/Pattern-Analyse, fremdes Eigentum, ~1,5 MB) – NICHT committen
 App3D-f554a111.js
 index-2eb69c09.js
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
