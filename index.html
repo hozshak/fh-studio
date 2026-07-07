@@ -41,6 +41,8 @@
   /* hologram website preview */
   #holo{position:fixed;z-index:7;top:96px;right:34px;width:min(360px,86vw);opacity:0;transform:translateY(-10px) scale(.97);transition:.55s cubic-bezier(.16,1,.3,1);pointer-events:none;}
   #holo.show{opacity:1;transform:none;}
+  #povholo{position:fixed;z-index:7;top:96px;left:34px;width:min(320px,86vw);opacity:0;transform:translateY(-10px) scale(.97);transition:.55s cubic-bezier(.16,1,.3,1);pointer-events:none;}
+  #povholo.show{opacity:1;transform:none;} #povcanvas{display:block;width:100%;height:216px;}
   .holo-fr{position:relative;border:1px solid rgba(79,212,238,.5);border-radius:12px;overflow:hidden;background:rgba(6,14,24,.55);box-shadow:0 0 30px rgba(79,212,238,.25),inset 0 0 40px rgba(79,212,238,.06);backdrop-filter:blur(6px);}
   .holo-fr:before{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(79,212,238,.06) 0 1px,transparent 1px 3px);mix-blend-mode:screen;animation:flick 3s infinite;}
   @keyframes flick{0%,100%{opacity:.5}48%{opacity:.7}50%{opacity:.3}}
@@ -96,6 +98,12 @@
   <div class="chrome"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url" id="hurl">project.fh-studio.dev</span></div>
   <div class="view"><div class="site" id="hsite"></div></div>
   <div class="holo-foot"><span id="hres">—</span><a href="mailto:edv@pflueger.de">Enquire ↗</a></div>
+</div></div>
+
+<div id="povholo"><div class="holo-fr">
+  <div class="holo-cap"><span class="rec"><i></i>Surface cam · POV</span><span id="pvname">WEB</span></div>
+  <canvas id="povcanvas"></canvas>
+  <div class="holo-foot"><span>Astronaut feed · EVA</span><span id="pvo2">O₂ 98%</span></div>
 </div></div>
 
 <div id="interior"><div class="int-room">
@@ -225,12 +233,35 @@
     document.getElementById('irows').innerHTML=s.inside.map(function(r){ return '<div class="cell"><div class="n">'+r[0]+'</div><div class="v">'+r[1]+'</div></div>'; }).join(''); }
   document.getElementById('ileave').onclick=function(){ interior.classList.remove('show'); returnMap(); };
 
+  // ---- POV surface cam (astronaut walking) ----
+  function rgbOf(h){ h=h.replace('#',''); return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]; }
+  function shd(hex,f){ var c=rgbOf(hex); return 'rgb('+c.map(function(v){ v=f<0?v*(1+f):v+(255-v)*f; return Math.max(0,Math.min(255,v|0)); }).join(',')+')'; }
+  var povc=document.getElementById('povcanvas'), pctx=povc.getContext('2d'), povOn=false, povT=0, povReq=null, povCol='#4fd4ee', povName='', rocks=[];
+  for(var pr=0;pr<16;pr++) rocks.push({x:Math.random()*2-1,d:Math.random(),s:0.5+Math.random()});
+  function povSize(){ var w=povc.clientWidth||300,h=povc.clientHeight||216,dpr=Math.min(devicePixelRatio,2); povc.width=w*dpr; povc.height=h*dpr; pctx.setTransform(dpr,0,0,dpr,0,0); povc._w=w; povc._h=h; }
+  function drawPOV(){ var W=povc._w||300,H=povc._h||216,t=povT,bob=Math.sin(t*4.5)*3,hz=H*0.52+bob;
+    var sky=pctx.createLinearGradient(0,0,0,hz); sky.addColorStop(0,'#04050b'); sky.addColorStop(1,shd(povCol,-0.42)); pctx.fillStyle=sky; pctx.fillRect(0,0,W,hz);
+    pctx.fillStyle='rgba(255,255,255,.6)'; for(var i=0;i<44;i++){ pctx.fillRect((i*89)%W,(i*47)%(hz-4|0||1),1,1); }
+    var gr=pctx.createLinearGradient(0,hz,0,H); gr.addColorStop(0,shd(povCol,-0.55)); gr.addColorStop(1,shd(povCol,-0.18)); pctx.fillStyle=gr; pctx.fillRect(0,hz,W,H-hz);
+    pctx.strokeStyle='rgba(255,255,255,.10)'; pctx.lineWidth=1; var cxp=W/2, off=(t*0.7)%1;
+    for(var g=0;g<10;g++){ var f=(g+off)/10, y=hz+Math.pow(f,2)*(H-hz); pctx.beginPath(); pctx.moveTo(0,y); pctx.lineTo(W,y); pctx.stroke(); }
+    for(var v=-5;v<=5;v++){ pctx.beginPath(); pctx.moveTo(cxp+v*7,hz); pctx.lineTo(cxp+v*W*0.62,H); pctx.stroke(); }
+    for(var r=0;r<rocks.length;r++){ var ro=rocks[r]; ro.d+=0.004*ro.s; if(ro.d>1){ ro.d=0; ro.x=Math.random()*2-1; }
+      var yy=hz+Math.pow(ro.d,2)*(H-hz), xx=cxp+ro.x*(W*0.55)*ro.d, sz=1.5+ro.d*ro.d*24; pctx.fillStyle=shd(povCol,-0.34-ro.d*0.22); pctx.beginPath(); pctx.ellipse(xx,yy,sz,sz*0.55,0,0,7); pctx.fill(); }
+    var vg=pctx.createRadialGradient(W/2,H*0.5,H*0.18,W/2,H*0.5,H*0.78); vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,0,0,.78)'); pctx.fillStyle=vg; pctx.fillRect(0,0,W,H);
+    pctx.strokeStyle=povCol; pctx.globalAlpha=0.7; pctx.beginPath(); pctx.arc(W/2,H/2,9,0,7); pctx.moveTo(W/2-15,H/2); pctx.lineTo(W/2-11,H/2); pctx.moveTo(W/2+11,H/2); pctx.lineTo(W/2+15,H/2); pctx.stroke(); pctx.globalAlpha=1;
+    pctx.fillStyle=povCol; pctx.font='9px "Space Mono",monospace'; pctx.fillText('SURFACE · '+povName.toUpperCase(),12,16); pctx.fillText('EVA 00:'+String((t|0)%60).toString().padStart(2,'0'),12,H-12);
+    pctx.textAlign='right'; pctx.fillText('CAM 02',W-12,16); pctx.textAlign='left'; }
+  function povLoop(){ if(!povOn){ povReq=null; return; } povT+=1/60; drawPOV(); povReq=requestAnimationFrame(povLoop); }
+  function povStart(w){ povCol='#'+w.c.toString(16).padStart(6,'0'); povName=w.n; document.getElementById('pvname').textContent=w.cls; povSize(); povOn=true; document.getElementById('povholo').classList.add('show'); if(!povReq) povLoop(); }
+  function povStop(){ povOn=false; document.getElementById('povholo').classList.remove('show'); }
+
   // selection + jump
   var sel=null,selEl=null,selT=0,selecting=false,locked=false,DURs=1.6;
   var panel=document.getElementById('panel'), pjump=document.getElementById('pjump'), preturn=document.getElementById('preturn');
   function txt(id,v){ document.getElementById(id).textContent=v; }
   function select(o,el){ if(jumping)return; if(sel&&sel.el)sel.el.classList.remove('sel'); sel=o; selEl=el; el.classList.add('sel'); selT=0; selecting=true; locked=false;
-    route.visible=true; routeDot.visible=true; controls.autoRotate=false; pjump.disabled=true; preturn.style.display='none'; holo.classList.remove('show');
+    route.visible=true; routeDot.visible=true; controls.autoRotate=false; pjump.disabled=true; preturn.style.display='none'; holo.classList.remove('show'); povStop();
     var st2=(o.type==='station'); pjump.textContent=st2?'Enter ▶':'Jump ▶';
     txt('pk',st2?'Service':'Plotting route'); txt('pnm',o.data.n); txt('pty',o.data.t); txt('pdesc',o.data.desc); txt('pres',o.data.res); txt('pdist',(o.pos.length()*0.84).toFixed(1)+' ly'); txt('pcls',o.data.cls);
     var st=document.getElementById('pst'); st.textContent=st2?'Requesting docking clearance…':'Charging jump…'; st.classList.remove('locked'); panel.classList.add('show'); }
@@ -240,7 +271,7 @@
   function doJump(){ if(!sel||!locked||jumping)return; jumping=true; jt=0; controls.enabled=false; controls.autoRotate=false;
     var rr=sel.data.r||5; jFrom.copy(camera.position); jtFrom.copy(controls.target); var dir=sel.pos.clone().sub(EARTH_POS).normalize(); jTo.copy(sel.pos).add(dir.multiplyScalar(-(rr*3.4+8))); jTo.y+=rr*1.1; jtTo.copy(sel.pos);
     document.getElementById('jumphud').style.opacity='1'; jhud.textContent=(sel.type==='station'?'Approaching ':'Jumping to ')+sel.data.n; }
-  function returnMap(){ if(jumping)return; jumping=true; jt=0; controls.enabled=false; atPlace=false; holo.classList.remove('show'); jFrom.copy(camera.position); jtFrom.copy(controls.target); jTo.set(0,40,150); jtTo.set(0,0,0); document.getElementById('jumphud').style.opacity='1'; jhud.textContent='Returning to Sol'; preturn.style.display='none'; }
+  function returnMap(){ if(jumping)return; jumping=true; jt=0; controls.enabled=false; atPlace=false; holo.classList.remove('show'); povStop(); jFrom.copy(camera.position); jtFrom.copy(controls.target); jTo.set(0,40,150); jtTo.set(0,0,0); document.getElementById('jumphud').style.opacity='1'; jhud.textContent='Returning to Sol'; preturn.style.display='none'; }
   pjump.onclick=doJump; preturn.onclick=returnMap;
   function smooth(x){ return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2; }
 
@@ -255,7 +286,7 @@
       warpI=Math.sin(k*Math.PI); document.getElementById('warp').style.opacity=warpI*0.7;
       if(k>=1){ jumping=false; document.getElementById('warp').style.opacity='0'; document.getElementById('jumphud').style.opacity='0'; controls.enabled=true;
         if(jtTo.length()>1){ atPlace=true; controls.minDistance=(sel.data.r||5)*1.5; preturn.style.display='inline-block'; txt('pk',sel.type==='station'?'Docked':'Arrived'); document.getElementById('pst').textContent=(sel.type==='station'?'◆ Docked — step inside':'◆ In orbit — '+sel.data.n);
-          if(sel.type==='world'){ fillHolo(sel.data); holo.classList.add('show'); } else { fillInterior(sel.data); interior.classList.add('show'); } }
+          if(sel.type==='world'){ fillHolo(sel.data); holo.classList.add('show'); povStart(sel.data); } else { fillInterior(sel.data); interior.classList.add('show'); } }
         else { atPlace=false; controls.minDistance=14; controls.autoRotate=true; if(sel&&sel.el)sel.el.classList.remove('sel'); route.visible=false; panel.classList.remove('show'); sel=null; } } }
     else warpI*=0.9;
     updWarp(dt);
@@ -279,6 +310,8 @@
   window.__jump=function(){ doJump(); return {jumping:jumping,to:sel?sel.data.n:null,jTo:[+jTo.x.toFixed(1),+jTo.y.toFixed(1),+jTo.z.toFixed(1)],nan:isNaN(jTo.x)}; };
   window.__arrive=function(){ if(jumping){ jt=JDUR; } return window.__diag(); };
   window.__stationIndex=function(){ for(var i=0;i<OBJ.length;i++) if(OBJ[i].type==='station') return i; return -1; };
+  window.__pov=function(){ return {on:povOn,shown:document.getElementById('povholo').classList.contains('show'),name:povName}; };
+  window.__povTick=function(n){ for(var i=0;i<(n||30);i++){ povT+=1/60; drawPOV(); } var W=povc.width,H=povc.height; var d=pctx.getImageData(W*0.5|0,H*0.7|0,1,1).data; return {litCenterGround:[d[0],d[1],d[2]]}; };
 })();
 </script>
 </body>
