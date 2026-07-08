@@ -183,7 +183,7 @@
       <label class="fl">Preferred contact</label>
       <div class="opts" id="cpref"></div>
       <button class="send" id="send">Send my request ↗</button>
-      <div class="hint">We'll get back within 24h. No spam, ever. · edv@pflueger.de</div>
+      <div class="hint">We'll get back within 24h. No spam, ever. · hello@fh-studio.dev</div>
       <div class="ok" id="ok"></div>
     </div>
   </div>
@@ -199,7 +199,7 @@
   </div>
 </div>
 
-<footer><span>© 2026 FH Studio</span><span>Hozan Shaker × Fynn Beckmann</span><a href="mailto:edv@pflueger.de">edv@pflueger.de</a></footer>
+<footer><span>© 2026 FH Studio</span><span>Hozan Shaker × Fynn Beckmann</span><a href="mailto:hello@fh-studio.dev">hello@fh-studio.dev</a></footer>
 
 <script>
 (function(){
@@ -330,8 +330,8 @@
     var notes=document.getElementById('notes').value.trim(); if(notes){ lines.push(''); lines.push('Notes: '+notes); }
     lines.push(''); lines.push('Contact: '+(name||'—')+' · '+email+(phone?(' · '+phone):'')+' · prefers '+st.pref);
     var body=encodeURIComponent(lines.join('\n')), subject=encodeURIComponent('New website request — '+T.n+' ('+document.getElementById('estV').textContent+')');
-    window.location.href='mailto:edv@pflueger.de?subject='+subject+'&body='+body;
-    var ok=document.getElementById('ok'); ok.classList.add('show'); ok.innerHTML='✓ Thank you, '+(name||'')+'! Your request is ready in your mail app. If it didn\'t open, email us at <a href="mailto:edv@pflueger.de" style="color:#bff0d2">edv@pflueger.de</a> — we\'ll reply within 24h.';
+    window.location.href='mailto:hello@fh-studio.dev?subject='+subject+'&body='+body;
+    var ok=document.getElementById('ok'); ok.classList.add('show'); ok.innerHTML='✓ Thank you, '+(name||'')+'! Your request is ready in your mail app. If it didn\'t open, email us at <a href="mailto:hello@fh-studio.dev" style="color:#bff0d2">hello@fh-studio.dev</a> — we\'ll reply within 24h.';
     ok.scrollIntoView({behavior:'smooth',block:'center'});
   });
 
