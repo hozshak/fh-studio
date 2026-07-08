@@ -122,16 +122,73 @@
   .site.st-brutalist .card,.site.st-brutalist .btnp{border:2px solid currentColor!important;box-shadow:4px 4px 0 currentColor;}
 
   footer{max-width:1440px;margin:10px auto 40px;padding:0 26px;color:var(--faint);font-size:12px;letter-spacing:.12em;text-transform:uppercase;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+
+  /* header nav */
+  header nav{display:flex;gap:24px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);}
+  header nav a{transition:color .2s;} header nav a:hover{color:var(--fg);}
+  @media(max-width:680px){ header nav{display:none;} }
+
+  /* about / hero */
+  #about{max-width:1100px;margin:0 auto;padding:clamp(60px,12vh,120px) 26px 30px;text-align:center;}
+  #about .eb{font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:var(--accent2);}
+  #about h1{font-size:clamp(38px,7vw,92px);font-weight:700;line-height:1.02;letter-spacing:-.02em;margin-top:18px;}
+  #about h1 em{font-style:normal;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  #about .lead{max-width:60ch;margin:22px auto 0;font-size:clamp(15px,1.6vw,19px);line-height:1.65;color:#b7bfd8;}
+  #about .stats{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:38px;}
+  #about .stat{flex:1 1 150px;max-width:210px;padding:20px 16px;}
+  #about .stat .v{font-size:28px;font-weight:700;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums;}
+  #about .stat .l{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin-top:7px;}
+  #about .do{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:28px;}
+  #about .do span{font-size:12px;padding:9px 15px;border-radius:999px;background:var(--glass2);border:1px solid var(--line);color:var(--mut);}
+  #about .cue{margin-top:44px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--faint);}
+  #about .cue .ar{width:1px;height:34px;margin:12px auto 0;background:linear-gradient(var(--accent2),transparent);animation:cue 1.9s infinite;}
+  @keyframes cue{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+  .secintro{max-width:1440px;margin:30px auto 0;padding:0 26px;}
+  .secintro .n{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent2);}
+  .secintro h2{font-size:clamp(26px,3.6vw,44px);font-weight:700;margin-top:8px;letter-spacing:-.01em;}
+  .secintro p{color:var(--mut);margin-top:8px;font-size:15px;max-width:64ch;line-height:1.6;}
+  .note{max-width:1440px;margin:18px auto 0;padding:0 26px;}
+  .note .in{display:flex;gap:13px;align-items:flex-start;padding:16px 18px;border-radius:14px;border:1px solid color-mix(in srgb,var(--accent) 50%,transparent);background:color-mix(in srgb,var(--accent) 12%,transparent);backdrop-filter:blur(8px);}
+  .note .ic{font-size:18px;line-height:1.3;} .note .tx{font-size:13px;line-height:1.6;color:#dbe1f2;} .note .tx b{color:#fff;font-weight:600;}
+
+  /* scroll reveal */
+  .rv{opacity:0;transform:translateY(22px);transition:.7s cubic-bezier(.16,1,.3,1);} .rv.in{opacity:1;transform:none;}
+  @media (prefers-reduced-motion: reduce){ .rv{opacity:1;transform:none;transition:none;} #about .cue .ar,.aur i{animation:none;} }
 </style>
 </head>
 <body class="grain">
 <div class="aur"><i class="a"></i><i class="b"></i><i class="c"></i></div>
 
 <header>
-  <div class="logo">FH&nbsp;<span>STUDIO</span></div>
+  <a class="logo" href="#top" aria-label="FH Studio">FH&nbsp;<span>STUDIO</span></a>
   <div class="prog" aria-hidden="true"><i id="prog"></i></div>
-  <div class="cta">Website Builder</div>
+  <nav aria-label="Primary"><a href="#about">About</a><a href="#build">Build</a><a href="#contact">Contact</a></nav>
 </header>
+
+<span id="top"></span>
+<section id="about">
+  <div class="eb rv">Independent Web Design Studio · Est. 2026</div>
+  <h1 class="rv">We design &amp; build<br>websites <em>worth remembering.</em></h1>
+  <p class="lead rv">FH Studio is an independent studio by <b style="color:#eef1fb">Hozan Shaker</b> &amp; <b style="color:#eef1fb">Fynn Beckmann</b>. We craft premium, fully custom websites — strategy, design, motion and clean code, all in-house. No templates, no shortcuts — every site is made from scratch for one brand: yours.</p>
+  <div class="stats rv">
+    <div class="glass stat"><div class="v">100%</div><div class="l">Custom-built</div></div>
+    <div class="glass stat"><div class="v">2</div><div class="l">Founders, hands-on</div></div>
+    <div class="glass stat"><div class="v">24h</div><div class="l">Reply time</div></div>
+    <div class="glass stat"><div class="v">∞</div><div class="l">Attention to detail</div></div>
+  </div>
+  <div class="do rv"><span>Strategy</span><span>Design</span><span>Motion</span><span>Development</span><span>Launch &amp; care</span></div>
+  <div class="cue rv">Configure your website below<div class="ar"></div></div>
+</section>
+
+<div class="secintro rv" id="build">
+  <div class="n">Start here</div>
+  <h2>Build your website</h2>
+  <p>Pick a type, a style, the pages and every feature you need — and watch it come to life in the live preview on the right. When you're done, send it to us for a plan and a price.</p>
+</div>
+<div class="note rv">
+  <div class="in"><span class="ic">✦</span><span class="tx"><b>Good to know —</b> this preview is a <b>standard layout</b> just to visualize your choices. Your real website is <b>designed individually, exactly to your wish</b> — the look, feel and details are fully custom. Think of this as a starting point, never a template.</span></div>
+</div>
 
 <div class="wrap">
   <!-- LEFT: configuration -->
@@ -195,7 +252,7 @@
       <div class="bchrome"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url" id="burl">https://yourbrand.com</span></div>
       <div class="stage"><div class="site light" id="site"></div></div>
     </div>
-    <div class="hint" style="margin-top:12px">↑ This is a live mockup — it changes with every choice you make.</div>
+    <div class="hint" style="margin-top:12px">↑ Live mockup — changes with every choice. The final design is fully custom, made to your wish.</div>
   </div>
 </div>
 
@@ -337,6 +394,11 @@
 
   window.__diag=function(){ return {types:TYPES.length,styles:STYLES.length,colors:COLORS.length,pages:PAGES.length,features:FEATURES.reduce(function(a,c){return a+c[1].length;},0),type:st.type,style:st.style,selPages:st.pages.size,selFeats:st.feats.size,previewLen:document.getElementById('site').innerHTML.length}; };
   window.__set=function(k,v){ if(k==='feat'){ st.feats.add(v); renderFeatures(); } else if(k==='type'){ st.type=v; renderTypes(); } else if(k==='page'){ st.pages.add(v); renderPages(); } renderPreview(); return window.__diag(); };
+
+  // scroll reveal
+  if('IntersectionObserver' in window){ var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:0.12,rootMargin:'0px 0px -8% 0px'});
+    document.querySelectorAll('.rv, .config .glass').forEach(function(el,i){ el.classList.add('rv'); io.observe(el); }); }
+  else document.querySelectorAll('.rv, .config .glass').forEach(function(el){ el.classList.add('in'); });
 
   renderAll(); renderPreview();
 })();
